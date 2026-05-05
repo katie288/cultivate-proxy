@@ -1030,24 +1030,18 @@ Write 3-5 priority areas based on their gaps. Tone: confident, warm, human — n
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
+          model: 'claude-sonnet-4-5',
           max_tokens: 1200,
           messages: [{ role: 'user', content: prompt }]
         })
       });
       clearInterval(iv);
-      if (!res.ok) {
-        const errText = await res.text();
-        console.error('Proxy error:', res.status, errText);
-        throw new Error('Proxy returned ' + res.status);
-      }
       const data = await res.json();
       const raw = data.content.map(b => b.text || '').join('');
       const report = JSON.parse(raw.replace(/```json|```/g, '').trim());
       renderReport(report);
     } catch (err) {
       clearInterval(iv);
-      console.error('Report generation error:', err);
       document.getElementById('generating').innerHTML = '<p style="color:var(--deep-pink);font-size:14px;margin-top:40px">Something went wrong generating your report. Please refresh and try again, or get in touch at <a href="mailto:katie@cultivatecustomerexperience.com" style="color:var(--deep-pink)">katie@cultivatecustomerexperience.com</a> directly.</p>';
     }
   }
