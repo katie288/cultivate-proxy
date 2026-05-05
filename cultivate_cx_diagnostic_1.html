@@ -999,56 +999,55 @@ body {
       'Additional context: ' + (answers.constraints || 'None')
     ].join('\n');
 
-    const prompt = `You are a CX training consultant for CULTIVATE Customer Experience by Design, founded by Katie Stabler — a globally recognised CCXP-certified CX leader (ranked #3 globally) and author of CX-ISM: The Philosophy of Customer Experience. CX-ISM positions customer experience not as a department but as an operating doctrine — a belief-level commitment to relationships over transactions. The signature phrase: "In a world where AI handles the doing, the businesses that endure will be those who master the being."
+    const prompt = `You are a CX training consultant for CULTIVATE Customer Experience by Design, founded by Katie Stabler (CCXP, globally ranked CX leader).
 
-A prospective client has completed a training needs diagnostic. Produce a structured report in valid JSON only. No preamble, no markdown code fences.
+A client completed a training needs diagnostic. Reply in valid JSON only. No markdown fences.
 
-Client responses:
-${summary}
+Client answers:
+Role: ${answers.role || 'Not specified'}
+Sector: ${answers.sector || 'Not specified'}
+CX Maturity: ${answers.cx_maturity || 'Not specified'}
+Gaps: ${(answers.gaps || []).join(', ') || 'None'}
+Audience: ${(answers.audience || []).join(', ') || 'Not specified'}
+Success vision: ${answers.success || 'Not specified'}
+Format preference: ${(answers.format || []).join(', ') || 'None'}
 
 Return exactly this JSON:
 {
-  "headline": "One bold, direct sentence capturing this client's core CX situation and what is at stake. No jargon. Make it feel personal and specific.",
-  "maturity_insight": "2-3 sentences assessing where they sit on the CX maturity curve and what that means for how training should be designed. Be specific to their sector and role.",
+  "headline": "One punchy sentence summarising their CX situation and opportunity",
+  "maturity_insight": "2 sentences on where they are on the CX maturity curve and what it means for training",
   "priority_areas": [
     {
-      "area": "Short training area name (3-5 words)",
+      "area": "Short area name",
       "priority": "high|medium|low",
-      "rationale": "1-2 sentences — why is this a priority given their specific responses?",
-      "cultivate_angle": "One sentence on how CULTIVATE would approach this, reflecting CX-ISM philosophy where relevant"
+      "rationale": "One sentence on why this matters for them specifically",
+      "cultivate_angle": "One sentence on how CULTIVATE would tackle this"
     }
   ],
-  "recommended_approach": "2-3 sentences on overall training design, sequencing and format that would work for this client.",
-  "discovery_questions": ["3-4 sharp, specific questions Katie should explore in the discovery conversation"],
-  "next_step_copy": "One warm, personal invitation for them to book a discovery conversation with Katie. Sign off warmly."
+  "recommended_approach": "2 sentences on the right training design for this client",
+  "discovery_questions": ["question 1", "question 2", "question 3"],
+  "next_step_copy": "One warm sentence inviting them to book a discovery call with Katie"
 }
 
-Write 3-5 priority areas based on their gaps. Tone: confident, warm, human — never corporate. This is read by the prospective client on the CULTIVATE website.`;
+Include 3 priority areas. Be specific, warm and human — not corporate.`;
 
     try {
-      const res = await fetch('/api/claude', {
+      const res = await fetch('https://cultivate-proxy.vercel.app/api/claude', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          model: 'claude-sonnet-4-5',
-          max_tokens: 1200,
+          model: 'claude-haiku-4-5',
+          max_tokens: 600,
           messages: [{ role: 'user', content: prompt }]
         })
       });
       clearInterval(iv);
       const data = await res.json();
-      console.log('API response:', JSON.stringify(data).substring(0, 500));
       const raw = data.content.map(b => b.text || '').join('');
-      console.log('Raw text:', raw.substring(0, 500));
-      const cleaned = raw.replace(/```json[\s\S]*?```|```/g, '').trim();
-      const firstBrace = cleaned.indexOf('{');
-      const lastBrace = cleaned.lastIndexOf('}');
-      const jsonStr = cleaned.substring(firstBrace, lastBrace + 1);
-      const report = JSON.parse(jsonStr);
+      const report = JSON.parse(raw.replace(/```json|```/g, '').trim());
       renderReport(report);
     } catch (err) {
       clearInterval(iv);
-      console.error('Full error:', err);
       document.getElementById('generating').innerHTML = '<p style="color:var(--deep-pink);font-size:14px;margin-top:40px">Something went wrong generating your report. Please refresh and try again, or get in touch at <a href="mailto:katie@cultivatecustomerexperience.com" style="color:var(--deep-pink)">katie@cultivatecustomerexperience.com</a> directly.</p>';
     }
   }
