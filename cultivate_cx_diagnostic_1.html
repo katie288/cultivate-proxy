@@ -1037,11 +1037,18 @@ Write 3-5 priority areas based on their gaps. Tone: confident, warm, human — n
       });
       clearInterval(iv);
       const data = await res.json();
+      console.log('API response:', JSON.stringify(data).substring(0, 500));
       const raw = data.content.map(b => b.text || '').join('');
-      const report = JSON.parse(raw.replace(/```json|```/g, '').trim());
+      console.log('Raw text:', raw.substring(0, 500));
+      const cleaned = raw.replace(/```json[\s\S]*?```|```/g, '').trim();
+      const firstBrace = cleaned.indexOf('{');
+      const lastBrace = cleaned.lastIndexOf('}');
+      const jsonStr = cleaned.substring(firstBrace, lastBrace + 1);
+      const report = JSON.parse(jsonStr);
       renderReport(report);
     } catch (err) {
       clearInterval(iv);
+      console.error('Full error:', err);
       document.getElementById('generating').innerHTML = '<p style="color:var(--deep-pink);font-size:14px;margin-top:40px">Something went wrong generating your report. Please refresh and try again, or get in touch at <a href="mailto:katie@cultivatecustomerexperience.com" style="color:var(--deep-pink)">katie@cultivatecustomerexperience.com</a> directly.</p>';
     }
   }
