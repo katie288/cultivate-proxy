@@ -1026,7 +1026,7 @@ Return exactly this JSON:
 Write 3-5 priority areas based on their gaps. Tone: confident, warm, human — never corporate. This is read by the prospective client on the CULTIVATE website.`;
 
     try {
-      const res = await fetch('https://cultivate-proxy.vercel.app/api/claude', {
+      const res = await fetch('/api/claude', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -1036,12 +1036,18 @@ Write 3-5 priority areas based on their gaps. Tone: confident, warm, human — n
         })
       });
       clearInterval(iv);
+      if (!res.ok) {
+        const errText = await res.text();
+        console.error('Proxy error:', res.status, errText);
+        throw new Error('Proxy returned ' + res.status);
+      }
       const data = await res.json();
       const raw = data.content.map(b => b.text || '').join('');
       const report = JSON.parse(raw.replace(/```json|```/g, '').trim());
       renderReport(report);
     } catch (err) {
       clearInterval(iv);
+      console.error('Report generation error:', err);
       document.getElementById('generating').innerHTML = '<p style="color:var(--deep-pink);font-size:14px;margin-top:40px">Something went wrong generating your report. Please refresh and try again, or get in touch at <a href="mailto:katie@cultivatecustomerexperience.com" style="color:var(--deep-pink)">katie@cultivatecustomerexperience.com</a> directly.</p>';
     }
   }
