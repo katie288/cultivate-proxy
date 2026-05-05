@@ -1,0 +1,8 @@
+{
+  "routes": [
+    {
+      "src": "/cultivate_cx_diagnostic.html",
+      "dest": "/cultivate_cx_diagnostic.html"
+    }
+  ]
+}
