@@ -999,37 +999,13 @@ body {
       'Additional context: ' + (answers.constraints || 'None')
     ].join('\n');
 
-    const prompt = `You are a CX training consultant for CULTIVATE Customer Experience by Design, founded by Katie Stabler (CCXP, globally ranked CX leader).
+    const prompt = `You are a CX training consultant for CULTIVATE Customer Experience by Design, founded by Katie Stabler (CCXP).
 
-A client completed a training needs diagnostic. Reply in valid JSON only. No markdown fences.
+Reply in valid JSON only. No markdown. No explanation before or after.
 
-Client answers:
-Role: ${answers.role || 'Not specified'}
-Sector: ${answers.sector || 'Not specified'}
-CX Maturity: ${answers.cx_maturity || 'Not specified'}
-Gaps: ${(answers.gaps || []).join(', ') || 'None'}
-Audience: ${(answers.audience || []).join(', ') || 'Not specified'}
-Success vision: ${answers.success || 'Not specified'}
-Format preference: ${(answers.format || []).join(', ') || 'None'}
+Client: Role=${answers.role || 'unknown'}, Sector=${answers.sector || 'unknown'}, Maturity=${answers.cx_maturity || 'unknown'}, Gaps=${(answers.gaps||[]).join(', ')||'none'}, Audience=${(answers.audience||[]).join(', ')||'unknown'}, Success=${answers.success||'not specified'}, Format=${(answers.format||[]).join(', ')||'none'}
 
-Return exactly this JSON:
-{
-  "headline": "One punchy sentence summarising their CX situation and opportunity",
-  "maturity_insight": "2 sentences on where they are on the CX maturity curve and what it means for training",
-  "priority_areas": [
-    {
-      "area": "Short area name",
-      "priority": "high|medium|low",
-      "rationale": "One sentence on why this matters for them specifically",
-      "cultivate_angle": "One sentence on how CULTIVATE would tackle this"
-    }
-  ],
-  "recommended_approach": "2 sentences on the right training design for this client",
-  "discovery_questions": ["question 1", "question 2", "question 3"],
-  "next_step_copy": "One warm sentence inviting them to book a discovery call with Katie"
-}
-
-Include 3 priority areas. Be specific, warm and human — not corporate.`;
+{"headline":"one sentence","maturity_insight":"two sentences","priority_areas":[{"area":"name","priority":"high","rationale":"one sentence","cultivate_angle":"one sentence"},{"area":"name","priority":"medium","rationale":"one sentence","cultivate_angle":"one sentence"},{"area":"name","priority":"low","rationale":"one sentence","cultivate_angle":"one sentence"}],"recommended_approach":"two sentences","discovery_questions":["q1","q2","q3"],"next_step_copy":"one warm sentence inviting a discovery call with Katie"}`;
 
     try {
       const res = await fetch('https://cultivate-proxy.vercel.app/api/claude', {
@@ -1041,15 +1017,43 @@ Include 3 priority areas. Be specific, warm and human — not corporate.`;
           messages: [{ role: 'user', content: prompt }]
         })
       });
+
       clearInterval(iv);
-      const data = await res.json();
-      const raw = data.content.map(b => b.text || '').join('');
-      const report = JSON.parse(raw.replace(/```json|```/g, '').trim());
+
+      const text = await res.text();
+      console.log('Response status:', res.status);
+      console.log('Response text:', text.substring(0, 300));
+
+      if (!res.ok) {
+        throw new Error('Server error: ' + res.status + ' ' + text.substring(0, 100));
+      }
+
+      const data = JSON.parse(text);
+
+      if (!data.content || !data.content[0]) {
+        throw new Error('Unexpected API response structure');
+      }
+
+      const raw = data.content[0].text;
+      console.log('Raw text:', raw.substring(0, 300));
+
+      const firstBrace = raw.indexOf('{');
+      const lastBrace = raw.lastIndexOf('}');
+      if (firstBrace === -1 || lastBrace === -1) {
+        throw new Error('No JSON found in response');
+      }
+
+      const jsonStr = raw.substring(firstBrace, lastBrace + 1);
+      const report = JSON.parse(jsonStr);
       renderReport(report);
+
     } catch (err) {
       clearInterval(iv);
-      document.getElementById('generating').innerHTML = '<p style="color:var(--deep-pink);font-size:14px;margin-top:40px">Something went wrong generating your report. Please refresh and try again, or get in touch at <a href="mailto:katie@cultivatecustomerexperience.com" style="color:var(--deep-pink)">katie@cultivatecustomerexperience.com</a> directly.</p>';
+      console.error('Error:', err.message);
+      document.getElementById('generating').innerHTML = '<p style="color:var(--deep-pink);font-size:14px;margin-top:40px">Something went wrong: ' + err.message + '<br><br>Please try again or email <a href="mailto:katie@cultivatecustomerexperience.com" style="color:var(--deep-pink)">katie@cultivatecustomerexperience.com</a></p>';
     }
+  }
+
   }
 
   function badge(p) {
