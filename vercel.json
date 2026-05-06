@@ -1,0 +1,8 @@
+{
+  "routes": [
+    {
+      "src": "/cx-diagnostic",
+      "dest": "/diagnostic.html"
+    }
+  ]
+}
