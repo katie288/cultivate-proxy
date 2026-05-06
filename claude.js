@@ -72,7 +72,7 @@ export default async function handler(req) {
     `;
 
     // Send to client
-    await fetch('https://api.resend.com/emails', {
+    const clientRes = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -86,8 +86,11 @@ export default async function handler(req) {
       })
     });
 
+    const clientData = await clientRes.text();
+    console.log('Client email status:', clientRes.status, clientData);
+
     // Send copy to Katie
-    await fetch('https://api.resend.com/emails', {
+    const katieRes = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -101,7 +104,10 @@ export default async function handler(req) {
       })
     });
 
-    return new Response(JSON.stringify({ success: true }), { status: 200, headers });
+    const katieData = await katieRes.text();
+    console.log('Katie email status:', katieRes.status, katieData);
+
+    return new Response(JSON.stringify({ success: true, clientStatus: clientRes.status, katieStatus: katieRes.status }), { status: 200, headers });
   }
 
   // Otherwise proxy to Anthropic
