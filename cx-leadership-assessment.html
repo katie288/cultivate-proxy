@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The CX-ISM Leadership Assessment | Cultivate Customer Experience</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --pink: #ffa9f9; --deep-pink: #80005a; --gold: #c9883a; --gold-pale: #f5e6d3;
+    --cream: #faf8f4; --white: #ffffff; --border: #e8e4de; --muted: #6b6b6b;
+    --light: #9a9a9a; --black: #111111;
+  }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--black); min-height: 100vh; line-height: 1.6; }
+  .header { background: var(--black); padding: 16px 40px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .header img { height: 36px; object-fit: contain; }
+  .header-badge { background: var(--pink); color: var(--black); border-radius: 20px; padding: 5px 16px; font-size: 11px; font-weight: 500; letter-spacing: 0.8px; text-transform: uppercase; }
+  .progress-bar-wrap { background: var(--border); height: 3px; width: 100%; position: sticky; top: 68px; z-index: 99; }
+  .progress-bar { height: 3px; background: linear-gradient(90deg, var(--gold), var(--pink)); transition: width 0.5s ease; width: 0%; }
+  .screen { display: none; }
+  .screen.active { display: block; }
+  .intro-hero { background: var(--pink); padding: 80px 40px; text-align: center; }
+  .intro-badge { display: inline-block; background: rgba(0,0,0,0.08); color: var(--black); border: 0.5px solid rgba(0,0,0,0.15); border-radius: 20px; padding: 6px 20px; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 28px; }
+  .intro-hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(32px, 5vw, 52px); line-height: 1.15; color: var(--black); font-weight: 400; margin-bottom: 20px; max-width: 680px; margin-left: auto; margin-right: auto; }
+  .intro-hero p { font-size: 17px; line-height: 1.75; color: var(--black); opacity: 0.8; font-weight: 300; max-width: 560px; margin: 0 auto 40px; }
+  .intro-content { max-width: 800px; margin: 0 auto; padding: 60px 40px; }
+  .section-label { font-size: 11px; font-weight: 500; color: var(--gold); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 20px; display: block; }
+  .intro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 40px; }
+  .intro-card { background: var(--white); border: 0.5px solid var(--border); border-radius: 10px; padding: 20px 22px; }
+  .intro-card-num { font-family: 'Playfair Display', serif; font-size: 22px; color: rgba(0,0,0,0.12); margin-bottom: 6px; }
+  .intro-card h3 { font-size: 13px; font-weight: 500; color: var(--black); margin-bottom: 4px; }
+  .intro-card p { font-size: 12px; line-height: 1.6; color: var(--muted); font-weight: 300; }
+  .intro-note { background: var(--white); border: 0.5px solid var(--border); border-left: 2px solid var(--gold); border-radius: 0 8px 8px 0; padding: 18px 24px; margin-bottom: 40px; }
+  .intro-note p { font-family: 'Playfair Display', serif; font-style: italic; font-size: 15px; line-height: 1.7; color: var(--muted); }
+  .form-group { margin-bottom: 20px; }
+  .form-group label { display: block; font-size: 13px; font-weight: 500; color: var(--black); margin-bottom: 8px; }
+  .form-group input, .form-group select { width: 100%; padding: 12px 16px; border: 0.5px solid var(--border); border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--black); background: var(--white); outline: none; transition: border-color 0.2s; }
+  .form-group input:focus, .form-group select:focus { border-color: var(--gold); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .btn-primary { background: var(--black); color: var(--white); border: none; border-radius: 8px; padding: 16px 36px; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 500; cursor: pointer; transition: opacity 0.2s; display: inline-block; }
+  .btn-primary:hover { opacity: 0.85; }
+  .btn-pink { background: var(--pink); color: var(--black); }
+  .assessment-wrap { max-width: 780px; margin: 0 auto; padding: 48px 40px; }
+  .dimension-header { margin-bottom: 36px; padding-bottom: 24px; border-bottom: 0.5px solid var(--border); }
+  .dimension-number { font-family: 'Playfair Display', serif; font-size: 13px; color: var(--light); margin-bottom: 8px; }
+  .dimension-title { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--black); font-weight: 400; margin-bottom: 8px; }
+  .dimension-desc { font-size: 14px; line-height: 1.7; color: var(--muted); font-weight: 300; max-width: 580px; }
+  .question-block { background: var(--white); border: 0.5px solid var(--border); border-radius: 10px; padding: 24px 28px; margin-bottom: 14px; }
+  .question-text { font-size: 15px; font-weight: 400; color: var(--black); line-height: 1.6; margin-bottom: 18px; }
+  .question-sub { font-size: 12px; color: var(--muted); font-weight: 300; margin-bottom: 14px; font-style: italic; line-height: 1.5; }
+  .scale-wrap { display: flex; flex-direction: column; gap: 0; }
+  .scale-option { display: flex; align-items: flex-start; gap: 12px; padding: 10px 14px; border-radius: 6px; cursor: pointer; transition: background 0.15s; border: 0.5px solid transparent; }
+  .scale-option:hover { background: var(--cream); }
+  .scale-option.selected { background: var(--gold-pale); border-color: rgba(201,136,58,0.3); }
+  .scale-option input[type="radio"] { margin-top: 2px; accent-color: var(--gold); flex-shrink: 0; width: 16px; height: 16px; }
+  .scale-option-label { font-size: 13px; line-height: 1.5; color: var(--black); font-weight: 300; }
+  .scale-option-label strong { font-weight: 500; display: block; margin-bottom: 1px; }
+  .open-textarea { width: 100%; padding: 14px 16px; border: 0.5px solid var(--border); border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--black); background: var(--white); resize: vertical; min-height: 100px; outline: none; line-height: 1.6; transition: border-color 0.2s; }
+  .open-textarea:focus { border-color: var(--gold); }
+  .checkbox-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .checkbox-option { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 6px; cursor: pointer; border: 0.5px solid var(--border); background: var(--cream); transition: all 0.15s; font-size: 13px; color: var(--black); font-weight: 300; }
+  .checkbox-option:hover { background: var(--gold-pale); }
+  .checkbox-option.selected { background: var(--gold-pale); border-color: rgba(201,136,58,0.4); }
+  .checkbox-option input[type="checkbox"] { accent-color: var(--gold); width: 15px; height: 15px; flex-shrink: 0; }
+  .multi-select-wrap { display: flex; flex-direction: column; gap: 6px; }
+  .multi-option { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 6px; cursor: pointer; border: 0.5px solid var(--border); background: var(--cream); transition: all 0.15s; font-size: 13px; color: var(--black); font-weight: 300; }
+  .multi-option:hover { background: var(--gold-pale); }
+  .multi-option.selected { background: var(--gold-pale); border-color: rgba(201,136,58,0.4); font-weight: 500; }
+  .multi-option input[type="radio"] { accent-color: var(--gold); width: 15px; height: 15px; flex-shrink: 0; }
+  .slider-wrap { padding: 8px 0 4px; }
+  .slider-input { width: 100%; accent-color: var(--gold); height: 4px; }
+  .slider-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--light); margin-top: 8px; }
+  .slider-value { text-align: center; font-family: 'Playfair Display', serif; font-size: 36px; color: var(--gold); margin-bottom: 12px; font-weight: 400; }
+  .yesno-wrap { display: flex; gap: 10px; flex-wrap: wrap; }
+  .yesno-btn { flex: 1; min-width: 80px; padding: 12px; border: 0.5px solid var(--border); border-radius: 8px; background: var(--cream); cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 400; color: var(--black); transition: all 0.15s; text-align: center; }
+  .yesno-btn:hover { background: var(--gold-pale); }
+  .yesno-btn.selected { background: var(--gold-pale); border-color: rgba(201,136,58,0.4); font-weight: 500; }
+  .conditional-followup { margin-top: 16px; padding: 16px 18px; background: var(--cream); border-radius: 8px; border: 0.5px solid var(--border); display: none; }
+  .conditional-followup.visible { display: block; }
+  .followup-label { font-size: 13px; font-weight: 500; color: var(--black); margin-bottom: 12px; }
+  .nav-row { display: flex; align-items: center; justify-content: space-between; margin-top: 40px; padding-top: 24px; border-top: 0.5px solid var(--border); }
+  .btn-back { background: transparent; color: var(--muted); border: 0.5px solid var(--border); border-radius: 8px; padding: 12px 24px; font-family: 'DM Sans', sans-serif; font-size: 14px; cursor: pointer; transition: all 0.2s; }
+  .btn-back:hover { border-color: var(--black); color: var(--black); }
+  .dimension-dots { display: flex; gap: 6px; align-items: center; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); transition: background 0.3s; }
+  .dot.active { background: var(--gold); }
+  .dot.done { background: var(--black); }
+  .loading-screen { background: var(--black); min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px; }
+  .loading-logo { height: 40px; margin-bottom: 48px; filter: brightness(0) invert(1) opacity(0.6); }
+  .loading-spinner { width: 48px; height: 48px; border: 2px solid rgba(255,169,249,0.2); border-top-color: var(--pink); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 32px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-title { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--white); font-weight: 400; margin-bottom: 12px; }
+  .loading-subtitle { font-size: 14px; color: rgba(255,255,255,0.45); font-weight: 300; max-width: 360px; line-height: 1.7; }
+  .loading-steps { margin-top: 48px; display: flex; flex-direction: column; gap: 12px; text-align: left; width: 100%; max-width: 360px; }
+  .loading-step { display: flex; align-items: center; gap: 12px; opacity: 0.3; transition: opacity 0.5s; font-size: 13px; color: var(--white); font-weight: 300; }
+  .loading-step.active { opacity: 1; }
+  .loading-step-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--pink); flex-shrink: 0; }
+  .report-header { background: var(--pink); padding: 64px 40px; text-align: center; }
+  .report-header h1 { font-family: 'Playfair Display', serif; font-size: clamp(28px, 4vw, 42px); color: var(--black); font-weight: 400; margin-bottom: 12px; }
+  .report-header p { font-size: 15px; color: var(--black); opacity: 0.7; font-weight: 300; }
+  .report-content { max-width: 780px; margin: 0 auto; padding: 60px 40px; }
+  .report-section { margin-bottom: 40px; }
+  .report-section h2 { font-family: 'Playfair Display', serif; font-size: 24px; color: var(--black); font-weight: 400; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 0.5px solid var(--border); }
+  .report-section p { font-size: 15px; line-height: 1.85; color: #333; font-weight: 300; margin-bottom: 14px; }
+  .report-section ul { padding-left: 0; list-style: none; margin-bottom: 14px; }
+  .report-section li { font-size: 15px; line-height: 1.75; color: #333; font-weight: 300; padding-left: 22px; position: relative; margin-bottom: 8px; }
+  .report-section li::before { content: '→'; position: absolute; left: 0; color: var(--gold); font-size: 13px; top: 2px; }
+  .maturity-badge { display: inline-block; background: var(--gold-pale); color: #7a5a2a; border: 0.5px solid rgba(201,136,58,0.3); border-radius: 20px; padding: 6px 18px; font-size: 12px; font-weight: 500; letter-spacing: 0.5px; margin-bottom: 16px; }
+  .report-divider { height: 0.5px; background: var(--border); margin: 36px 0; }
+  .error-box { background: #fff0f0; border: 0.5px solid #ffcccc; border-radius: 8px; padding: 16px 20px; font-size: 14px; color: #cc0000; margin-top: 16px; }
+  .email-section { background: var(--black); padding: 48px 40px; border-radius: 12px; text-align: center; margin-top: 48px; }
+  .email-section h3 { font-family: 'Playfair Display', serif; font-size: 24px; color: var(--white); font-weight: 400; margin-bottom: 8px; }
+  .email-section p { font-size: 14px; color: rgba(255,255,255,0.5); font-weight: 300; margin-bottom: 24px; }
+  .email-row { display: flex; gap: 12px; max-width: 480px; margin: 0 auto; }
+  .email-row input { flex: 1; padding: 12px 16px; border: 0.5px solid rgba(255,255,255,0.2); border-radius: 8px; background: rgba(255,255,255,0.08); color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none; }
+  .email-row input::placeholder { color: rgba(255,255,255,0.3); }
+  @media (max-width: 640px) {
+    .intro-grid, .form-row, .checkbox-grid { grid-template-columns: 1fr; }
+    .email-row { flex-direction: column; }
+    .assessment-wrap, .intro-content, .report-content { padding: 32px 20px; }
+    .header { padding: 14px 20px; }
+    .intro-hero, .report-header { padding: 48px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <img src="https://d1yei2z3i6k35z.cloudfront.net/13851559/689300280e99b_LogoJune2025.png" alt="Cultivate Customer Experience">
+  <span class="header-badge">Leadership Assessment</span>
+</div>
+<div class="progress-bar-wrap"><div class="progress-bar" id="progressBar"></div></div>
+
+<!-- PASSWORD -->
+<div class="screen active" id="screen-password">
+  <div class="intro-hero">
+    <div class="intro-badge">The CX-ISM Method™ · Course Members Only</div>
+    <h1>Your CX Leadership<br><em>Awareness Assessment</em></h1>
+    <p>A private, premium diagnostic for founding cohort members. Please enter your access code to begin.</p>
+  </div>
+  <div class="intro-content" style="max-width:480px;">
+    <div class="form-group">
+      <label>Access Code</label>
+      <input type="password" id="passwordInput" placeholder="Enter your access code" />
+    </div>
+    <div id="passwordError" style="display:none;" class="error-box">That access code isn't correct. Please check with Katie.</div>
+    <button class="btn-primary" onclick="checkPassword()" style="width:100%;margin-top:8px;">Continue →</button>
+  </div>
+</div>
+
+<!-- INTRO -->
+<div class="screen" id="screen-intro">
+  <div class="intro-hero">
+    <div class="intro-badge">The CX-ISM Method™ · Module 1 · Awareness</div>
+    <h1>Your CX Leadership<br><em>Awareness Assessment</em></h1>
+    <p>Before we change anything, we need to see clearly. This assessment is your honest starting point — not a test, not a judgement. A mirror.</p>
+  </div>
+  <div class="intro-content">
+    <span class="section-label">What this assessment covers</span>
+    <div class="intro-grid">
+      <div class="intro-card"><div class="intro-card-num">01</div><h3>Your Leadership Position</h3><p>Your role, influence, team, and personal leadership starting point.</p></div>
+      <div class="intro-card"><div class="intro-card-num">02</div><h3>CX Maturity</h3><p>How developed your organisation's approach to CX actually is — beyond the narrative.</p></div>
+      <div class="intro-card"><div class="intro-card-num">03</div><h3>Cultural Conditions</h3><p>The hidden forces quietly shaping the experience your customers receive.</p></div>
+      <div class="intro-card"><div class="intro-card-num">04</div><h3>Customer Understanding</h3><p>How deeply your organisation truly knows its customers.</p></div>
+      <div class="intro-card"><div class="intro-card-num">05</div><h3>Strategy & Governance</h3><p>Whether CX has a clear strategic home and how decisions about it are made.</p></div>
+      <div class="intro-card"><div class="intro-card-num">06</div><h3>Measurement & Meaning</h3><p>What you measure, why, and whether it's actually informing better decisions.</p></div>
+      <div class="intro-card"><div class="intro-card-num">07</div><h3>Employee Experience</h3><p>The connection between how your people are led and how customers are treated.</p></div>
+      <div class="intro-card"><div class="intro-card-num">08</div><h3>Technology & AI</h3><p>How technology and AI are shaping your CX — and whether that's intentional.</p></div>
+      <div class="intro-card"><div class="intro-card-num">09</div><h3>Your Honest Reflection</h3><p>Space to articulate what you see, feel, and believe — in your own words.</p></div>
+    </div>
+    <div class="intro-note"><p>There are no right or wrong answers. The value of this assessment is entirely dependent on your honesty. Answer as things are — not as you wish they were. This report is for you.</p></div>
+    <span class="section-label">Before you begin</span>
+    <div class="form-row" style="margin-bottom:16px;">
+      <div class="form-group"><label>Your full name</label><input type="text" id="userName" placeholder="e.g. Sarah Mitchell" /></div>
+      <div class="form-group"><label>Your job title</label><input type="text" id="userTitle" placeholder="e.g. Head of Customer Experience" /></div>
+    </div>
+    <div class="form-row" style="margin-bottom:16px;">
+      <div class="form-group"><label>Organisation name</label><input type="text" id="userOrg" placeholder="e.g. Hartley Financial Group" /></div>
+      <div class="form-group"><label>Industry / sector</label><input type="text" id="userSector" placeholder="e.g. Financial Services" /></div>
+    </div>
+    <div class="form-group" style="margin-bottom:32px;">
+      <label>Organisation size</label>
+      <select id="userSize">
+        <option value="">Select...</option>
+        <option>Under 50 employees</option>
+        <option>50 – 250 employees</option>
+        <option>250 – 1,000 employees</option>
+        <option>1,000 – 5,000 employees</option>
+        <option>Over 5,000 employees</option>
+      </select>
+    </div>
+    <button class="btn-primary" onclick="startAssessment()" style="width:100%;">Begin the assessment →</button>
+    <p style="text-align:center;font-size:12px;color:var(--light);margin-top:12px;">Approximately 40–50 minutes · Your answers are never shared beyond Katie</p>
+  </div>
+</div>
+
+<!-- ASSESSMENT -->
+<div class="screen" id="screen-assessment">
+  <div class="assessment-wrap">
+    <div class="dimension-header">
+      <div class="dimension-number" id="dimNumber"></div>
+      <div class="dimension-title" id="dimTitle"></div>
+      <div class="dimension-desc" id="dimDesc"></div>
+    </div>
+    <div id="questionsContainer"></div>
+    <div class="nav-row">
+      <button class="btn-back" id="backBtn" onclick="prevDimension()">← Back</button>
+      <div class="dimension-dots" id="dimensionDots"></div>
+      <button class="btn-primary" id="nextBtn" onclick="nextDimension()">Continue →</button>
+    </div>
+  </div>
+</div>
+
+<!-- LOADING -->
+<div class="screen" id="screen-loading">
+  <div class="loading-screen">
+    <img src="https://d1yei2z3i6k35z.cloudfront.net/13851559/689300280e99b_LogoJune2025.png" class="loading-logo" alt="Cultivate">
+    <div class="loading-spinner"></div>
+    <div class="loading-title">Generating your report</div>
+    <div class="loading-subtitle">Your responses are being analysed across all nine dimensions. This takes a moment.</div>
+    <div class="loading-steps">
+      <div class="loading-step active" id="step1"><div class="loading-step-dot"></div>Interpreting your leadership context</div>
+      <div class="loading-step" id="step2"><div class="loading-step-dot"></div>Assessing CX maturity and cultural conditions</div>
+      <div class="loading-step" id="step3"><div class="loading-step-dot"></div>Identifying key themes and patterns</div>
+      <div class="loading-step" id="step4"><div class="loading-step-dot"></div>Mapping your strengths and growth edges</div>
+      <div class="loading-step" id="step5"><div class="loading-step-dot"></div>Crafting your personalised report</div>
+    </div>
+  </div>
+</div>
+
+<!-- REPORT -->
+<div class="screen" id="screen-report">
+  <div class="report-header">
+    <div class="maturity-badge">CX-ISM Awareness Report</div>
+    <h1>Your CX Leadership<br>Awareness Report</h1>
+    <p id="reportSubtitle">Prepared for you · The CX-ISM Method™ · Module 1</p>
+  </div>
+  <div class="report-content">
+    <div id="reportBody"></div>
+    <div class="email-section">
+      <h3>Receive your report by email</h3>
+      <p>We'll send a copy to you and to Katie so she can reference it throughout your programme.</p>
+      <div class="email-row">
+        <input type="email" id="reportEmail" placeholder="Your email address" />
+        <button class="btn-primary btn-pink" onclick="sendReport()">Send →</button>
+      </div>
+      <div id="emailConfirm" style="display:none;margin-top:16px;font-size:13px;color:rgba(255,255,255,0.6);">✓ Report sent to you and Katie. Check your inbox.</div>
+      <div id="emailError" style="display:none;margin-top:16px;" class="error-box">Email couldn't send right now — Katie has still received your report automatically.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const ACCESS_CODE = "CXISM2026";
+const KATIE_EMAIL = "katie@cultivatecustomerexperience.com";
+// UPDATE THIS to match your actual proxy endpoint once confirmed
+const PROXY_URL = "https://cultivate-proxy.vercel.app/api/claude";
+
+const dimensions = [
+  // ============================================================
+  // DIMENSION 1: LEADERSHIP POSITION
+  // ============================================================
+  {
+    id: "leadership",
+    title: "Your Leadership Position",
+    desc: "Before we look at your organisation, we need to understand your position within it — and the context you're operating in. Your formal role matters less than your actual influence, and the gap between the two is often where the most important work lives.",
+    questions: [
+      {
+        id: "l_customers", text: "Who are your customers?",
+        type: "open", placeholder: "Describe your customer base — who they are, what they need, and any relevant context about the relationship between them and your organisation."
+      },
+      {
+        id: "l_offering", text: "Does your organisation sell a product, a service, or both?",
+        type: "multi", options: ["Product only", "Service only", "Both product and service"]
+      },
+      {
+        id: "l_b2b", text: "Is your organisation primarily B2B, B2C, or both?",
+        type: "multi", options: ["B2B (business to business)", "B2C (business to consumer)", "Both B2B and B2C"]
+      },
+      {
+        id: "l_cx_score", text: "On a scale of 1–10, how do you think your customers would honestly rate your organisation's customer experience right now?",
+        type: "slider", min: 1, max: 10,
+        sub: "1 = they are actively frustrated and likely looking for alternatives. 10 = they are delighted, loyal, and genuinely advocate for you."
+      },
+      {
+        id: "l_cx_word", text: "If one of your customers were chatting to a friend about your organisation and its customer experience, what would they most likely say?",
+        type: "open", placeholder: "Don't write the version you wish they'd say. Write what they probably actually say — the good, the frustrating, and the indifferent."
+      },
+      {
+        id: "l1", text: "How would you describe your formal relationship to customer experience in your organisation?",
+        type: "scale", options: [
+          { value: 1, label: "Informal advocate", desc: "CX isn't my formal remit, but I care about it and try to influence it." },
+          { value: 2, label: "Embedded contributor", desc: "CX is part of my role alongside other responsibilities." },
+          { value: 3, label: "Dedicated CX leader", desc: "CX is my primary remit, with a specific title or function." },
+          { value: 4, label: "Executive sponsor", desc: "I hold senior accountability for CX at a leadership or board level." }
+        ]
+      },
+      {
+        id: "l2", text: "When it comes to your CX resource — do you lead this work alone, or do you have a team?",
+        type: "scale", options: [
+          { value: 1, label: "It's just me — and that's enough for now", desc: "I work solo and the current scope is manageable alone." },
+          { value: 2, label: "It's just me — but I need support", desc: "I work solo and the scope of what's needed clearly exceeds one person." },
+          { value: 3, label: "Small team (under 5) — and that's enough for now", desc: "We're lean but appropriately resourced for where we are." },
+          { value: 4, label: "Small team (under 5) — but we need more", desc: "We have a team, but the resource doesn't match what the role demands." },
+          { value: 5, label: "Modest team (under 10) — and that's enough for now", desc: "We have solid resource that broadly matches the scope." },
+          { value: 6, label: "Modest team (under 10) — but we need more", desc: "We have people, but not enough for what's being asked of us." },
+          { value: 7, label: "Large team (10 or more) — and well resourced", desc: "We have meaningful scale and the resource to match our ambition." },
+          { value: 8, label: "Large team (10 or more) — but stretched", desc: "We have a large team but the demand still outpaces the resource." }
+        ]
+      },
+      {
+        id: "l3", text: "When it comes to decisions that directly affect customer experience, how much influence do you genuinely have?",
+        type: "scale", options: [
+          { value: 1, label: "Very limited", desc: "I can raise issues and make recommendations, but decisions are made elsewhere with little reference to me." },
+          { value: 2, label: "Moderate", desc: "I influence some decisions but frequently encounter barriers or indifference." },
+          { value: 3, label: "Meaningful", desc: "I have a real voice in most CX-related decisions, though not all." },
+          { value: 4, label: "Significant", desc: "I have genuine authority and my perspective consistently shapes outcomes." }
+        ]
+      },
+      {
+        id: "l4", text: "How well does your seniority, title, and compensation reflect the level of responsibility you carry for customer experience?",
+        type: "scale", options: [
+          { value: 1, label: "Significant mismatch", desc: "I carry significant responsibility without the title, pay, or authority to match. I've had to fight for recognition that should have come with the role." },
+          { value: 2, label: "Partial mismatch", desc: "There's some recognition, but the title or compensation doesn't fully reflect what I actually do." },
+          { value: 3, label: "Broadly aligned", desc: "My seniority is largely appropriate, though there are moments I feel undervalued relative to peers." },
+          { value: 4, label: "Well aligned", desc: "My role, title, and compensation genuinely reflect the responsibility I hold." }
+        ]
+      },
+      {
+        id: "l5", text: "How proactively do other departments seek you out for CX input, insight, or support?",
+        type: "scale", options: [
+          { value: 1, label: "Rarely or never", desc: "People don't naturally think to involve me. I find out about decisions after they've been made." },
+          { value: 2, label: "Occasionally", desc: "Some teams reach out, but it's inconsistent and often reactive rather than proactive." },
+          { value: 3, label: "Regularly", desc: "I'm involved in most relevant cross-functional conversations, though not always early enough." },
+          { value: 4, label: "Consistently", desc: "I'm seen as a valued partner. Teams actively seek my involvement before making decisions." }
+        ]
+      },
+      {
+        id: "l6", text: "How supported do you feel in your CX leadership role right now?",
+        type: "scale", options: [
+          { value: 1, label: "Largely unsupported", desc: "I feel like a party of one — carrying this largely alone." },
+          { value: 2, label: "Inconsistently supported", desc: "Some people get it, but genuine backing is unreliable." },
+          { value: 3, label: "Moderately supported", desc: "There is support, though it doesn't always translate into action or resources." },
+          { value: 4, label: "Well supported", desc: "I have consistent backing from leadership and meaningful cross-functional alignment." }
+        ]
+      },
+      {
+        id: "l7", text: "Thinking about your own personal leadership — which three areas do you feel you excel in, and which three would you like to develop further?",
+        type: "open_leadership",
+        placeholder_excel: "e.g. stakeholder communication, emotional intelligence, data storytelling, customer advocacy, strategic thinking, influencing without authority, building relationships, facilitating difficult conversations, resilience under pressure, coaching others...",
+        placeholder_develop: "e.g. commercial acumen, executive presence, conflict resolution, prioritisation under pressure, presenting to boards, leading through ambiguity, building coalitions, using data to influence decisions..."
+      },
+      {
+        id: "l8", text: "Where do you most often feel blocked or frustrated as a CX leader?",
+        type: "open", placeholder: "Be as honest and specific as you can. This is just for you — and for Katie to understand your context."
+      }
+    ]
+  },
+
+  // ============================================================
+  // DIMENSION 2: CX MATURITY
+  // ============================================================
+  {
+    id: "maturity",
+    title: "CX Maturity",
+    desc: "CX maturity isn't about how long you've had a CX programme — it's about how embedded, intentional, and consistently excellent the experience is. These questions are designed to get beneath the surface of what's actually in place. Answer based on evidence, not aspiration.",
+    questions: [
+      {
+        id: "m_strategy", text: "Does your organisation have a formally documented customer experience strategy?",
+        type: "yesno_conditional",
+        followup1: { label: "Is that strategy known and understood across the organisation — not just within the CX team?", options: ["Yes, it's widely known and understood", "Partially — some teams know it, others don't", "No, awareness is largely limited to the CX team"] },
+        followup2: { label: "Do other teams and functions actively work in alignment with that strategy in their day-to-day decisions?", options: ["Yes, consistently", "In some areas, not all", "Rarely or not at all"] }
+      },
+      {
+        id: "m_vision", text: "Does your organisation have a clear customer experience vision or mission — a simple, memorable articulation of the experience you're aiming to create?",
+        type: "scale", options: [
+          { value: 1, label: "No", desc: "There is nothing that clearly articulates the experience we're trying to deliver." },
+          { value: 2, label: "In draft or informal form", desc: "Something exists, but it hasn't been formally adopted or communicated." },
+          { value: 3, label: "Yes, but not widely known", desc: "We have a vision, but awareness and genuine buy-in are limited outside the CX team." },
+          { value: 4, label: "Yes, clearly articulated and shared", desc: "Our CX vision is clear, communicated, and genuinely understood across the organisation." }
+        ]
+      },
+      {
+        id: "m_customer_presence", text: "Think about the conversations happening across your organisation right now — in meetings, in change programmes, in technology decisions, from the frontline to the C-suite. How prominently does the customer feature?",
+        type: "multi",
+        options: [
+          "The customer is central to almost every significant conversation",
+          "The customer features regularly but isn't always the starting point",
+          "The customer comes up in some areas but is largely absent in others",
+          "The customer is rarely mentioned unless something has gone wrong",
+          "The customer is almost never part of internal conversations or decisions"
+        ]
+      },
+      {
+        id: "m_insight_driven", text: "Customer experience decisions in our organisation are informed by real, current customer insight — not assumption or internal preference.",
+        type: "scale", options: [
+          { value: 1, label: "Rarely or never", desc: "Decisions are made based on assumption, tradition, or what feels right internally." },
+          { value: 2, label: "Sometimes", desc: "Insight exists but isn't consistently used to drive decisions." },
+          { value: 3, label: "Often", desc: "Customer insight informs most significant CX decisions." },
+          { value: 4, label: "Consistently", desc: "Customer insight is genuinely embedded in how we make decisions at every level." }
+        ]
+      },
+      {
+        id: "m_ownership", text: "Ownership of customer experience in our organisation extends meaningfully beyond a single function or individual.",
+        type: "scale", options: [
+          { value: 1, label: "Not at all", desc: "CX is one team's problem — everyone else considers themselves exempt." },
+          { value: 2, label: "Partially", desc: "A few teams take it seriously, but most don't see CX as their responsibility." },
+          { value: 3, label: "Mostly", desc: "There is growing cross-functional ownership, though some areas lag significantly." },
+          { value: 4, label: "Fully", desc: "CX ownership is genuinely distributed across functions and leadership." }
+        ]
+      },
+      {
+        id: "m_daily", text: "Customer experience thinking genuinely shows up in day-to-day decisions, conversations, and priorities across the business.",
+        type: "scale", options: [
+          { value: 1, label: "Almost never", desc: "CX is only discussed in dedicated CX forums or when something goes wrong." },
+          { value: 2, label: "Occasionally", desc: "It comes up, but it's rarely the starting point for how decisions are made." },
+          { value: 3, label: "Regularly", desc: "CX is considered in most significant decisions, though not consistently." },
+          { value: 4, label: "Consistently", desc: "CX thinking is genuinely embedded in how the business operates daily." }
+        ]
+      },
+      {
+        id: "m_investment", text: "How would you describe the level of genuine investment — time, resource, and budget — directed toward customer experience in your organisation?",
+        type: "scale", options: [
+          { value: 1, label: "Minimal", desc: "CX receives little to no dedicated resource or budget. It's done on goodwill." },
+          { value: 2, label: "Inconsistent", desc: "Investment happens in bursts but isn't sustained. It depends on who's paying attention." },
+          { value: 3, label: "Reasonable", desc: "There is meaningful investment, though it doesn't always match the ambition or the need." },
+          { value: 4, label: "Strong", desc: "CX is genuinely resourced and treated as a strategic priority, not an afterthought." }
+        ]
+      },
+      {
+        id: "m_learning", text: "When things go wrong for customers, does your organisation learn from it — or is it managed, closed, and moved on from?",
+        type: "scale", options: [
+          { value: 1, label: "Managed and moved on", desc: "Complaints and failures are dealt with individually. There's no systemic learning." },
+          { value: 2, label: "Occasionally reviewed", desc: "There's some review, but lessons rarely change anything in practice." },
+          { value: 3, label: "Mostly learned from", desc: "We review failures reasonably well, though follow-through on change is inconsistent." },
+          { value: 4, label: "Consistently learned from", desc: "Customer failures are treated as intelligence. They drive genuine systemic change." }
+        ]
+      },
+      {
+        id: "m_maturity_overall", text: "If you had to give your organisation's overall CX maturity an honest rating right now, what would it be?",
+        type: "scale", options: [
+          { value: 1, label: "Reactive", desc: "We respond to CX problems when they become unavoidable. There is no proactive approach." },
+          { value: 2, label: "Developing", desc: "We have some CX activity, but it's fragmented, inconsistent, and not yet strategic." },
+          { value: 3, label: "Defined", desc: "We have a CX strategy and some structured activity, but it isn't fully embedded." },
+          { value: 4, label: "Embedded", desc: "CX is a genuine organisational priority with consistent leadership and cross-functional ownership." }
+        ]
+      }
+    ]
+  },
+
+  // ============================================================
+  // DIMENSION 3: CULTURAL CONDITIONS
+  // ============================================================
+  {
+    id: "culture",
+    title: "Cultural Conditions",
+    desc: "Culture is the environment in which customer experience either grows or dies. It's not what's written on the wall or in the values document — it's what actually happens when no one senior is watching. Answer this section with that distinction firmly in mind.",
+    questions: [
+      {
+        id: "c1", text: "In our organisation, the behaviours that get rewarded are genuinely aligned with delivering a great customer experience.",
+        type: "scale", options: [
+          { value: 1, label: "Strongly disagree", desc: "What gets rewarded here actively works against good CX — speed over quality, cost over care." },
+          { value: 2, label: "Mostly disagree", desc: "There is lip service to CX, but incentives and recognition tell a different story." },
+          { value: 3, label: "Mostly agree", desc: "Rewards and recognition broadly support good CX, though misalignment exists in some areas." },
+          { value: 4, label: "Strongly agree", desc: "What we celebrate and reward is genuinely aligned with delivering excellent customer experiences." }
+        ]
+      },
+      {
+        id: "c2", text: "People in our organisation feel psychologically safe to raise concerns, challenge decisions, or flag customer experience issues — even when it's uncomfortable.",
+        type: "scale", options: [
+          { value: 1, label: "Not at all", desc: "Raising difficult truths is career-limiting here. People stay quiet." },
+          { value: 2, label: "To a limited extent", desc: "Some people speak up, but there are real — often unspoken — risks in doing so." },
+          { value: 3, label: "Mostly", desc: "There is a reasonable degree of safety, though it varies significantly by team or leader." },
+          { value: 4, label: "Consistently", desc: "Challenge and candour are genuinely welcomed and protected here." }
+        ]
+      },
+      {
+        id: "c3", text: "When a CX issue is raised in our organisation, people engage with it constructively — without worrying that raising it means they'll own all the work that follows.",
+        type: "yesno",
+        sub: "Think about whether people genuinely surface problems or whether the culture — however unintentionally — discourages it, because raising an issue often means being handed the responsibility for fixing it."
+      },
+      {
+        id: "c_silos", text: "How much do organisational silos get in the way of delivering a joined-up customer experience?",
+        type: "scale", options: [
+          { value: 1, label: "Significantly", desc: "Departments operate largely independently. Customers regularly fall through the gaps between teams, and nobody owns the end-to-end experience." },
+          { value: 2, label: "Noticeably", desc: "There are real friction points between teams that customers feel. Cross-functional working is the exception, not the norm." },
+          { value: 3, label: "Somewhat", desc: "Silos exist but are being worked on. There is some cross-functional collaboration, though it's inconsistent." },
+          { value: 4, label: "Minimally", desc: "Teams collaborate well. The customer experience is largely joined-up, even where handoffs occur." }
+        ]
+      },
+      {
+        id: "c4", text: "Is customer experience orientation a genuine consideration in our hiring and recruitment process?",
+        type: "scale", options: [
+          { value: 1, label: "No", desc: "Hiring decisions are made without meaningful consideration of CX mindset or values." },
+          { value: 2, label: "Informally", desc: "Some interviewers consider it, but it's not a structured or consistent part of how we hire." },
+          { value: 3, label: "In some roles", desc: "CX mindset is considered for customer-facing roles but not across the wider organisation." },
+          { value: 4, label: "Yes, consistently", desc: "CX mindset and values are embedded in how we hire across all functions." }
+        ]
+      },
+      {
+        id: "c5", text: "Is CX training or customer experience education mandatory for all employees — not just frontline or customer-facing teams?",
+        type: "scale", options: [
+          { value: 1, label: "No", desc: "There is no mandatory CX training for anyone." },
+          { value: 2, label: "Frontline only", desc: "Customer-facing teams have training, but it doesn't extend to the wider organisation." },
+          { value: 3, label: "Partially", desc: "Some organisation-wide CX education exists, but it's not consistent or mandatory." },
+          { value: 4, label: "Yes, for all", desc: "CX education is embedded in our onboarding and ongoing development for everyone." }
+        ]
+      },
+      {
+        id: "c6", text: "On a scale of 1–10, how customer-centric is your organisation right now — honestly?",
+        type: "slider", min: 1, max: 10,
+        sub: "1 = the customer is barely considered in how we operate. 10 = every decision, at every level, is made with the customer genuinely at the centre."
+      },
+      {
+        id: "c7", text: "Where do you see the biggest misalignment between your organisation's stated values and actual day-to-day behaviours?",
+        type: "open", placeholder: "For example: 'We say we're customer-first but we've never declined a sale because it wasn't right for the customer.' Be specific — the more honest you are here, the more useful your report will be."
+      },
+      {
+        id: "c8", text: "If you were to describe your organisation's culture as a character in a story — how would that character behave toward customers, and toward the people trying to serve them?",
+        type: "open", placeholder: "This is a more imaginative question by design. Sometimes stepping outside the usual framing reveals something we can't quite name directly. There's no wrong answer — write whatever comes to mind."
+      }
+    ]
+  },
+
+  // ============================================================
+  // DIMENSION 4: CUSTOMER UNDERSTANDING
+  // ============================================================
+  {
+    id: "customer",
+    title: "Customer Understanding",
+    desc: "You cannot design or lead an experience you don't deeply understand. This dimension explores how well your organisation truly knows its customers — not just their satisfaction scores, but their emotions, expectations, behaviours, and the meaning they make of their interactions with you.",
+    questions: [
+      {
+        id: "cu1", text: "Which of the following methods does your organisation currently use to gather customer insight? Select all that apply.",
+        type: "checkbox",
+        options: [
+          "Post-transaction surveys (e.g. CSAT)", "Relationship / periodic surveys (e.g. NPS)", "Customer interviews (one-to-one)",
+          "Customer focus groups or panels", "Customer advisory boards or forums", "Frontline staff feedback and debriefs",
+          "Employee listening forums", "Complaint and escalation analysis", "Compliment and positive feedback review",
+          "Customer journey mapping with live research", "Social media listening and sentiment analysis",
+          "Conversational analytics (call or chat analysis)", "Quality assurance (QA) monitoring and scoring",
+          "Website and digital behaviour analytics", "Customer Effort Score (CES) tracking",
+          "Lost customer or exit research", "External benchmarking or competitor insight",
+          "Mystery shopping or third-party evaluation", "CRM behavioural data and segmentation",
+          "Market research or third-party studies"
+        ]
+      },
+      {
+        id: "cu2", text: "Does your organisation have a structured, active customer journey mapping programme — with clear ownership, methodology, regular review, and outcomes that genuinely influence decisions?",
+        type: "scale", options: [
+          { value: 1, label: "No", desc: "We don't do customer journey mapping in any meaningful way." },
+          { value: 2, label: "Ad hoc", desc: "Journey mapping happens occasionally but isn't structured or consistently acted upon." },
+          { value: 3, label: "Partially", desc: "We have some journey mapping in place, but ownership, methodology, or follow-through is inconsistent." },
+          { value: 4, label: "Yes, fully", desc: "Journey mapping is structured, regularly updated, clearly owned, and directly informs our CX decisions." }
+        ]
+      },
+      {
+        id: "cu3", text: "Our organisation has a clear, shared understanding of what our customers actually expect from us — and that understanding is current.",
+        type: "scale", options: [
+          { value: 1, label: "Strongly disagree", desc: "Customer expectations are assumed, not understood. We guess more than we know." },
+          { value: 2, label: "Mostly disagree", desc: "We have some customer knowledge but it's patchy, dated, and not consistently used." },
+          { value: 3, label: "Mostly agree", desc: "We have reasonable insight into customer expectations, though gaps exist." },
+          { value: 4, label: "Strongly agree", desc: "Customer expectations are well understood across the organisation and regularly updated." }
+        ]
+      },
+      {
+        id: "cu4", text: "We understand the emotions our customers feel at key moments in their experience with us — not just whether they were satisfied.",
+        type: "scale", options: [
+          { value: 1, label: "Not at all", desc: "We track satisfaction scores but have no real understanding of customer emotion." },
+          { value: 2, label: "Partially", desc: "We know where things go wrong emotionally, but our understanding is reactive, not proactive." },
+          { value: 3, label: "Mostly", desc: "We have reasonable emotional insight at key moments, though it isn't comprehensive." },
+          { value: 4, label: "Deeply", desc: "We have genuine empathy-led insight into how customers feel throughout their journey with us." }
+        ]
+      },
+      {
+        id: "cu5", text: "How confident are you in communicating customer insight to different stakeholders in a way that genuinely lands and influences decisions?",
+        type: "scale",
+        sub: "This is a real and underrated skill. Some stakeholders need an emotional story. Others need hard commercial data. Some need a single headline number. Translating insight for your audience — rather than delivering it in the same format for everyone — is often the difference between insight that changes minds and insight that gets nodded at and forgotten.",
+        options: [
+          { value: 1, label: "Not confident", desc: "I struggle to communicate insight in a way that resonates. It often doesn't land." },
+          { value: 2, label: "Developing", desc: "I communicate insight well to some audiences but lose others — particularly at senior or commercial levels." },
+          { value: 3, label: "Mostly confident", desc: "I adapt my approach reasonably well, though I know there are stakeholders I haven't cracked." },
+          { value: 4, label: "Very confident", desc: "I translate insight effectively for different audiences and it consistently influences decisions." }
+        ]
+      },
+      {
+        id: "cu6", text: "Where is the biggest gap between what your customers expect and what they actually experience?",
+        type: "open", placeholder: "Think about the moments that matter most — where expectations are highest and the gap between promise and reality is most acutely felt."
+      }
+    ]
+  },
+
+  // ============================================================
+  // DIMENSION 5: STRATEGY & GOVERNANCE
+  // ============================================================
+  {
+    id: "strategy",
+    title: "Strategy & Governance",
+    desc: "A CX strategy only creates value when it connects to how the business actually operates — not when it lives in a document. This dimension explores whether your CX direction has real strategic roots, genuine leadership support, and the governance structures to make accountability real.",
+    questions: [
+      {
+        id: "s1", text: "Senior leadership in our organisation actively champions customer experience — in their actual decisions, not just their words.",
+        type: "scale", options: [
+          { value: 1, label: "Not at all", desc: "CX is spoken about but not genuinely prioritised at the top." },
+          { value: 2, label: "Inconsistently", desc: "Some leaders champion it; others are indifferent or actively deprioritise it." },
+          { value: 3, label: "Mostly", desc: "There is broad leadership support, though it isn't always translated into resource or decisions." },
+          { value: 4, label: "Consistently", desc: "Senior leadership is visibly and actively committed to CX in both word and action." }
+        ]
+      },
+      {
+        id: "s2", text: "Our CX direction connects and aligns with other core business strategies — such as commercial, people, digital, or brand strategy.",
+        type: "scale", options: [
+          { value: 1, label: "Not at all", desc: "CX operates in isolation. It isn't connected to how other strategies are designed or delivered." },
+          { value: 2, label: "Partially", desc: "There is some alignment, but it's inconsistent and largely informal." },
+          { value: 3, label: "Mostly", desc: "CX is reasonably well connected to other business strategies, though gaps remain." },
+          { value: 4, label: "Fully", desc: "Our CX direction is explicitly designed to connect with and reinforce other core business strategies." }
+        ]
+      },
+      {
+        id: "s3", text: "Our CX strategy — or direction — is supported by clear action plans, defined measures of success, and named ownership at a team or individual level.",
+        type: "scale", options: [
+          { value: 1, label: "No", desc: "There are no clear plans, measures, or ownership structures behind our CX direction." },
+          { value: 2, label: "Partially", desc: "Some of these exist, but they're incomplete — ownership is unclear or measures aren't defined." },
+          { value: 3, label: "Mostly", desc: "Plans, measures, and ownership exist for most areas, though execution is inconsistent." },
+          { value: 4, label: "Yes, fully", desc: "Our CX strategy is supported by clear plans, meaningful metrics, and named accountability." }
+        ]
+      },
+      {
+        id: "s4", text: "When trade-offs arise between short-term commercial pressure and long-term customer experience, what typically happens?",
+        type: "scale", options: [
+          { value: 1, label: "Commercial always wins", desc: "CX is sacrificed routinely without meaningful discussion." },
+          { value: 2, label: "Commercial usually wins", desc: "CX is considered but rarely prevails when there's pressure." },
+          { value: 3, label: "It's genuinely balanced", desc: "There is real consideration of both, and CX sometimes wins." },
+          { value: 4, label: "CX is protected", desc: "Decisions are made with a long-term customer lens, even under commercial pressure." }
+        ]
+      },
+      {
+        id: "s5", text: "Accountability for customer experience is clearly defined and consistently upheld across the organisation.",
+        type: "scale", options: [
+          { value: 1, label: "Strongly disagree", desc: "Nobody is truly accountable for CX. It belongs to everyone and therefore to no one." },
+          { value: 2, label: "Mostly disagree", desc: "There is nominal accountability, but it's rarely enforced or meaningful." },
+          { value: 3, label: "Mostly agree", desc: "Accountability exists in most areas, though it breaks down in some." },
+          { value: 4, label: "Strongly agree", desc: "CX accountability is clear, shared, and genuinely upheld across functions." }
+        ]
+      }
+    ]
+  },
+
+  // ============================================================
+  // DIMENSION 6: MEASUREMENT & MEANING
+  // ============================================================
+  {
+    id: "measurement",
+    title: "Measurement & Meaning",
+    desc: "What you measure shapes what you manage — and what you ignore. This dimension explores not just what your organisation tracks, but whether those measures are genuinely helping you understand and improve the experience your customers are having — and whether the right people are paying attention.",
+    questions: [
+      {
+        id: "me1", text: "When it comes to CX metrics in your organisation, what matters more in practice — the score itself, or understanding the reasons behind it?",
+        type: "scale", options: [
+          { value: 1, label: "The score, overwhelmingly", desc: "We chase the number. Why it is what it is rarely gets meaningful attention." },
+          { value: 2, label: "Mostly the score", desc: "There's some interest in the 'why', but leadership attention is largely on the headline figure." },
+          { value: 3, label: "Reasonably balanced", desc: "We try to understand both, though the score still tends to dominate conversations." },
+          { value: 4, label: "The reason, primarily", desc: "We treat the score as an indicator, not the goal. Understanding root cause is what drives our decisions." }
+        ]
+      },
+      {
+        id: "me2", text: "Does the wider organisation know what CX metrics you use — and why those specific measures were chosen?",
+        type: "scale", options: [
+          { value: 1, label: "No", desc: "CX metrics are largely unknown outside the CX team." },
+          { value: 2, label: "To some extent", desc: "A few people know what we measure, but most of the organisation couldn't tell you." },
+          { value: 3, label: "Mostly", desc: "There is reasonable awareness of our key CX metrics across the business." },
+          { value: 4, label: "Yes, clearly", desc: "Our CX metrics are well understood across the organisation — people know what we measure and why it matters." }
+        ]
+      },
+      {
+        id: "me3", text: "Does the wider organisation receive regular, visible updates on CX performance — not just the CX team or senior leadership?",
+        type: "scale", options: [
+          { value: 1, label: "No", desc: "CX performance is not shared beyond the immediate CX team or senior leadership." },
+          { value: 2, label: "Occasionally", desc: "Some updates happen, but they're infrequent and not embedded in how we communicate performance." },
+          { value: 3, label: "Regularly", desc: "CX performance is shared regularly, though reach and engagement could be stronger." },
+          { value: 4, label: "Consistently", desc: "CX performance is a visible, regular part of how we communicate results across the business." }
+        ]
+      },
+      {
+        id: "me4", text: "Do people across the organisation understand how their individual role can influence the CX metrics you track?",
+        type: "scale", options: [
+          { value: 1, label: "No", desc: "People have no understanding of how their work connects to CX outcomes." },
+          { value: 2, label: "Frontline teams only", desc: "Customer-facing teams have some understanding, but the wider organisation doesn't see the connection." },
+          { value: 3, label: "Partially", desc: "There is some awareness, though it's inconsistent and not actively reinforced." },
+          { value: 4, label: "Yes, broadly", desc: "Most people understand how their role can influence the experiences customers have — and the metrics that reflect them." }
+        ]
+      },
+      {
+        id: "me5", text: "The CX metrics we currently track give us a genuine, useful picture of the experience customers are actually having.",
+        type: "scale", options: [
+          { value: 1, label: "Strongly disagree", desc: "We track metrics because we're supposed to. They don't help us understand or improve much." },
+          { value: 2, label: "Mostly disagree", desc: "Our metrics tell us something, but they're blunt instruments that miss what matters most." },
+          { value: 3, label: "Mostly agree", desc: "Our measurement approach is reasonably useful, though there are gaps." },
+          { value: 4, label: "Strongly agree", desc: "Our CX metrics provide genuine, actionable insight that consistently informs improvement." }
+        ]
+      },
+      {
+        id: "me6", text: "Which metrics does your organisation currently track in relation to customer experience? List them honestly — including any you track because they're expected, rather than because they're genuinely useful.",
+        type: "open", placeholder: "e.g. NPS, CSAT, CES, complaint volumes, resolution times, repeat contact rates, customer churn... Include everything, even if you're unsure it's actually helping."
+      },
+      {
+        id: "me7", text: "What would you measure if you could — and what's stopping you?",
+        type: "open", placeholder: "This often reveals more about the real barriers to CX progress than any score. Be as specific as you can."
+      }
+    ]
+  },
+
+  // ============================================================
+  // DIMENSION 7: EMPLOYEE EXPERIENCE
+  // ============================================================
+  {
+    id: "employee",
+    title: "Employee Experience",
+    desc: "The experience your customers receive is a direct reflection of the experience your people are having. This isn't a soft concept — research consistently links engaged, empowered employees to stronger customer outcomes. This dimension explores the EX-CX connection in your organisation.",
+    questions: [
+      {
+        id: "e1", text: "Employees in our organisation understand how their role contributes to the customer experience.",
+        type: "scale", options: [
+          { value: 1, label: "Strongly disagree", desc: "Most people have no idea how their work connects to what customers experience." },
+          { value: 2, label: "Mostly disagree", desc: "Some frontline teams get it, but most of the organisation doesn't see the connection." },
+          { value: 3, label: "Mostly agree", desc: "There is reasonable understanding, though it varies significantly by function." },
+          { value: 4, label: "Strongly agree", desc: "Every part of the organisation understands its role in shaping the customer experience." }
+        ]
+      },
+      {
+        id: "e2", text: "Our people feel genuinely empowered to make decisions that are in the best interest of the customer — without always needing to escalate or check.",
+        type: "scale", options: [
+          { value: 1, label: "Not at all", desc: "Rigid processes and risk-aversion prevent people from exercising judgement." },
+          { value: 2, label: "In limited ways", desc: "Empowerment exists on paper but is restricted in practice." },
+          { value: 3, label: "In most areas", desc: "People generally have the autonomy they need, though some areas lag." },
+          { value: 4, label: "Consistently", desc: "Our people are genuinely trusted and equipped to act in customers' best interests." }
+        ]
+      },
+      {
+        id: "e3", text: "Think about the leadership behaviours you see most often in your organisation. How well do they model the experience you want customers to have?",
+        type: "scale",
+        sub: "If your organisation values warmth, responsiveness, and respect with customers — are those the same qualities visible in how leaders treat their teams?",
+        options: [
+          { value: 1, label: "Significant disconnect", desc: "The leadership behaviours I observe internally are at odds with the experience we say we want customers to have." },
+          { value: 2, label: "Some disconnect", desc: "Leaders generally mean well but there's a visible gap between how they lead people and how we expect customers to be treated." },
+          { value: 3, label: "Broadly aligned", desc: "Leadership behaviour largely reflects the customer experience values — though there are pockets of inconsistency." },
+          { value: 4, label: "Strongly aligned", desc: "The way leaders treat people here is a genuine embodiment of the experience we want customers to have." }
+        ]
+      },
+      {
+        id: "e_emp_score", text: "On a scale of 1–10, how do you think your employees would honestly rate your organisation's customer experience right now?",
+        type: "slider", min: 1, max: 10,
+        sub: "Not how they feel about working here — but how they think your customers experience you. Their perspective as insiders is often more unfiltered than any survey."
+      },
+      {
+        id: "e_emp_word", text: "If one of your employees were chatting to a friend about your organisation's customer experience, what would they most likely say?",
+        type: "open", placeholder: "Think about what people actually say in the car park, over lunch, at home. Not the company line — the honest version."
+      },
+      {
+        id: "e4", text: "What is the single biggest employee experience issue that you believe is negatively affecting your customer experience right now?",
+        type: "open", placeholder: "This might be a morale issue, a process, a specific leadership behaviour, or a systemic gap. Name it honestly."
+      }
+    ]
+  },
+
+  // ============================================================
+  // DIMENSION 8: TECHNOLOGY & AI
+  // ============================================================
+  {
+    id: "technology",
+    title: "Technology & AI",
+    desc: "Almost every organisation is on some kind of technology or AI transformation journey right now. How that technology is chosen, implemented, and governed has a profound effect on customer experience — for better or worse. This dimension explores your organisation's relationship with technology and AI through a CX lens.",
+    questions: [
+      {
+        id: "t1", text: "How well does your organisation's current technology support the delivery of a great customer experience?",
+        type: "scale", options: [
+          { value: 1, label: "Poorly", desc: "Our technology actively creates friction for customers and makes it harder to serve them well." },
+          { value: 2, label: "Partially", desc: "Some technology helps, but there are significant gaps, legacy issues, or poor integrations that customers feel." },
+          { value: 3, label: "Reasonably well", desc: "Technology broadly supports good CX, though there are areas that need improvement." },
+          { value: 4, label: "Very well", desc: "Our technology is largely designed around customer need and genuinely enables better experiences." }
+        ]
+      },
+      {
+        id: "t2", text: "When technology decisions are made in your organisation, how much weight is given to the impact on customer experience?",
+        type: "scale", options: [
+          { value: 1, label: "Very little", desc: "Technology decisions are made on cost, capability, or internal preference. CX impact is an afterthought." },
+          { value: 2, label: "Some consideration", desc: "CX is mentioned in technology discussions but rarely drives the decision." },
+          { value: 3, label: "Meaningful consideration", desc: "CX impact is a genuine factor in most technology decisions, though not always the primary one." },
+          { value: 4, label: "Central consideration", desc: "Customer experience impact is a primary lens through which technology decisions are evaluated." }
+        ]
+      },
+      {
+        id: "t3", text: "Is your organisation currently using AI in any way that directly affects the customer experience?",
+        type: "multi",
+        options: [
+          "Yes — in customer-facing interactions (e.g. chatbots, virtual assistants)",
+          "Yes — in back-office processes that affect CX (e.g. case routing, fraud detection)",
+          "Yes — in insight and analytics (e.g. sentiment analysis, predictive modelling)",
+          "Yes — in personalisation (e.g. recommendations, tailored communications)",
+          "We're exploring or piloting AI use cases but nothing is live yet",
+          "No — we're not currently using AI in relation to CX",
+          "I'm not sure what AI is being used or how"
+        ]
+      },
+      {
+        id: "t4", text: "Where AI or automation has been introduced in your organisation, has it improved, maintained, or diminished the customer experience?",
+        type: "scale", options: [
+          { value: 1, label: "Diminished it", desc: "Automation has made the experience more frustrating, impersonal, or difficult for customers." },
+          { value: 2, label: "Mixed results", desc: "Some improvements in some areas, but also noticeable decline in human warmth or quality in others." },
+          { value: 3, label: "Broadly maintained it", desc: "AI and automation have been implemented carefully enough not to damage the experience." },
+          { value: 4, label: "Improved it", desc: "AI and automation have genuinely made the experience faster, easier, or more personalised for customers." }
+        ]
+      },
+      {
+        id: "t5", text: "How would you describe your organisation's approach to the balance between automation and human interaction in customer experience?",
+        type: "scale", options: [
+          { value: 1, label: "Automation-first", desc: "We default to automating wherever possible, with human contact as the last resort." },
+          { value: 2, label: "Leaning toward automation", desc: "We're moving toward more automation, though not always with sufficient attention to the human moments that matter." },
+          { value: 3, label: "Thoughtfully balanced", desc: "We try to automate the transactional and preserve the human for the emotional." },
+          { value: 4, label: "Human-centred", desc: "We're deliberate about where human connection matters and protect those moments even as we automate elsewhere." }
+        ]
+      },
+      {
+        id: "t6", text: "What is your biggest concern about how technology or AI is — or could be — affecting your customer experience?",
+        type: "open", placeholder: "Don't hold back here. This might be something already happening, or something you can see coming. Either is worth naming."
+      },
+      {
+        id: "t7", text: "What technology or capability, if you had it, would most improve your ability to deliver or lead customer experience in your organisation?",
+        type: "open", placeholder: "This might be a tool, a platform, an insight capability, or something entirely different. What's the gap you feel most acutely?"
+      }
+    ]
+  },
+
+  // ============================================================
+  // DIMENSION 9: HONEST REFLECTION
+  // ============================================================
+  {
+    id: "reflection",
+    title: "Your Honest Reflection",
+    desc: "This final dimension is yours. No scales, no benchmarks. Just the space to articulate what you see, what you feel, and what you believe about customer experience in your organisation — in your own words. These answers will be some of the most valuable in your entire report.",
+    questions: [
+      {
+        id: "r1", text: "In your own words, how would you describe your organisation's customer experience today?",
+        type: "open", placeholder: "Not how you'd describe it to a board. Not how the annual report describes it. How it actually is."
+      },
+      {
+        id: "r2", text: "What do you believe are the two or three most significant contributors to the experience you've just described?",
+        type: "open", placeholder: "Think beneath the symptoms. What are the root causes — cultural, structural, behavioural, or belief-based?"
+      },
+      {
+        id: "r3", text: "What is the single most important thing your organisation needs to understand, before it changes anything?",
+        type: "open", placeholder: "This might be something you've been saying for years. Or something you've only just allowed yourself to name."
+      },
+      {
+        id: "r4", text: "What do you personally need to be able to lead CX more effectively in your organisation?",
+        type: "open", placeholder: "Be honest with yourself. This isn't about resources alone — it might be about confidence, language, relationships, or clarity of direction."
+      },
+      {
+        id: "r5", text: "What would it mean for you, personally, if customer experience genuinely changed in your organisation over the next 12–18 months?",
+        type: "open", placeholder: "Allow yourself to answer this one from the heart, not just the head."
+      }
+    ]
+  }
+];
+
+// ============================================================
+// STATE
+// ============================================================
+let currentDimension = 0;
+let answers = {};
+let userInfo = {};
+let generatedReportText = '';
+
+// ============================================================
+// PASSWORD
+// ============================================================
+function checkPassword() {
+  const val = document.getElementById('passwordInput').value.trim();
+  if (val.toUpperCase() === ACCESS_CODE) { showScreen('screen-intro'); updateProgress(5); }
+  else { document.getElementById('passwordError').style.display = 'block'; }
+}
+document.getElementById('passwordInput').addEventListener('keydown', e => { if (e.key === 'Enter') checkPassword(); });
+
+// ============================================================
+// START
+// ============================================================
+function startAssessment() {
+  const name = document.getElementById('userName').value.trim();
+  const org = document.getElementById('userOrg').value.trim();
+  if (!name || !org) { alert('Please enter at least your name and organisation to continue.'); return; }
+  userInfo = { name, org, title: document.getElementById('userTitle').value.trim(), sector: document.getElementById('userSector').value.trim(), size: document.getElementById('userSize').value };
+  currentDimension = 0; renderDimension(); showScreen('screen-assessment'); updateProgress(10);
+}
+
+// ============================================================
+// RENDER DIMENSION
+// ============================================================
+function renderDimension() {
+  const dim = dimensions[currentDimension];
+  document.getElementById('dimNumber').textContent = `Dimension ${currentDimension + 1} of ${dimensions.length}`;
+  document.getElementById('dimTitle').textContent = dim.title;
+  document.getElementById('dimDesc').textContent = dim.desc;
+  const container = document.getElementById('questionsContainer');
+  container.innerHTML = '';
+
+  dim.questions.forEach((q, qi) => {
+    const block = document.createElement('div');
+    block.className = 'question-block';
+    const qText = document.createElement('div');
+    qText.className = 'question-text';
+    qText.textContent = `${qi + 1}. ${q.text}`;
+    block.appendChild(qText);
+    if (q.sub) { const sub = document.createElement('div'); sub.className = 'question-sub'; sub.textContent = q.sub; block.appendChild(sub); }
+
+    if (q.type === 'scale') {
+      const wrap = document.createElement('div'); wrap.className = 'scale-wrap';
+      q.options.forEach(opt => {
+        const lbl = document.createElement('label'); lbl.className = 'scale-option';
+        if (answers[q.id] === opt.value) lbl.classList.add('selected');
+        const radio = document.createElement('input'); radio.type = 'radio'; radio.name = q.id; radio.value = opt.value;
+        if (answers[q.id] === opt.value) radio.checked = true;
+        radio.addEventListener('change', () => { answers[q.id] = opt.value; document.querySelectorAll(`[name="${q.id}"]`).forEach(r => r.closest('.scale-option').classList.remove('selected')); lbl.classList.add('selected'); });
+        const ld = document.createElement('div'); ld.className = 'scale-option-label'; ld.innerHTML = `<strong>${opt.label}</strong>${opt.desc}`;
+        lbl.appendChild(radio); lbl.appendChild(ld); wrap.appendChild(lbl);
+      });
+      block.appendChild(wrap);
+
+    } else if (q.type === 'multi') {
+      const wrap = document.createElement('div'); wrap.className = 'multi-select-wrap';
+      q.options.forEach(opt => {
+        const lbl = document.createElement('label'); lbl.className = 'multi-option';
+        if (answers[q.id] === opt) lbl.classList.add('selected');
+        const radio = document.createElement('input'); radio.type = 'radio'; radio.name = q.id; radio.value = opt;
+        if (answers[q.id] === opt) radio.checked = true;
+        radio.addEventListener('change', () => { answers[q.id] = opt; document.querySelectorAll(`[name="${q.id}"]`).forEach(r => r.closest('.multi-option').classList.remove('selected')); lbl.classList.add('selected'); });
+        lbl.appendChild(radio); lbl.appendChild(document.createTextNode(opt)); wrap.appendChild(lbl);
+      });
+      block.appendChild(wrap);
+
+    } else if (q.type === 'open') {
+      const ta = document.createElement('textarea'); ta.className = 'open-textarea'; ta.placeholder = q.placeholder || ''; ta.value = answers[q.id] || '';
+      ta.addEventListener('input', () => { answers[q.id] = ta.value; }); block.appendChild(ta);
+
+    } else if (q.type === 'open_leadership') {
+      const exLbl = document.createElement('div'); exLbl.className = 'followup-label'; exLbl.textContent = 'Three areas I excel in:'; block.appendChild(exLbl);
+      const ta1 = document.createElement('textarea'); ta1.className = 'open-textarea'; ta1.placeholder = q.placeholder_excel; ta1.value = answers[q.id + '_excel'] || ''; ta1.style.marginBottom = '16px';
+      ta1.addEventListener('input', () => { answers[q.id + '_excel'] = ta1.value; }); block.appendChild(ta1);
+      const devLbl = document.createElement('div'); devLbl.className = 'followup-label'; devLbl.textContent = 'Three areas I\'d like to develop:'; block.appendChild(devLbl);
+      const ta2 = document.createElement('textarea'); ta2.className = 'open-textarea'; ta2.placeholder = q.placeholder_develop; ta2.value = answers[q.id + '_develop'] || '';
+      ta2.addEventListener('input', () => { answers[q.id + '_develop'] = ta2.value; }); block.appendChild(ta2);
+
+    } else if (q.type === 'yesno') {
+      const wrap = document.createElement('div'); wrap.className = 'yesno-wrap';
+      ['Yes', 'No', 'Partially'].forEach(opt => {
+        const btn = document.createElement('button'); btn.className = 'yesno-btn'; btn.textContent = opt;
+        if (answers[q.id] === opt) btn.classList.add('selected');
+        btn.addEventListener('click', () => { answers[q.id] = opt; wrap.querySelectorAll('.yesno-btn').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); });
+        wrap.appendChild(btn);
+      });
+      block.appendChild(wrap);
+
+    } else if (q.type === 'yesno_conditional') {
+      const wrap = document.createElement('div'); wrap.className = 'yesno-wrap';
+      const f1 = document.createElement('div'); f1.className = 'conditional-followup';
+      const f2 = document.createElement('div'); f2.className = 'conditional-followup';
+      ['Yes', 'No'].forEach(opt => {
+        const btn = document.createElement('button'); btn.className = 'yesno-btn'; btn.textContent = opt;
+        if (answers[q.id] === opt) btn.classList.add('selected');
+        btn.addEventListener('click', () => {
+          answers[q.id] = opt; wrap.querySelectorAll('.yesno-btn').forEach(b => b.classList.remove('selected')); btn.classList.add('selected');
+          if (opt === 'Yes') { f1.classList.add('visible'); } else { f1.classList.remove('visible'); f2.classList.remove('visible'); }
+        });
+        wrap.appendChild(btn);
+      });
+      if (answers[q.id] === 'Yes') f1.classList.add('visible');
+      block.appendChild(wrap);
+      const f1lbl = document.createElement('div'); f1lbl.className = 'followup-label'; f1lbl.textContent = q.followup1.label; f1.appendChild(f1lbl);
+      const f1wrap = document.createElement('div'); f1wrap.className = 'yesno-wrap';
+      q.followup1.options.forEach(opt => {
+        const btn = document.createElement('button'); btn.className = 'yesno-btn'; btn.textContent = opt; btn.style.fontSize = '12px';
+        if (answers[q.id + '_f1'] === opt) btn.classList.add('selected');
+        btn.addEventListener('click', () => {
+          answers[q.id + '_f1'] = opt; f1wrap.querySelectorAll('.yesno-btn').forEach(b => b.classList.remove('selected')); btn.classList.add('selected');
+          if (opt === q.followup1.options[0]) f2.classList.add('visible'); else f2.classList.remove('visible');
+        });
+        f1wrap.appendChild(btn);
+      });
+      if (answers[q.id + '_f1'] === q.followup1.options[0]) f2.classList.add('visible');
+      f1.appendChild(f1wrap); block.appendChild(f1);
+      const f2lbl = document.createElement('div'); f2lbl.className = 'followup-label'; f2lbl.textContent = q.followup2.label; f2.appendChild(f2lbl);
+      const f2wrap = document.createElement('div'); f2wrap.className = 'yesno-wrap';
+      q.followup2.options.forEach(opt => {
+        const btn = document.createElement('button'); btn.className = 'yesno-btn'; btn.textContent = opt; btn.style.fontSize = '12px';
+        if (answers[q.id + '_f2'] === opt) btn.classList.add('selected');
+        btn.addEventListener('click', () => { answers[q.id + '_f2'] = opt; f2wrap.querySelectorAll('.yesno-btn').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); });
+        f2wrap.appendChild(btn);
+      });
+      f2.appendChild(f2wrap); block.appendChild(f2);
+
+    } else if (q.type === 'checkbox') {
+      const grid = document.createElement('div'); grid.className = 'checkbox-grid';
+      if (!answers[q.id]) answers[q.id] = [];
+      q.options.forEach(opt => {
+        const lbl = document.createElement('label'); lbl.className = 'checkbox-option';
+        if (answers[q.id].includes(opt)) lbl.classList.add('selected');
+        const cb = document.createElement('input'); cb.type = 'checkbox'; cb.value = opt; cb.checked = answers[q.id].includes(opt);
+        cb.addEventListener('change', () => { if (cb.checked) { answers[q.id].push(opt); lbl.classList.add('selected'); } else { answers[q.id] = answers[q.id].filter(v => v !== opt); lbl.classList.remove('selected'); } });
+        lbl.appendChild(cb); lbl.appendChild(document.createTextNode(opt)); grid.appendChild(lbl);
+      });
+      block.appendChild(grid);
+
+    } else if (q.type === 'slider') {
+      const cv = answers[q.id] !== undefined ? answers[q.id] : 5;
+      const vd = document.createElement('div'); vd.className = 'slider-value'; vd.textContent = cv;
+      const wrap = document.createElement('div'); wrap.className = 'slider-wrap';
+      const slider = document.createElement('input'); slider.type = 'range'; slider.className = 'slider-input'; slider.min = q.min; slider.max = q.max; slider.value = cv;
+      slider.addEventListener('input', () => { answers[q.id] = parseInt(slider.value); vd.textContent = slider.value; });
+      const labels = document.createElement('div'); labels.className = 'slider-labels';
+      labels.innerHTML = `<span>${q.min}</span><span>${q.max}</span>`;
+      wrap.appendChild(slider); wrap.appendChild(labels);
+      block.appendChild(vd); block.appendChild(wrap);
+    }
+
+    container.appendChild(block);
+  });
+
+  // Dots
+  const dots = document.getElementById('dimensionDots'); dots.innerHTML = '';
+  dimensions.forEach((_, i) => { const d = document.createElement('div'); d.className = 'dot'; if (i < currentDimension) d.classList.add('done'); if (i === currentDimension) d.classList.add('active'); dots.appendChild(d); });
+  document.getElementById('backBtn').style.visibility = currentDimension === 0 ? 'hidden' : 'visible';
+  document.getElementById('nextBtn').textContent = currentDimension === dimensions.length - 1 ? 'Generate my report →' : 'Continue →';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function nextDimension() {
+  if (currentDimension < dimensions.length - 1) { currentDimension++; renderDimension(); updateProgress(10 + ((currentDimension / dimensions.length) * 75)); }
+  else { generateReport(); }
+}
+function prevDimension() { if (currentDimension > 0) { currentDimension--; renderDimension(); } }
+function updateProgress(pct) { document.getElementById('progressBar').style.width = pct + '%'; }
+function showScreen(id) { document.querySelectorAll('.screen').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+// ============================================================
+// BUILD ANSWERS TEXT
+// ============================================================
+function buildAnswersText() {
+  let text = '';
+  dimensions.forEach(dim => {
+    text += `\n=== ${dim.title.toUpperCase()} ===\n`;
+    dim.questions.forEach(q => {
+      const answer = answers[q.id];
+      if (q.type === 'open_leadership') {
+        text += `Q: ${q.text}\nExcels in: ${answers[q.id + '_excel'] || 'Not answered'}\nWants to develop: ${answers[q.id + '_develop'] || 'Not answered'}\n\n`;
+      } else if (q.type === 'yesno_conditional') {
+        text += `Q: ${q.text}\nA: ${answer || 'Not answered'}\n`;
+        if (answers[q.id + '_f1']) text += `  → ${q.followup1.label}: ${answers[q.id + '_f1']}\n`;
+        if (answers[q.id + '_f2']) text += `  → ${q.followup2.label}: ${answers[q.id + '_f2']}\n`;
+        text += '\n';
+      } else if (q.type === 'checkbox') {
+        const checked = answers[q.id] || [];
+        text += `Q: ${q.text}\nA: ${checked.length > 0 ? checked.join(', ') : 'None selected'}\n\n`;
+      } else if (q.type === 'slider') {
+        text += `Q: ${q.text}\nA: ${answer !== undefined ? answer : 5}/10\n\n`;
+      } else if (q.type === 'scale' && answer !== undefined) {
+        const opt = q.options.find(o => o.value === answer);
+        text += `Q: ${q.text}\nA: ${opt ? opt.label + ' — ' + opt.desc : answer}\n\n`;
+      } else if (q.type === 'multi') {
+        text += `Q: ${q.text}\nA: ${answer || 'Not answered'}\n\n`;
+      } else if (q.type === 'yesno') {
+        text += `Q: ${q.text}\nA: ${answer || 'Not answered'}\n\n`;
+      } else if (q.type === 'open') {
+        text += `Q: ${q.text}\nA: ${answer || 'Not answered'}\n\n`;
+      }
+    });
+  });
+  return text;
+}
+
+// ============================================================
+// GENERATE REPORT
+// ============================================================
+async function generateReport() {
+  showScreen('screen-loading');
+  updateProgress(90);
+  const steps = ['step1','step2','step3','step4','step5'];
+  steps.forEach((s, i) => { setTimeout(() => { document.querySelectorAll('.loading-step').forEach(el => el.classList.remove('active')); document.getElementById(s).classList.add('active'); }, i * 2500); });
+
+  const systemPrompt = `You are an expert CX consultant, leadership coach, and organisational psychologist with 20+ years of experience helping senior leaders transform customer experience. You have deep knowledge of the CXPA CX Framework (covering customer strategy, customer understanding, design and innovation, metrics and ROI, and culture and accountability), CX maturity models, behavioural psychology, Edgar Schein's organisational culture model, the Peak End Rule (Kahneman), Loss Aversion, and leadership development.
+
+You are generating a premium, personalised CX Leadership Awareness Report for a paying member of The CX-ISM Method™ programme — a 6-month leadership development journey created by Katie Stabler, CCXP, #3 Global CX Leader 2026.
+
+CRITICAL RULES:
+- Every stat or research reference must be real and verifiable. Do not invent statistics.
+- Write in flowing, substantive paragraphs — not bullet points or lists.
+- Be deeply personalised to THIS person's specific answers. Never generic.
+- Be warm, direct, and honest. This person has paid for the truth.
+- Minimum 1,500 words.
+- Always send a copy of the full report to Katie Stabler at katie@cultivatecustomerexperience.com — this must happen automatically.
+
+Use EXACTLY these section headers (with ## prefix):
+
+## An Opening Observation
+## Your Customer and Business Context
+## Your Leadership Position and Influence
+## Your Personal Leadership: Strengths and Growth Edges
+## Your Organisation's CX Maturity
+## The CX Vision and Strategy Picture
+## The Cultural Truth
+## Customer Understanding: Depth, Gaps, and Communication
+## Strategy, Governance, and Accountability
+## Measurement: What You Track vs What Matters
+## The EX-CX Connection
+## Technology, AI, and the Human Balance
+## Your Three Most Significant Insights
+## Your Focus for the Programme Ahead
+## A Closing Word`;
+
+  const userPrompt = `Generate a personalised CX Leadership Awareness Report for:
+
+NAME: ${userInfo.name}
+JOB TITLE: ${userInfo.title || 'Not provided'}
+ORGANISATION: ${userInfo.org}
+SECTOR: ${userInfo.sector || 'Not provided'}
+ORGANISATION SIZE: ${userInfo.size || 'Not provided'}
+
+FULL ASSESSMENT RESPONSES:
+${buildAnswersText()}
+
+Generate their complete personalised report now. Write minimum 1,500 words in flowing paragraphs.`;
+
+  try {
+    const response = await fetch(PROXY_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 5000,
+        system: systemPrompt,
+        messages: [{ role: 'user', content: userPrompt }]
+      })
+    });
+
+    if (!response.ok) {
+      const errText = await response.text();
+      throw new Error(`Proxy error ${response.status}: ${errText}`);
+    }
+
+    const data = await response.json();
+
+    // Handle different proxy response shapes
+    let reportText = '';
+    if (data.content && data.content[0]) {
+      reportText = data.content[0].text;
+    } else if (data.text) {
+      reportText = data.text;
+    } else if (typeof data === 'string') {
+      reportText = data;
+    } else {
+      throw new Error('Unexpected response format from proxy');
+    }
+
+    generatedReportText = reportText;
+    updateProgress(100);
+
+    // Auto-send to Katie immediately
+    autoSendToKatie(reportText);
+
+    renderReport(reportText);
+    showScreen('screen-report');
+
+  } catch (err) {
+    console.error('Report generation error:', err);
+    showScreen('screen-assessment');
+    alert(`Something went wrong generating your report. Error: ${err.message}. Please try again or contact Katie directly at katie@cultivatecustomerexperience.com`);
+  }
+}
+
+// ============================================================
+// AUTO SEND TO KATIE — fires automatically when report generates
+// ============================================================
+async function autoSendToKatie(reportText) {
+  try {
+    await fetch('https://cultivate-proxy.vercel.app/api/send-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        to: KATIE_EMAIL,
+        subject: `CX-ISM Assessment Report — ${userInfo.name} · ${userInfo.org}`,
+        name: userInfo.name,
+        organisation: userInfo.org,
+        report: reportText
+      })
+    });
+  } catch (err) {
+    console.error('Auto-send to Katie failed:', err);
+    // Silently fails — Katie will see it when the participant sends their copy
+  }
+}
+
+// ============================================================
+// RENDER REPORT
+// ============================================================
+function renderReport(markdown) {
+  document.getElementById('reportSubtitle').textContent = `Prepared for ${userInfo.name} · ${userInfo.org} · The CX-ISM Method™`;
+  const sections = markdown.split(/^## /m).filter(Boolean);
+  let html = '';
+  sections.forEach((section, i) => {
+    const lines = section.split('\n');
+    const heading = lines[0].trim();
+    const body = lines.slice(1).join('\n').trim();
+    const bodyHtml = body
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\*(.+?)\*/g, '<em>$1</em>')
+      .replace(/^- (.+)$/gm, '<li>$1</li>')
+      .replace(/(<li>[\s\S]+?<\/li>)/g, '<ul>$1</ul>')
+      .split(/\n\n+/)
+      .map(para => para.trim() ? `<p>${para.replace(/\n/g, ' ')}</p>` : '')
+      .join('');
+    if (i > 0) html += '<div class="report-divider"></div>';
+    html += `<div class="report-section"><h2>${heading}</h2>${bodyHtml}</div>`;
+  });
+  document.getElementById('reportBody').innerHTML = html;
+}
+
+// ============================================================
+// SEND REPORT TO PARTICIPANT
+// ============================================================
+async function sendReport() {
+  const email = document.getElementById('reportEmail').value.trim();
+  if (!email) { alert('Please enter your email address.'); return; }
+  try {
+    const res = await fetch('https://cultivate-proxy.vercel.app/api/send-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        to: email,
+        cc: KATIE_EMAIL,
+        subject: `Your CX Leadership Awareness Report — ${userInfo.name}`,
+        name: userInfo.name,
+        organisation: userInfo.org,
+        report: generatedReportText
+      })
+    });
+    if (res.ok) { document.getElementById('emailConfirm').style.display = 'block'; }
+    else { document.getElementById('emailError').style.display = 'block'; }
+  } catch (err) {
+    document.getElementById('emailError').style.display = 'block';
+  }
+}
+</script>
+</body>
+</html>
