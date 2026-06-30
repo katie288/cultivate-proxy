@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The CX-ISM Method™ — Founding Cohort</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap');
+
+  :root{
+    --pink:#ffa9f9;
+    --deep-pink:#80005a;
+    --gold:#c9883a;
+    --cream:#faf8f4;
+    --yellow:#fff7ad;
+    --ink:#1a0612;
+    --muted:#6b5a64;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:'Inter', sans-serif;
+    background:var(--cream);
+    color:var(--ink);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .anton{ font-family:'Anton', sans-serif; text-transform:uppercase; letter-spacing:0.5px; }
+  .wrap{ max-width:1040px; margin:0 auto; padding:0 24px; }
+
+  /* ===== HERO ===== */
+  .hero{
+    background: linear-gradient(135deg, var(--deep-pink) 0%, #5c0040 60%, var(--ink) 100%);
+    color:#fff;
+    padding:64px 24px 72px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:"";
+    position:absolute; top:-120px; right:-120px;
+    width:420px; height:420px; border-radius:50%;
+    background:radial-gradient(circle, rgba(255,169,249,0.35) 0%, rgba(255,169,249,0) 70%);
+  }
+  .hero::after{
+    content:"";
+    position:absolute; bottom:-160px; left:-100px;
+    width:380px; height:380px; border-radius:50%;
+    background:radial-gradient(circle, rgba(201,136,58,0.25) 0%, rgba(201,136,58,0) 70%);
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.25);
+    padding:7px 16px; border-radius:999px;
+    font-size:12.5px; font-weight:700; letter-spacing:1.5px;
+    text-transform:uppercase; color:var(--pink);
+    margin-bottom:28px;
+    position:relative; z-index:2;
+  }
+  .badge .dot{ width:7px; height:7px; border-radius:50%; background:var(--gold); animation:pulse 1.8s infinite; }
+  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+
+  .hero h1{
+    font-size:clamp(40px, 6vw, 68px);
+    line-height:0.98;
+    margin-bottom:20px;
+    position:relative; z-index:2;
+    max-width:800px;
+  }
+  .hero h1 span{ color:var(--pink); }
+  .hero p.lede{
+    font-size:18px; max-width:560px; color:rgba(255,255,255,0.85);
+    position:relative; z-index:2; margin-bottom:36px;
+  }
+  .hero-cta{
+    display:flex; gap:16px; flex-wrap:wrap; align-items:center; position:relative; z-index:2;
+  }
+  .btn-primary{
+    background:var(--gold); color:var(--ink); font-weight:800; font-size:15px;
+    padding:16px 32px; border-radius:6px; text-decoration:none; display:inline-block;
+    letter-spacing:0.3px;
+    box-shadow:0 8px 24px rgba(201,136,58,0.35);
+    transition:transform 0.15s ease;
+  }
+  .btn-primary:hover{ transform:translateY(-2px); }
+  .hero-meta{ font-size:13.5px; color:rgba(255,255,255,0.65); }
+
+  /* ===== DEADLINE STRIP ===== */
+  .strip{
+    background:var(--ink); color:var(--yellow);
+    text-align:center; padding:14px 16px; font-size:14px; font-weight:600;
+    letter-spacing:0.3px;
+  }
+  .strip strong{ color:#fff; }
+
+  /* ===== INTRO ===== */
+  .intro{ padding:72px 24px 48px; }
+  .intro .eyebrow{
+    color:var(--deep-pink); font-weight:800; font-size:13px; letter-spacing:2px;
+    text-transform:uppercase; margin-bottom:14px;
+  }
+  .intro h2{ font-size:clamp(28px,4vw,40px); max-width:680px; margin-bottom:20px; line-height:1.1; }
+  .intro p{ font-size:17px; color:var(--muted); max-width:640px; }
+
+  /* ===== TASTER QUOTE BLOCK ===== */
+  .taster{
+    background:linear-gradient(120deg, #1a0612 0%, #3d0030 100%);
+    color:#fff; border-radius:18px; padding:48px 40px;
+    margin:48px 0; position:relative; overflow:hidden;
+  }
+  .taster::before{
+    content:"“";
+    font-family:'Anton', sans-serif;
+    position:absolute; top:-30px; left:20px;
+    font-size:200px; color:rgba(255,169,249,0.08); line-height:1;
+  }
+  .taster .label{
+    display:inline-block; background:var(--pink); color:var(--ink);
+    font-weight:800; font-size:11.5px; letter-spacing:1.5px; text-transform:uppercase;
+    padding:6px 14px; border-radius:999px; margin-bottom:22px;
+  }
+  .taster blockquote{
+    font-size:clamp(22px,3vw,30px); font-weight:600; line-height:1.35;
+    max-width:680px; position:relative; z-index:1; margin-bottom:18px;
+  }
+  .taster blockquote span{ color:var(--gold); }
+  .taster .context{ color:rgba(255,255,255,0.65); font-size:14.5px; max-width:560px; }
+
+  /* ===== PILLARS ===== */
+  .pillars{ padding:24px 24px 72px; }
+  .pillars h2{ font-size:clamp(26px,4vw,36px); margin-bottom:8px; }
+  .pillars > .wrap > p{ color:var(--muted); font-size:16px; margin-bottom:40px; max-width:600px; }
+
+  .pillar-grid{ display:grid; grid-template-columns:1fr; gap:16px; }
+  .pillar-card{
+    display:grid; grid-template-columns:64px 1fr; gap:20px;
+    background:#fff; border:1px solid rgba(128,0,90,0.1);
+    border-radius:14px; padding:26px 28px;
+    position:relative;
+    transition:border-color 0.15s ease;
+  }
+  .pillar-card.active{ border-color:var(--gold); background:linear-gradient(135deg, #fff 0%, #fff9ef 100%); }
+  .pillar-num{
+    font-family:'Anton', sans-serif; font-size:34px; color:var(--pink);
+    line-height:1;
+  }
+  .pillar-card.active .pillar-num{ color:var(--gold); }
+  .pillar-card h3{ font-size:18px; margin-bottom:6px; letter-spacing:0.3px; }
+  .pillar-card p{ color:var(--muted); font-size:14.5px; }
+  .pillar-tag{
+    position:absolute; top:24px; right:24px;
+    font-size:10.5px; font-weight:800; letter-spacing:1px; text-transform:uppercase;
+    color:var(--gold); background:rgba(201,136,58,0.1); padding:4px 10px; border-radius:999px;
+  }
+
+  /* ===== PRICE PANEL ===== */
+  .price-section{ padding:24px 24px 80px; }
+  .price-panel{
+    background:linear-gradient(135deg, var(--deep-pink), #5c0040);
+    border-radius:20px; padding:48px 40px; color:#fff;
+    display:grid; grid-template-columns:1fr; gap:32px;
+    position:relative; overflow:hidden;
+  }
+  .price-panel::after{
+    content:"";
+    position:absolute; bottom:-100px; right:-60px;
+    width:300px; height:300px; border-radius:50%;
+    background:radial-gradient(circle, rgba(255,247,173,0.15), transparent 70%);
+  }
+  .price-row{ display:flex; align-items:baseline; gap:18px; flex-wrap:wrap; position:relative; z-index:1; }
+  .price-old{ font-size:22px; color:rgba(255,255,255,0.5); text-decoration:line-through; }
+  .price-new{ font-family:'Anton', sans-serif; font-size:56px; color:var(--yellow); }
+  .price-sub{ font-size:14.5px; color:rgba(255,255,255,0.75); position:relative; z-index:1; }
+  .price-list{ list-style:none; display:grid; gap:10px; position:relative; z-index:1; }
+  .price-list li{ font-size:14.5px; display:flex; gap:10px; align-items:flex-start; }
+  .price-list li::before{ content:"✓"; color:var(--gold); font-weight:800; flex-shrink:0; }
+  .price-cta{ position:relative; z-index:1; margin-top:8px; }
+
+  /* ===== FOOTER ===== */
+  footer{ text-align:center; padding:40px 24px 60px; color:var(--muted); font-size:13.5px; }
+  footer .sig{ font-weight:700; color:var(--deep-pink); margin-bottom:4px; }
+
+  .anchors{ padding:8px 24px 56px; }
+  .anchor-grid{ display:grid; grid-template-columns:1fr; gap:14px; margin-top:28px; }
+  .anchor-row{
+    display:flex; align-items:baseline; gap:16px;
+    padding:18px 0; border-bottom:1px solid rgba(128,0,90,0.12);
+  }
+  .anchor-name{ font-weight:800; color:var(--deep-pink); font-size:15px; min-width:170px; flex-shrink:0; }
+  .anchor-desc{ font-size:14.5px; color:var(--muted); }
+
+  .quote-strip{
+    display:grid; grid-template-columns:1fr; gap:18px; margin:36px 0 0;
+  }
+  .mini-quote{
+    background:#fff; border:1px solid rgba(128,0,90,0.1); border-left:4px solid var(--gold);
+    padding:20px 24px; border-radius:10px; font-size:15px; color:var(--ink); font-style:italic;
+  }
+  .mini-quote span{ display:block; font-style:normal; font-size:12.5px; color:var(--muted); margin-top:8px; font-weight:600;}
+
+  .format{
+    background:linear-gradient(180deg, #fff 0%, var(--cream) 100%);
+    padding:64px 24px 8px;
+    border-top:1px solid rgba(128,0,90,0.08);
+    border-bottom:1px solid rgba(128,0,90,0.08);
+  }
+  .format-grid{ display:grid; grid-template-columns:1fr; gap:18px; margin-top:32px; }
+  .format-card{
+    background:#fff; border-radius:14px; padding:26px 26px 24px;
+    border:1px solid rgba(128,0,90,0.1);
+  }
+  .format-icon{
+    width:42px; height:42px; border-radius:10px;
+    background:linear-gradient(135deg, var(--pink), var(--deep-pink));
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom:16px; font-size:19px;
+  }
+  .format-card h3{ font-size:16.5px; margin-bottom:8px; }
+  .format-card p{ font-size:14.5px; color:var(--muted); }
+
+  .not-banner{
+    background:var(--ink); color:#fff; border-radius:16px;
+    padding:32px 32px; margin:40px 0 0; display:grid; gap:14px;
+  }
+  .not-banner .heading{ font-size:13px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; color:var(--gold); margin-bottom:4px; }
+  .not-row{ display:flex; gap:14px; align-items:baseline; font-size:15px; }
+  .not-row .no{ color:#ff8fae; font-weight:800; flex-shrink:0; }
+  .not-row .yes{ color:var(--yellow); }
+
+  @media(min-width:760px){
+    .format-grid{ grid-template-columns:1fr 1fr 1fr; }
+    .pillar-grid{ grid-template-columns:1fr 1fr; }
+    .price-panel{ grid-template-columns:1.3fr 1fr; align-items:center; }
+    .quote-strip{ grid-template-columns:1fr 1fr; }
+  }
+  /* ===== MODAL FORM ===== */
+  .modal-overlay{
+    display:none; position:fixed; inset:0; z-index:100;
+    background:rgba(26,6,18,0.72); backdrop-filter:blur(4px);
+    align-items:center; justify-content:center; padding:20px;
+  }
+  .modal-overlay.open{ display:flex; }
+  .modal-box{
+    background:#fff; border-radius:18px; max-width:480px; width:100%;
+    padding:36px 32px; position:relative; max-height:92vh; overflow-y:auto;
+  }
+  .modal-close{
+    position:absolute; top:18px; right:18px; background:none; border:none;
+    font-size:22px; color:var(--muted); cursor:pointer; line-height:1; padding:4px;
+  }
+  .modal-box h3{ font-size:22px; margin-bottom:6px; }
+  .modal-box .modal-sub{ font-size:14px; color:var(--muted); margin-bottom:24px; }
+  .form-field{ margin-bottom:16px; }
+  .form-field label{ display:block; font-size:13px; font-weight:700; margin-bottom:6px; color:var(--ink); }
+  .form-field input, .form-field textarea{
+    width:100%; border:1.5px solid rgba(128,0,90,0.18); border-radius:8px;
+    padding:11px 14px; font-family:'Inter',sans-serif; font-size:14.5px; color:var(--ink);
+    background:var(--cream); transition:border-color 0.15s ease;
+  }
+  .form-field input:focus, .form-field textarea:focus{
+    outline:none; border-color:var(--deep-pink); background:#fff;
+  }
+  .form-field textarea{ resize:vertical; min-height:80px; }
+  .form-submit{
+    width:100%; background:var(--deep-pink); color:#fff; font-weight:800; font-size:15px;
+    padding:14px; border:none; border-radius:8px; cursor:pointer; margin-top:6px;
+    transition:background 0.15s ease;
+  }
+  .form-submit:hover{ background:#5c0040; }
+  .form-note{ font-size:12px; color:var(--muted); text-align:center; margin-top:12px; }
+  .form-status{ font-size:14px; text-align:center; margin-top:14px; display:none; }
+  .form-status.success{ color:#1a7a4a; display:block; }
+  .form-status.error{ color:#b0003a; display:block; }
+</style>
+</head>
+<body>
+
+  <div class="strip">⏳ <strong>This is the final window</strong> to join the Founding Cohort at £1,500 — after this, the price moves to £3,497.</div>
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="badge"><span class="dot"></span> Founding Cohort &nbsp;·&nbsp; Final place open</div>
+      <h1 class="anton">Become the leader<br>who changes what<br>the room <span>considers possible.</span></h1>
+      <p class="lede">The CX-ISM Method™ is a six-month leadership development experience for CX leaders who are ready to stop managing symptoms and start designing what their organisation needs to become.</p>
+      <div class="hero-cta">
+        <a href="#" class="btn-primary" onclick="openModal(event)">Claim the founding price →</a>
+        <span class="hero-meta">£1,500 + VAT where applicable · Self-paced, online · 6 months · August 2026 start</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="intro">
+    <div class="wrap">
+      <div class="eyebrow">Not a toolkit. Not a template.</div>
+      <h2>This isn't a course that teaches you to run an NPS programme or build a journey map.</h2>
+      <p>It's a guided leadership development experience — grounded in psychology, behavioural science, and commercial reality — for leaders who feel the weight of CX responsibility and want the clarity, language, and conviction to lead it properly. Every module is built from real consulting experience, tested theory, and the kind of honesty most CX content avoids.</p>
+
+      <div class="taster">
+        <span class="label">A taste of Architecture — Module 2</span>
+        <blockquote>"Your customer does not experience what you designed. <span>They experience what they perceive.</span>"</blockquote>
+        <p class="context">Drawn from neuroscience — specifically Professor Anil Seth's work on perception — this single reframe changes how you design every touchpoint your organisation builds. Two customers can have the identical interaction with you and walk away with completely different memories of it. Once you understand why, you design differently.</p>
+      </div>
+
+      <div class="quote-strip">
+        <div class="mini-quote">"Conviction, modelled consistently by whoever has credibility in a room, gradually changes what the room considers possible."<span>— On leadership language, Architecture Module 4</span></div>
+        <div class="mini-quote">"Nobody builds lasting CX change alone — and the leaders who try to are the ones whose progress quietly stalls."<span>— On coalition building, Architecture Module 4</span></div>
+        <div class="mini-quote">"The details are not the details. They make the design." — Charles Eames<span>The idea that opens the entire Architecture pillar</span></div>
+        <div class="mini-quote">"A problem is something you respond to. A design brief is something you build from."<span>— On reframing your diagnostic, Architecture Module 1</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="format">
+    <div class="wrap">
+      <div class="eyebrow">How it actually works</div>
+      <h2 style="font-size:clamp(26px,4vw,36px); max-width:680px; margin-bottom:16px; line-height:1.15;">Self-paced, online, and built to fit inside your real job — not on top of it.</h2>
+      <p style="color:var(--muted); font-size:16px; max-width:640px;">This isn't six months away from your desk. It's six months of becoming sharper, more confident, and more strategic at the job you're already doing — delivered entirely online, at your own pace, with bi-weekly coaching support directly from Katie.</p>
+
+      <div class="format-grid">
+        <div class="format-card">
+          <div class="format-icon">🗓️</div>
+          <h3>Guided and self-led</h3>
+          <p>Five pillars released in sequence over six months, completed at your own pace. You always know exactly what's next — no overwhelming content dump, no guessing what matters.</p>
+        </div>
+        <div class="format-card">
+          <div class="format-icon">💼</div>
+          <h3>Applied to your real organisation</h3>
+          <p>Every diagnostic, workbook, and design exercise is built around your specific organisation — not a hypothetical case study. You finish each module with something usable, not just something learned.</p>
+        </div>
+        <div class="format-card">
+          <div class="format-icon">🎥</div>
+          <h3>Video, reading, and reflection</h3>
+          <p>Short, focused videos. Substantial readings when a topic deserves depth. Guided workbook reflection throughout — built for people who think for a living, not for passive scrolling.</p>
+        </div>
+        <div class="format-card">
+          <div class="format-icon">🤝</div>
+          <h3>Genuinely supported</h3>
+          <p>Bi-weekly coaching support directly from Katie throughout — not a chatbot, not a forum you'll never check. A founding cohort community of peers doing the same work, in real time, alongside you.</p>
+        </div>
+        <div class="format-card">
+          <div class="format-icon">⏳</div>
+          <h3>Designed for the pace of real work</h3>
+          <p>You're not expected to implement everything immediately. Some of what you design will move this month. Some will take a year. The programme is honest about that from day one.</p>
+        </div>
+        <div class="format-card">
+          <div class="format-icon">🌍</div>
+          <h3>A global, founding community</h3>
+          <p>You'll be learning alongside CX leaders from other industries and continents — bringing a breadth of perspective you won't get from an internal training programme.</p>
+        </div>
+      </div>
+
+      <div class="not-banner">
+        <div class="heading">What this is — and isn't</div>
+        <div class="not-row"><span class="no">✕</span> <span>Not a pre-recorded course you'll abandon by week three</span></div>
+        <div class="not-row"><span class="no">✕</span> <span>Not a generic leadership programme with CX bolted on</span></div>
+        <div class="not-row"><span class="no">✕</span> <span>Not six months away from your day job</span></div>
+        <div class="not-row"><span class="no">✕</span> <span>Not a regurgitation of existing tools and frameworks</span></div>
+        <div class="not-row"><span class="yes">✓</span> <span style="color:#fff;">A guided leadership development experience, built to be lived inside the job you already have</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pillars">
+    <div class="wrap">
+      <h2 class="anton">The five pillars</h2>
+      <p>Six months. A complete arc from honest diagnosis to sustained, visible leadership.</p>
+
+      <div class="pillar-grid">
+        <div class="pillar-card active">
+          <div class="pillar-num">01</div>
+          <div>
+            <span class="pillar-tag">Live now</span>
+            <h3>Awareness</h3>
+            <p>A personal 13-dimension diagnostic and a report written specifically for you. You sense-check it with real conversations, learn to read what's beneath the data, and finish with the conditions that need to change — and the conversations you've been avoiding.</p>
+          </div>
+        </div>
+        <div class="pillar-card active">
+          <div class="pillar-num">02</div>
+          <div>
+            <span class="pillar-tag">Live now</span>
+            <h3>Architecture</h3>
+            <p>Four modules. You design the conditions, build a genuinely deep understanding of your customer, design the experience itself — journey management, recovery, the 3 S's — then design your own leadership: language, coalition, and commercial case.</p>
+          </div>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-num">03</div>
+          <div>
+            <h3>Activation</h3>
+            <p>Where the blueprint becomes construction — implementation, organisational CX capability building, and the practical work of bringing your coalition with you as conditions resist.</p>
+          </div>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-num">04</div>
+          <div>
+            <h3>Advancement</h3>
+            <p>Sustaining what you've built when the initial momentum fades — embedding change into the rhythm of the organisation so it survives leadership changes, budget cycles, and your own bandwidth.</p>
+          </div>
+        </div>
+        <div class="pillar-card" style="grid-column: span 1;">
+          <div class="pillar-num">05</div>
+          <div>
+            <h3>Amplification</h3>
+            <p>Your leadership, visible at scale — recognised inside your organisation and across the CX profession as someone who doesn't just talk about customer experience, but genuinely leads it.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="anchors">
+    <div class="wrap">
+      <div class="eyebrow">Built on real thinking</div>
+      <h2 class="anton" style="font-size:clamp(26px,4vw,36px); margin-bottom:8px;">The intellectual anchors</h2>
+      <p style="color:var(--muted); font-size:16px; max-width:600px;">No off-the-shelf frameworks regurgitated. Every concept is tested, current, and applied specifically to CX leadership — not theory for theory's sake.</p>
+      <div class="anchor-grid">
+        <div class="anchor-row">
+          <span class="anchor-name">Anil Seth</span>
+          <span class="anchor-desc">Neuroscience of perception — why your customer experiences what they perceive, not what you designed</span>
+        </div>
+        <div class="anchor-row">
+          <span class="anchor-name">Daniel Kahneman</span>
+          <span class="anchor-desc">The Peak-End Rule — what customers actually remember, and how to design for it deliberately</span>
+        </div>
+        <div class="anchor-row">
+          <span class="anchor-name">Clayton Christensen</span>
+          <span class="anchor-desc">Jobs to Be Done — what your customers are really hiring you to do (it's rarely what you think)</span>
+        </div>
+        <div class="anchor-row">
+          <span class="anchor-name">Edgar Schein</span>
+          <span class="anchor-desc">Organisational culture — why values statements change nothing, and what actually shifts underlying assumptions</span>
+        </div>
+        <div class="anchor-row">
+          <span class="anchor-name">John Kotter</span>
+          <span class="anchor-desc">Coalition building — why 75% of leadership needs to believe change is necessary before it becomes possible</span>
+        </div>
+        <div class="anchor-row">
+          <span class="anchor-name">Chip & Dan Heath</span>
+          <span class="anchor-desc">Why some ideas stick and others don't — and the four translations that make your CX insight land in commercial rooms</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="price-section" id="price">
+    <div class="wrap">
+      <div class="price-panel">
+        <div>
+          <div class="price-row">
+            <span class="price-old">£3,497</span>
+            <span class="price-new anton">£1,500</span>
+          </div>
+          <p class="price-sub">+ VAT where applicable · Founding Cohort price — full six-month programme. This price will not be offered again.</p>
+          <div class="price-cta">
+            <a href="#" class="btn-primary" onclick="openModal(event)">Reserve the final place →</a>
+          </div>
+        </div>
+        <ul class="price-list">
+          <li>Full six-month, five-pillar leadership programme</li>
+          <li>Personal 13-dimension CX diagnostic & report, written for you</li>
+          <li>Architecture Workbooks, guides, and downloadable tools</li>
+          <li>A private community of founding global leaders</li>
+          <li>Direct access to Katie throughout the programme</li>
+          <li>Beta pricing in exchange for structured monthly feedback</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="sig">Katie Stabler, CCXP</div>
+    Founder, Cultivate Customer Experience · The CX-ISM Method™
+  </footer>
+
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal()" aria-label="Close">×</button>
+      <h3>Reserve your founding place</h3>
+      <p class="modal-sub">Tell me a little about you and I'll be in touch personally within 24 hours.</p>
+
+      <form id="cohortForm" action="https://formspree.io/f/mzdlarva" method="POST">
+        <div class="form-field">
+          <label for="name">Full name</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+        <div class="form-field">
+          <label for="email">Email address</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-field">
+          <label for="company">Company / organisation</label>
+          <input type="text" id="company" name="company" required>
+        </div>
+        <div class="form-field">
+          <label for="reason">Why do you want to join the Founding Cohort?</label>
+          <textarea id="reason" name="reason" required placeholder="Tell me a little about where you are right now, and what you're hoping this programme helps with."></textarea>
+        </div>
+        <input type="hidden" name="_subject" value="New Founding Cohort enquiry — CX-ISM Method">
+        <button type="submit" class="form-submit">Send my details to Katie →</button>
+        <p class="form-note">No payment is taken here — I'll follow up personally to confirm your place.</p>
+        <div class="form-status" id="formStatus"></div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function openModal(e){
+      if(e) e.preventDefault();
+      document.getElementById('modalOverlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal(){
+      document.getElementById('modalOverlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.getElementById('modalOverlay').addEventListener('click', function(e){
+      if(e.target === this) closeModal();
+    });
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape') closeModal();
+    });
+
+    document.getElementById('cohortForm').addEventListener('submit', async function(e){
+      e.preventDefault();
+      const form = e.target;
+      const status = document.getElementById('formStatus');
+      const submitBtn = form.querySelector('.form-submit');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending...';
+
+      try{
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        });
+        if(res.ok){
+          status.textContent = "Thank you — your details have been sent. I'll be in touch personally very soon.";
+          status.className = 'form-status success';
+          form.reset();
+          submitBtn.textContent = 'Sent ✓';
+        } else {
+          throw new Error('Submission failed');
+        }
+      } catch(err){
+        status.textContent = "Something went wrong — please email katie@cultivatecustomerexperience.com directly.";
+        status.className = 'form-status error';
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send my details to Katie →';
+      }
+    });
+  </script>
+
+</body>
+</html>
