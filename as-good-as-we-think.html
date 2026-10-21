@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Are We As Good As We Think? | The 80% Test</title>
+<meta name="description" content="A diagnostic for leaders who want to know how their customer experience really looks, and whether their team sees it the same way.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Arimo:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--plum:#490B2F;--berry:#841B55;--bubble:#D03C90;--blush:#F6E6EC;--cream:#F4ECDD;--petal:#FFB3D5;--ink:#2a0a1d;--ink2:#5b4652;--line:#e6d6dc;--white:#fff;--ok:#2f6b3a;--warn:#a4261e}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0;background:var(--cream);color:var(--ink);font-family:Arimo,Arial,sans-serif;font-size:16px;line-height:1.55}
+h1,h2,h3{font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;margin:0;letter-spacing:-.01em;line-height:1.15}
+button,input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--bubble);outline-offset:2px}
+.top{background:linear-gradient(135deg,var(--plum),var(--berry));color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px;position:sticky;top:0;z-index:5}
+.word{font-family:'Cormorant Garamond',serif;font-weight:300;letter-spacing:.28em;font-size:20px;color:var(--petal)}
+.word small{display:block;font-family:Arimo,sans-serif;letter-spacing:.2em;font-size:9px;color:#f3cfe0}
+.prog{flex:1;max-width:360px;display:flex;flex-direction:column;gap:4px;font-size:12px;color:#f3cfe0;text-align:right}
+.bar{height:6px;background:rgba(255,255,255,.18);border-radius:99px;overflow:hidden}.bar i{display:block;height:100%;background:var(--petal);transition:width .3s}
+main{max-width:760px;margin:0 auto;padding:32px 20px 120px}
+.hero{background:linear-gradient(160deg,var(--plum),var(--berry) 70%,var(--bubble));color:#fff;border-radius:22px;padding:40px 32px;margin-bottom:24px}
+.hero .eyebrow{color:var(--petal)}
+.hero h1{font-size:46px;font-weight:300;margin:10px 0 6px}
+.hero .sub{font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--petal);font-style:italic}
+.stat{display:flex;gap:18px;margin:26px 0 8px;flex-wrap:wrap}
+.stat div{background:rgba(255,255,255,.1);border-radius:14px;padding:14px 18px;flex:1;min-width:200px}
+.stat b{display:block;font-family:'Cormorant Garamond',serif;font-size:44px;font-weight:400;color:var(--petal);line-height:1}
+.src{font-size:11px;color:#f3cfe0;margin-top:6px}
+.eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--berry)}
+.card{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:26px 26px;margin-bottom:18px}
+.card h2{font-size:30px;margin:6px 0 8px;color:var(--plum)}
+.lead{color:var(--ink2);font-style:italic;font-family:'Cormorant Garamond',serif;font-size:21px;margin:0 0 6px}
+p{margin:0 0 12px}
+.muted{color:var(--ink2);font-size:14px}
+ul.ticks{padding-left:20px;margin:6px 0 14px}ul.ticks li{margin-bottom:6px}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.field label{font-weight:600;font-size:14px}
+.input,textarea,select{width:100%;border:1px solid var(--line);border-radius:12px;background:#fff;padding:12px 14px;min-height:48px}
+textarea{min-height:110px;resize:vertical}
+.q{padding:22px 0;border-top:1px solid var(--line)}
+.q:first-of-type{border-top:0;padding-top:6px}
+.q .num{font-size:12px;font-weight:600;color:var(--bubble);letter-spacing:.06em}
+.q .qt{font-size:18px;font-weight:500;margin:4px 0 4px;color:var(--ink)}
+.q .hint{font-size:13px;color:var(--ink2);margin-bottom:10px}
+.q.missing .qt{color:var(--warn)}
+.q.missing .need{display:block}
+.need{display:none;font-size:13px;color:var(--warn);margin-top:6px}
+.opts{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.opt{display:flex;gap:12px;align-items:flex-start;border:1px solid var(--line);border-radius:12px;padding:11px 14px;cursor:pointer;background:#fff;text-align:left;min-height:46px}
+.opt:hover{border-color:var(--bubble)}
+.opt[aria-checked="true"]{border-color:var(--berry);background:var(--blush)}
+.opt .dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--berry);flex:none;margin-top:2px;display:inline-flex;align-items:center;justify-content:center}
+.opt.multi .dot{border-radius:5px}
+.opt[aria-checked="true"] .dot{background:var(--berry)}
+.opt[aria-checked="true"] .dot::after{content:"";width:6px;height:6px;border-radius:50%;background:#fff}
+.opt.multi[aria-checked="true"] .dot::after{width:9px;height:5px;border-radius:0;background:none;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg) translate(1px,-1px)}
+.opt.dk{border-style:dashed;color:var(--ink2)}
+.scale{display:grid;grid-template-columns:repeat(10,1fr);gap:6px;margin-top:10px}
+.scale button{border:1px solid var(--line);background:#fff;border-radius:10px;min-height:46px;font-weight:600;cursor:pointer}
+.scale button[aria-pressed="true"]{background:var(--berry);color:#fff;border-color:var(--berry)}
+.ends{display:flex;justify-content:space-between;font-size:12px;color:var(--ink2);margin-top:4px}
+.dkrow{margin-top:8px}
+.dkbtn{border:1px dashed var(--line);background:#fff;border-radius:10px;padding:8px 14px;cursor:pointer;color:var(--ink2);font-size:14px;min-height:40px}
+.dkbtn[aria-pressed="true"]{background:var(--blush);border-color:var(--berry);color:var(--berry);border-style:solid}
+.numrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px}
+.numrow .input{max-width:240px}
+.pre{position:relative}.pre span{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--ink2)}.pre .input{padding-left:28px}
+.nav{position:fixed;left:0;right:0;bottom:0;background:rgba(244,236,221,.96);backdrop-filter:blur(6px);border-top:1px solid var(--line);padding:12px 20px;display:flex;justify-content:center;gap:10px;z-index:6}
+.nav .in{max-width:760px;width:100%;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.btn{border:0;border-radius:12px;min-height:48px;padding:0 22px;font-weight:600;cursor:pointer;background:var(--berry);color:#fff;font-size:15px}
+.btn.ghost{background:transparent;color:var(--berry);border:1px solid var(--berry)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.saved{font-size:12px;color:var(--ink2)}
+.notice{background:var(--blush);border-radius:12px;padding:12px 14px;font-size:14px;margin-bottom:14px}
+.notice.err{background:#fbe5e3;color:var(--warn)}
+.done{text-align:center;padding:40px 26px}
+.done h2{font-size:40px}
+.summary{display:grid;grid-template-columns:1fr auto;gap:6px 16px;font-size:14px;margin:12px 0}
+.summary span:nth-child(even){text-align:right;color:var(--ink2)}
+.foot{font-size:12px;color:var(--ink2);text-align:center;margin-top:30px}
+@media (max-width:600px){.hero{padding:28px 22px}.hero h1{font-size:36px}.card{padding:20px 18px}.scale{grid-template-columns:repeat(5,1fr)}.prog{max-width:150px}}
+</style>
+</head>
+<body>
+<header class="top"><div class="word">CULTIVATE<small>CUSTOMER EXPERIENCE BY DESIGN</small></div><div class="prog" id="prog" hidden><span id="progTxt"></span><div class="bar"><i id="progBar" style="width:0"></i></div></div></header>
+<main id="main"></main>
+<nav class="nav" id="nav" hidden><div class="in"><button class="btn ghost" id="back">Back</button><span class="saved" id="saved"></span><button class="btn" id="next">Next</button></div></nav>
+<script>
+const BANK = {"name": "Are We As Good As We Think?", "subtitle": "The 80% Test", "version": "1.0", "dimensions": {"proximity": "Customer Proximity", "maturity": "CX Maturity", "culture": "Cultural Conditions", "understanding": "Customer Understanding", "strategy": "Strategy & Governance", "measurement": "Measurement & Meaning", "employee": "Employee Experience", "tech": "Technology & AI", "change": "Change Readiness", "commercial": "Commercial Visibility"}, "about": {"functions": ["CEO or MD", "Operations", "Customer service or contact centre", "Customer experience", "Commercial or sales", "Marketing", "Finance", "People or HR", "Technology or digital", "Other"], "sizes": ["Under 250", "250 to 999", "1,000 to 4,999", "5,000 or more"]}, "sections": [{"n": 1, "title": "Organisation and customer context", "intro": "Start with who you serve, as you see it. If colleagues are taking part, they're answering the same questions.", "questions": [{"id": "1.1", "text": "Who are your customers, in a sentence or two?", "type": "open", "hint": "Two or three honest sentences is plenty."}, {"id": "1.2", "text": "Is your organisation mainly B2B, B2C or both?", "type": "single", "options": [["B2B", null], ["B2C", null], ["Both", null]]}, {"id": "1.3", "text": "What are your main customer touchpoints?", "type": "multi", "options": [["Website or app", null], ["Phone or contact centre", null], ["Chat or chatbot", null], ["Email", null], ["In person, branch or store", null], ["Field or on-site", null], ["Social media", null], ["Account management", null]], "hint": "Select all that apply."}, {"id": "1.4", "text": "What significant change is underway that affects customers?", "type": "multi", "options": [["Restructure", null], ["Merger or acquisition", null], ["Digital or AI transformation", null], ["Rapid growth", null], ["Cost reduction", null], ["New leadership", null], ["Regulatory change", null], ["None", null]], "hint": "Select all that apply."}, {"id": "1.5", "text": "How would your customers honestly rate their experience with you right now?", "type": "scale10", "dk": true, "gap": "customer"}, {"id": "1.6", "text": "If a customer were telling a friend what dealing with you is like, what would they say?", "type": "open", "hint": "Two or three honest sentences is plenty."}]}, {"n": 2, "title": "Your vantage point", "intro": "Everyone sees the organisation from somewhere. This section shows where you're standing.", "questions": [{"id": "2.1", "text": "How often do you hear directly from customers, not through reports?", "type": "single", "dim": "proximity", "options": [["Weekly", 100], ["Monthly", 75], ["A few times a year", 50], ["Rarely", 25], ["Never", 0]]}, {"id": "2.2", "text": "When did you last go through your organisation's experience as a customer would, start to finish, with no help?", "type": "single", "dim": "proximity", "options": [["In the last month", 100], ["In the last six months", 75], ["In the last year", 50], ["Longer ago", 25], ["Never", 0]]}, {"id": "2.3", "text": "How much influence do you have over decisions that affect customers?", "type": "single", "options": [["None", null], ["A little", null], ["Some", null], ["A lot", null], ["Decisive", null]]}, {"id": "2.4", "text": "My function's work directly shapes what customers experience.", "type": "single", "options": [["Strongly agree", null], ["Agree", null], ["Neither agree nor disagree", null], ["Disagree", null], ["Strongly disagree", null]]}, {"id": "2.5", "text": "Which customer measures do you personally see at least monthly?", "type": "multi", "dim": "proximity", "options": [["NPS", null], ["Satisfaction (CSAT)", null], ["Customer effort", null], ["Complaints", null], ["Repeat contacts", null], ["Retention or churn", null], ["Reviews", null], ["None of these", null]], "hint": "Select all that apply.", "note": "breadth4"}, {"id": "2.6", "text": "Where is your own view of the customer experience most likely to be wrong?", "type": "open", "hint": "Two or three honest sentences is plenty."}]}, {"n": 3, "title": "CX maturity", "intro": "How established customer experience is here: not how it's described, but how it works.", "questions": [{"id": "3.1", "text": "Do we have a documented customer experience strategy?", "type": "single", "dim": "maturity", "options": [["Yes, and it's used", 100], ["Yes, but it's rarely referenced", 50], ["It's in development", 25], ["No", 0]], "dk": true}, {"id": "3.2", "text": "Could most leaders here describe the experience we're trying to create in one sentence?", "type": "single", "dim": "maturity", "options": [["Yes, consistently", 100], ["Some could", 60], ["Very few", 25], ["No", 0]], "dk": true}, {"id": "3.3", "text": "Customer decisions here are based on current customer evidence, not assumption or internal preference.", "type": "single", "dim": "maturity", "options": [["Strongly agree", 100], ["Agree", 75], ["Neither agree nor disagree", 50], ["Disagree", 25], ["Strongly disagree", 0]], "dk": true}, {"id": "3.4", "text": "Ownership of customer experience extends well beyond one team or person.", "type": "single", "dim": "maturity", "options": [["Strongly agree", 100], ["Agree", 75], ["Neither agree nor disagree", 50], ["Disagree", 25], ["Strongly disagree", 0]], "dk": true}, {"id": "3.5", "text": "When things go wrong for customers, we fix the root cause rather than just closing the case.", "type": "single", "dim": "maturity", "options": [["Strongly agree", 100], ["Agree", 75], ["Neither agree nor disagree", 50], ["Disagree", 25], ["Strongly disagree", 0]], "dk": true}, {"id": "3.6", "text": "Which best describes our customer experience maturity today?", "type": "single", "dim": "maturity", "options": [["Reactive: we respond to problems as they arise", 0], ["Developing: some good practice, not yet joined up", 25], ["Defined: a clear approach, applied in places", 50], ["Embedded: customer thinking shapes most decisions", 75], ["Leading: customer experience is how we compete", 100]], "dk": true}]}, {"n": 4, "title": "Cultural conditions", "intro": "Culture is what happens when nobody's watching. Answer for the organisation as it behaves, not as it describes itself.", "questions": [{"id": "4.1", "text": "The behaviours that get rewarded here line up with delivering a great customer experience.", "type": "single", "dim": "culture", "options": [["Strongly agree", 100], ["Agree", 75], ["Neither agree nor disagree", 50], ["Disagree", 25], ["Strongly disagree", 0]], "dk": true}, {"id": "4.2", "text": "People feel safe to raise customer problems or challenge decisions, even when it's uncomfortable.", "type": "single", "dim": "culture", "options": [["Strongly agree", 100], ["Agree", 75], ["Neither agree nor disagree", 50], ["Disagree", 25], ["Strongly disagree", 0]], "dk": true}, {"id": "4.3", "text": "How often do silos get in the way of a joined-up experience?", "type": "single", "dim": "culture", "options": [["Rarely", 100], ["Sometimes", 66], ["Often", 33], ["Constantly", 0]], "dk": true}, {"id": "4.4", "text": "When customer experience conflicts with cost, speed or revenue, what usually wins?", "type": "single", "dim": "culture", "options": [["Customer experience", 100], ["It depends who's in the room", 50], ["The other priority", 25], ["Customers aren't really considered", 0]], "dk": true}, {"id": "4.5", "text": "What does your organisation say it believes about customers?", "type": "open", "hint": "Two or three honest sentences is plenty."}, {"id": "4.6", "text": "Describe a recent decision that showed what your organisation truly values.", "type": "open", "hint": "Two or three honest sentences is plenty."}, {"id": "4.7", "text": "How wide is the gap between what we say about customers and what our decisions show?", "type": "single", "dim": "culture", "options": [["No gap", 100], ["Small", 75], ["Moderate", 50], ["Large", 25], ["Very large", 0]], "dk": true}, {"id": "4.8", "text": "Do real customer stories or data feature at leadership meetings?", "type": "single", "dim": "culture", "options": [["Every meeting", 100], ["Often", 75], ["Occasionally", 50], ["Rarely", 25], ["Never", 0]], "dk": true}]}, {"n": 5, "title": "Customer understanding", "intro": "What you know about customers, how you know it, and what happens to it.", "questions": [{"id": "5.1", "text": "How do we gather customer insight today?", "type": "multi", "dim": "understanding", "options": [["Surveys", null], ["Complaints analysis", null], ["Reviews", null], ["Call or chat analysis", null], ["Customer interviews", null], ["Journey mapping", null], ["Front-line feedback", null], ["Usage or behaviour data", null], ["Mystery shopping", null], ["None of these", null]], "hint": "Select all that apply.", "note": "breadth5"}, {"id": "5.2", "text": "We share a current, accurate understanding of what customers expect from us.", "type": "single", "dim": "understanding", "options": [["Strongly agree", 100], ["Agree", 75], ["Neither agree nor disagree", 50], ["Disagree", 25], ["Strongly disagree", 0]], "dk": true}, {"id": "5.3", "text": "We understand how customers feel at key moments, not just whether they were satisfied.", "type": "single", "dim": "understanding", "options": [["Strongly agree", 100], ["Agree", 75], ["Neither agree nor disagree", 50], ["Disagree", 25], ["Strongly disagree", 0]], "dk": true}, {"id": "5.4", "text": "When insight reveals a significant problem, what usually happens next?", "type": "single", "dim": "understanding", "options": [["It's acted on quickly, with an owner", 100], ["It's discussed, then slow to move", 50], ["It's noted but not acted on", 25], ["It rarely reaches leaders", 0]], "dk": true}, {"id": "5.5", "text": "Where is the biggest gap between what customers expect and what they get?", "type": "open", "hint": "Two or three honest sentences is plenty."}, {"id": "5.6", "text": "How much does customer insight genuinely shape strategic decisions?", "type": "scale10", "dim": "understanding", "dk": true}]}, {"n": 6, "title": "Strategy and governance", "intro": "Whether customer experience is led, or left to happen.", "questions": [{"id": "6.1", "text": "Senior leaders champion customer experience in their decisions, not just their words.", "type": "single", "dim": "strategy", "options": [["Strongly agree", 100], ["Agree", 75], ["Neither agree nor disagree", 50], ["Disagree", 25], ["Strongly disagree", 0]], "dk": true}, {"id": "6.2", "text": "Our customer direction lines up with our commercial, people and digital strategies.", "type": "single", "dim": "strategy", "options": [["Strongly agree", 100], ["Agree", 75], ["Neither agree nor disagree", 50], ["Disagree", 25], ["Strongly disagree", 0]], "dk": true}, {"id": "6.3", "text": "Accountability for customer experience is clearly defined and consistently upheld.", "type": "single", "dim": "strategy", "options": [["Strongly agree", 100], ["Agree", 75], ["Neither agree nor disagree", 50], ["Disagree", 25], ["Strongly disagree", 0]], "dk": true}, {"id": "6.4", "text": "When short-term commercial pressure meets long-term customer experience, what usually happens?", "type": "single", "dim": "strategy", "options": [["Customers usually win", 100], ["It's genuinely balanced", 75], ["Short-term usually wins", 25], ["It's never discussed", 0]], "dk": true}, {"id": "6.5", "text": "How well does where we spend time and money match what we say about customers?", "type": "scale10", "dim": "strategy", "dk": true}]}, {"n": 7, "title": "Measurement and meaning", "intro": "What you track, and what it actually tells you.", "questions": [{"id": "7.1", "text": "In practice, what matters more here: the customer score, or understanding the reasons behind it?", "type": "single", "dim": "measurement", "options": [["The reasons", 100], ["Both equally", 75], ["The score", 25]], "dk": true}, {"id": "7.2", "text": "Our customer measures give a genuine picture of the experience customers are having.", "type": "single", "dim": "measurement", "options": [["Strongly agree", 100], ["Agree", 75], ["Neither agree nor disagree", 50], ["Disagree", 25], ["Strongly disagree", 0]], "dk": true}, {"id": "7.3", "text": "People understand how their own role affects the customer measures we track.", "type": "single", "dim": "measurement", "options": [["Strongly agree", 100], ["Agree", 75], ["Neither agree nor disagree", 50], ["Disagree", 25], ["Strongly disagree", 0]], "dk": true}, {"id": "7.4", "text": "Is anyone's pay or bonus linked to a customer score?", "type": "single", "options": [["Yes, and it shapes behaviour", null], ["Yes, but it has little effect", null], ["No", null]], "dk": true, "feeds": ["goodhart"]}, {"id": "7.5", "text": "What would you measure if you could, and what's stopping you?", "type": "open", "hint": "Two or three honest sentences is plenty."}]}, {"n": 8, "title": "Employee experience", "intro": "Customers rarely get a better experience than the people serving them.", "questions": [{"id": "8.1", "text": "Employees understand how their role contributes to the customer experience.", "type": "single", "dim": "employee", "options": [["Strongly agree", 100], ["Agree", 75], ["Neither agree nor disagree", 50], ["Disagree", 25], ["Strongly disagree", 0]], "dk": true}, {"id": "8.2", "text": "Front-line people can do the right thing for a customer without having to escalate or check.", "type": "single", "dim": "employee", "options": [["Strongly agree", 100], ["Agree", 75], ["Neither agree nor disagree", 50], ["Disagree", 25], ["Strongly disagree", 0]], "dk": true}, {"id": "8.3", "text": "How would front-line employees honestly rate the customer experience right now?", "type": "scale10", "dk": true, "gap": "staff"}, {"id": "8.4", "text": "What most gets in the way of front-line people serving customers well?", "type": "multi", "dim": "employee", "options": [["Workload or staffing", null], ["Broken processes and workarounds", null], ["Systems", null], ["Unclear priorities", null], ["Management style", null], ["Training", null], ["Recognition", null], ["Nothing significant", null]], "hint": "Pick up to two.", "max": 2, "note": "blockers"}, {"id": "8.5", "text": "Roughly what share of customer-facing staff leave each year?", "type": "single", "options": [["Under 10%", 5], ["10 to 20%", 15], ["20 to 35%", 27.5], ["Over 35%", 40]], "dk": true, "feeds": ["people"]}, {"id": "8.6", "text": "Roughly how many people work in customer-facing roles?", "type": "number", "dk": true, "feeds": ["people"], "hint": "Optional. A best guess is fine."}, {"id": "8.7", "text": "Roughly what does it cost to recruit and train one replacement?", "type": "money", "dk": true, "feeds": ["people"], "hint": "Optional, in £. Include recruitment, training and lost productivity if you can."}, {"id": "8.8", "text": "How long does a new starter take to be fully effective with customers?", "type": "single", "options": [["Under a month", null], ["1 to 3 months", null], ["3 to 6 months", null], ["Over 6 months", null]], "dk": true, "feeds": ["people"]}]}, {"n": 9, "title": "Technology and AI", "intro": "Technology can make a good experience easier, or a bad one faster. This section asks whether you're ready for AI, not just whether you're using it.", "questions": [{"id": "9.1", "text": "Our technology helps us deliver a great customer experience.", "type": "single", "dim": "tech", "options": [["Strongly agree", 100], ["Agree", 75], ["Neither agree nor disagree", 50], ["Disagree", 25], ["Strongly disagree", 0]], "dk": true}, {"id": "9.2", "text": "When technology decisions are made, how much weight goes to the impact on customers?", "type": "single", "dim": "tech", "options": [["Decisive", 100], ["Significant", 75], ["Some", 50], ["Little", 25], ["None", 0]], "dk": true}, {"id": "9.3", "text": "What's the main reason we use, or plan to use, AI with customers?", "type": "single", "dim": "tech", "options": [["Both cost and experience, deliberately balanced", 100], ["Mainly to improve the experience", 75], ["Mainly to cut cost", 25], ["No clear reason", 0], ["We're not using or planning AI", null]], "dk": true, "feeds": ["ai"]}, {"id": "9.4", "text": "Where do customers experience AI or automation directly?", "type": "multi", "options": [["Chatbot or virtual agent", null], ["Automated email or messaging", null], ["Call routing", null], ["Self-service", null], ["Personalisation", null], ["Agent assist", null], ["None", null], ["Don't know", null]], "hint": "Select all that apply."}, {"id": "9.5", "text": "Where AI or automation has been introduced, what has it done to the experience?", "type": "single", "dim": "tech", "options": [["Improved it", 100], ["Maintained it", 66], ["Made it worse", 0], ["Too early to tell", null]], "dk": true}, {"id": "9.6", "text": "When automation can't help, can customers easily reach a person?", "type": "single", "dim": "tech", "options": [["Always", 100], ["Usually", 75], ["Sometimes", 40], ["Rarely", 0]], "dk": true, "feeds": ["ai"]}, {"id": "9.7", "text": "Our customer data is joined up enough for AI to do the right thing for each customer.", "type": "single", "dim": "tech", "options": [["Strongly agree", 100], ["Agree", 75], ["Neither agree nor disagree", 50], ["Disagree", 25], ["Strongly disagree", 0]], "dk": true, "feeds": ["ai"]}, {"id": "9.8", "text": "Who signs off AI that affects customers?", "type": "single", "dim": "tech", "options": [["A named owner, and customer impact is assessed", 100], ["A named owner, but the focus is cost", 40], ["No clear owner", 0]], "dk": true, "feeds": ["ai"]}, {"id": "9.9", "text": "Do we measure how customers feel about our automated interactions?", "type": "single", "dim": "tech", "options": [["Yes, regularly", 100], ["Partly", 50], ["No", 0]], "dk": true, "feeds": ["ai"]}, {"id": "9.10", "text": "What worries you most about how AI could affect customers, or the people who serve them?", "type": "open", "hint": "Two or three honest sentences is plenty."}]}, {"n": 10, "title": "Change readiness", "intro": "Whether the organisation is ready to change, not just willing to talk about it.", "questions": [{"id": "10.1", "text": "How ready is the organisation to make meaningful changes for customers?", "type": "scale10", "dim": "change", "dk": true}, {"id": "10.2", "text": "Which best describes our appetite for customer experience change?", "type": "single", "dim": "change", "options": [["Actively looking for help", 100], ["Wants change, but has no clear plan", 66], ["Comfortable as we are", 25], ["Resistant", 0]], "dk": true}, {"id": "10.3", "text": "Which of these have we done in the last three years?", "type": "multi", "options": [["Journey mapping", null], ["Voice of the customer programme", null], ["NPS or satisfaction programme", null], ["CX strategy", null], ["Customer service training", null], ["CRM or new platform", null], ["Chatbot or AI", null], ["Culture programme", null], ["External consultancy", null], ["None of these", null]], "hint": "Select all that apply."}, {"id": "10.4", "text": "How many of those delivered lasting change?", "type": "single", "dim": "change", "options": [["All", 100], ["Most", 75], ["Some", 50], ["Few", 25], ["None", 0]], "dk": true}, {"id": "10.5", "text": "Where change hasn't stuck, what was the main reason?", "type": "single", "options": [["Lack of senior sponsorship", null], ["Competing priorities", null], ["No clear owner", null], ["Not enough customer insight", null], ["Focused on tools, not behaviour", null], ["Lost momentum", null], ["Under-resourced", null], ["Not applicable", null]]}]}, {"n": 11, "title": "Commercial impact", "intro": "Customer experience shows up in the accounts long before it shows up in a survey. Best guesses are fine, and “Don't know” is a useful answer.", "questions": [{"id": "11.1", "text": "Annual revenue", "type": "single", "options": [["Under £10m", 5000000.0], ["£10m to £50m", 30000000.0], ["£50m to £250m", 150000000.0], ["£250m to £1bn", 625000000.0], ["Over £1bn", 1000000000.0], ["Prefer not to say", null]], "feeds": ["revenue"], "hint": "Optional. Used only to put indicative figures in your report."}, {"id": "11.2", "text": "Roughly how many customer contacts (calls, emails, chats) do we handle a year?", "type": "number", "dk": true, "feeds": ["cost", "efficiency"], "hint": "Optional. A best guess is fine."}, {"id": "11.3", "text": "Roughly what does a typical customer contact cost to handle?", "type": "money", "dk": true, "feeds": ["cost", "efficiency"], "hint": "Optional, in £. A best guess is fine."}, {"id": "11.4", "text": "What share of customer contacts are avoidable: chasing, correcting, or caused by something going wrong?", "type": "single", "dim": "commercial", "options": [["Under 10%", 5], ["10 to 20%", 15], ["20 to 30%", 25], ["Over 30%", 35]], "dk": true, "feeds": ["cost"], "note": "known"}, {"id": "11.5", "text": "What drives most avoidable contact?", "type": "multi", "options": [["Chasing progress or updates", null], ["Errors and corrections", null], ["Unclear letters, emails or bills", null], ["Can't do it online", null], ["Missed appointments or deliveries", null], ["Billing problems", null], ["Handoffs between teams", null], ["Don't know", null]], "feeds": ["cost"], "hint": "Pick up to three.", "max": 3}, {"id": "11.6", "text": "How much of our teams' time goes on fixing things that went wrong: rework, escalations and complaints?", "type": "single", "dim": "commercial", "options": [["Under 10%", 5], ["10 to 20%", 15], ["20 to 30%", 25], ["Over 30%", 35]], "dk": true, "feeds": ["cost"], "note": "known"}, {"id": "11.7", "text": "Over the last year, refunds, credits, goodwill and compensation have been:", "type": "single", "dim": "commercial", "options": [["Falling", 100], ["Stable", 66], ["Rising", 33], ["Rising sharply", 0]], "dk": true, "feeds": ["cost"], "note": "known"}, {"id": "11.8", "text": "Over the last year, complaints, including any taken to an ombudsman or regulator, have been:", "type": "single", "dim": "commercial", "options": [["Falling", 100], ["Stable", 66], ["Rising", 33], ["Rising sharply", 0]], "dk": true, "feeds": ["cost"], "note": "known"}, {"id": "11.9", "text": "Do we know what poor experience costs us in total?", "type": "single", "dim": "commercial", "options": [["Yes, quantified and reported", 100], ["A rough estimate", 50], ["No", 0]], "dk": true, "feeds": ["cost"], "note": "level"}, {"id": "11.10", "text": "What share of customers leave or don't renew each year?", "type": "single", "dim": "commercial", "options": [["Under 5%", 2.5], ["5 to 10%", 7.5], ["10 to 20%", 15], ["Over 20%", 25], ["Not applicable (one-off purchases)", null]], "dk": true, "feeds": ["revenue"], "note": "known"}, {"id": "11.11", "text": "Do we know why customers leave, from what they tell us rather than what we assume?", "type": "single", "dim": "commercial", "options": [["Yes, systematically", 100], ["Anecdotally", 40], ["No", 0]], "dk": true, "feeds": ["revenue"], "note": "level"}, {"id": "11.12", "text": "Where is experience costing us revenue today?", "type": "multi", "options": [["Customers lost or not renewing", null], ["Tenders or bids lost", null], ["Discounts or credits to keep customers", null], ["Reviews putting off new customers", null], ["Slower growth with existing customers", null], ["None we know of", null], ["Don't know", null]], "feeds": ["revenue"], "hint": "Select all that apply."}, {"id": "11.13", "text": "How much of our growth comes from existing customers: renewals, buying more, or referrals?", "type": "single", "dim": "commercial", "options": [["Most", 4], ["About half", 3], ["Some", 2], ["Little", 1]], "dk": true, "feeds": ["growth"], "note": "known"}, {"id": "11.14", "text": "Could our experience let us charge more or win more than competitors?", "type": "single", "dim": "commercial", "options": [["We already do", 3], ["We could, but don't", 2], ["No, we compete on price", 1]], "dk": true, "feeds": ["growth"], "note": "known"}, {"id": "11.15", "text": "How many teams does a typical customer problem pass through before it's fixed?", "type": "single", "dim": "commercial", "options": [["One", 1], ["Two", 2], ["Three or four", 3.5], ["Five or more", 5]], "dk": true, "feeds": ["efficiency"], "note": "known"}, {"id": "11.16", "text": "What share of contacts could customers handle themselves if self-service worked well?", "type": "single", "dim": "commercial", "options": [["Under 10%", 5], ["10 to 25%", 17.5], ["25 to 50%", 37.5], ["Over 50%", 60]], "dk": true, "feeds": ["efficiency"], "note": "known"}, {"id": "11.17", "text": "Where do we spend money on customers that doesn't improve their experience?", "type": "open", "hint": "Two or three honest sentences is plenty."}]}, {"n": 12, "title": "Ownership and alignment", "intro": "Who really shapes the customer experience, and whether the leadership team sees it the same way.", "questions": [{"id": "12.1", "text": "Who has the most influence over decisions that affect customers?", "type": "single", "options": [["CEO or MD", null], ["Operations", null], ["Customer service or contact centre", null], ["Customer experience", null], ["Commercial or sales", null], ["Marketing", null], ["Finance", null], ["People or HR", null], ["Technology or digital", null], ["Other", null]]}, {"id": "12.2", "text": "Which functions most help customer experience move forward?", "type": "multi", "options": [["CEO or MD", null], ["Operations", null], ["Customer service or contact centre", null], ["Customer experience", null], ["Commercial or sales", null], ["Marketing", null], ["Finance", null], ["People or HR", null], ["Technology or digital", null], ["Other", null]], "hint": "Select all that apply."}, {"id": "12.3", "text": "Which functions find it hardest to put customers first, given the pressures they're under?", "type": "multi", "options": [["CEO or MD", null], ["Operations", null], ["Customer service or contact centre", null], ["Customer experience", null], ["Commercial or sales", null], ["Marketing", null], ["Finance", null], ["People or HR", null], ["Technology or digital", null], ["Other", null]], "hint": "Select all that apply."}, {"id": "12.4", "text": "How aligned is the leadership team on what a great customer experience means for us?", "type": "scale10", "dk": true, "gap": "alignment"}]}, {"n": 13, "title": "Honest reflection", "intro": "Last few. These are the answers leaders usually remember.", "questions": [{"id": "13.1", "text": "In your own words, how would you describe our customer experience today?", "type": "open", "hint": "Two or three honest sentences is plenty."}, {"id": "13.2", "text": "What's the most important thing we need to understand before we change anything?", "type": "open", "hint": "Two or three honest sentences is plenty."}, {"id": "13.3", "text": "If our customer experience genuinely improved over the next 12 to 18 months, what would be different for the business, and for you?", "type": "open", "hint": "Two or three honest sentences is plenty."}, {"id": "13.4", "text": "Which question in this diagnostic was hardest to answer, and why?", "type": "open", "hint": "Two or three honest sentences is plenty."}]}]};
+const API = '/api/agwt';
+(function(){
+'use strict';
+const $ = s => document.querySelector(s);
+const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const SECTIONS = BANK.sections;
+const params = new URLSearchParams(location.search);
+let S = {step:'welcome', code:(params.get('code')||'').toUpperCase(), org:'', preview:false, about:{}, answers:{}, startedAt:null, missing:new Set(), err:''};
+const store = { get(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } }, set(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }, del(k){ try{ localStorage.removeItem(k); }catch(e){} } };
+const key = () => 'agwt:' + S.code + ':' + (S.about.email||'').toLowerCase();
+function save(){ if (!S.code || !S.about.email) return; store.set(key(), {about:S.about, answers:S.answers, step:S.step, startedAt:S.startedAt}); const el = $('#saved'); if (el) el.textContent = 'Saved on this device'; }
+const STEPS = () => ['welcome','about', ...SECTIONS.map((_,i) => 's'+i), 'review', 'done'];
+
+/* ---------- validation: scored questions need an answer (Don't know counts) ---------- */
+function required(q){ return !!q.dim && q.type !== 'open'; }
+function answered(q){ const a = S.answers[q.id]; if (a === undefined || a === null || a === '') return false; if (Array.isArray(a)) return a.length > 0; return true; }
+function missingIn(sec){ return sec.questions.filter(q => required(q) && !answered(q)).map(q => q.id); }
+
+/* ---------- rendering ---------- */
+function render(){
+  const st = S.step; const m = $('#main');
+  $('#nav').hidden = st === 'welcome' || st === 'done';
+  $('#prog').hidden = st === 'welcome' || st === 'done';
+  const steps = STEPS(); const idx = steps.indexOf(st);
+  $('#progBar').style.width = Math.round(Math.max(0, idx-1) / (steps.length-3) * 100) + '%';
+  $('#progTxt').textContent = st === 'about' ? 'About you' : st === 'review' ? 'Final check' : st.startsWith('s') ? 'Section ' + (+st.slice(1)+1) + ' of ' + SECTIONS.length : '';
+  $('#back').hidden = st === 'about';
+  $('#next').textContent = st === 'review' ? 'Submit my answers' : 'Next';
+  if (st === 'welcome') m.innerHTML = welcome();
+  else if (st === 'about') m.innerHTML = about();
+  else if (st === 'review') m.innerHTML = review();
+  else if (st === 'done') m.innerHTML = done();
+  else m.innerHTML = section(SECTIONS[+st.slice(1)]);
+}
+function welcome(){
+  return `<section class="hero"><span class="eyebrow">The 80% Test</span><h1>${esc(BANK.name)}</h1>
+    <div class="sub">How your customer experience really looks, and whether your leadership team sees it the same way.</div>
+    <div class="stat"><div><b>80%</b>of organisations believe they deliver a superior customer experience.</div><div><b>8%</b>of their customers agree.</div></div>
+    <div class="src">Source: Bain &amp; Company, “Closing the delivery gap”, 2005.</div></section>
+  <section class="card"><span class="eyebrow">Before you start</span><h2>Which side are you on?</h2>
+    <p>This diagnostic asks how your organisation really serves its customers: culture, insight, leadership, technology and AI, and what poor experience costs. It takes about 50 minutes. You can stop and come back on this device; your answers save as you go.</p>
+    <ul class="ticks"><li>Answer as things are, not as they're meant to be.</li><li>“Don't know” is a useful answer. It shows what leadership can't see.</li><li>If colleagues are taking part, please answer on your own first. Comparing notes flattens exactly what we're trying to see.</li><li>Your answers aren't attributed to you by name in anything shared with colleagues.</li></ul>
+    ${S.err ? `<div class="notice err">${esc(S.err)}</div>` : ''}
+    <div class="field"><label for="code">Your access code</label><input class="input" id="code" value="${esc(S.code)}" autocomplete="off" placeholder="From your invitation email" style="text-transform:uppercase;max-width:320px"></div>
+    <button class="btn" id="start">Start</button></section>
+  <p class="foot">CULTIVATE Customer Experience by Design · Katie Stabler CCXP · Questions? Reply to your invitation email.</p>`;
+}
+function about(){
+  const a = S.about, B = BANK.about;
+  const opt = (arr, v) => '<option value="">Choose…</option>' + arr.map(x => `<option${x===v?' selected':''}>${esc(x)}</option>`).join('');
+  return `<section class="card"><span class="eyebrow">About you</span><h2>A little context first</h2>
+    ${S.preview ? '<div class="notice">Preview mode: answers stay on this device and nothing is sent.</div>' : ''}
+    <p class="muted">${S.org ? 'Organisation: <b>' + esc(S.org) + '</b>. ' : ''}This isn't scored. It helps put your answers in context.</p>
+    ${S.err ? `<div class="notice err">${esc(S.err)}</div>` : ''}
+    <div class="field"><label for="a_name">Your name</label><input class="input" id="a_name" data-a="name" value="${esc(a.name)}" autocomplete="name"></div>
+    <div class="field"><label for="a_email">Work email</label><input class="input" id="a_email" data-a="email" type="email" value="${esc(a.email)}" autocomplete="email"><span class="muted">So we can send your readout, and so you can pick up where you left off.</span></div>
+    ${S.org ? '' : `<div class="field"><label for="a_org">Organisation</label><input class="input" id="a_org" data-a="organisation" value="${esc(a.organisation)}" autocomplete="organization"></div>`}
+    <div class="field"><label for="a_title">Job title</label><input class="input" id="a_title" data-a="title" value="${esc(a.title)}" autocomplete="organization-title"></div>
+    <div class="field"><label for="a_func">Your function</label><select id="a_func" data-a="function">${opt(B.functions, a.function)}</select></div>
+    <div class="field"><label for="a_size">Organisation size (people)</label><select id="a_size" data-a="size">${opt(B.sizes, a.size)}</select></div>
+    <div class="field"><label for="a_sector">Sector</label><input class="input" id="a_sector" data-a="sector" value="${esc(a.sector)}" placeholder="For example: utilities, housing, retail, financial services"></div></section>`;
+}
+function section(sec){
+  return `<section class="card"><span class="eyebrow">Section ${sec.n} of ${SECTIONS.length}</span><h2>${esc(sec.title)}</h2><p class="lead">${esc(sec.intro)}</p>
+    ${sec.questions.map(question).join('')}</section>`;
+}
+function question(q){
+  const a = S.answers[q.id]; const miss = S.missing.has(q.id);
+  let body = '';
+  const dkBtn = on => `<div class="dkrow"><button type="button" class="dkbtn" data-q="${q.id}" data-dk="1" aria-pressed="${on}">Don't know</button></div>`;
+  if (q.type === 'single'){
+    body = `<div class="opts" role="radiogroup" aria-labelledby="t${q.id}">${q.options.map((o,i) => `<button type="button" class="opt" role="radio" aria-checked="${a===i}" data-q="${q.id}" data-i="${i}"><span class="dot"></span><span>${esc(o[0])}</span></button>`).join('')}
+      ${q.dk ? `<button type="button" class="opt dk" role="radio" aria-checked="${a==='dk'}" data-q="${q.id}" data-dk="1"><span class="dot"></span><span>Don't know</span></button>` : ''}</div>`;
+  } else if (q.type === 'multi'){
+    const sel = Array.isArray(a) ? a : [];
+    body = `<div class="opts" role="group" aria-labelledby="t${q.id}">${q.options.map((o,i) => `<button type="button" class="opt multi" role="checkbox" aria-checked="${sel.includes(i)}" data-q="${q.id}" data-m="${i}"><span class="dot"></span><span>${esc(o[0])}</span></button>`).join('')}</div>`;
+  } else if (q.type === 'scale10'){
+    body = `<div class="scale" role="group" aria-labelledby="t${q.id}">${[1,2,3,4,5,6,7,8,9,10].map(n => `<button type="button" aria-pressed="${a===n}" data-q="${q.id}" data-n="${n}">${n}</button>`).join('')}</div>
+      <div class="ends"><span>1 · Very poor</span><span>10 · Excellent</span></div>${dkBtn(a==='dk')}`;
+  } else if (q.type === 'open'){
+    body = `<textarea id="f${q.id}" data-q="${q.id}" data-open="1" aria-labelledby="t${q.id}">${esc(typeof a === 'string' ? a : '')}</textarea>`;
+  } else if (q.type === 'number' || q.type === 'money'){
+    const v = typeof a === 'number' ? a : '';
+    const inp = `<input class="input" id="f${q.id}" data-q="${q.id}" data-num="1" inputmode="numeric" value="${v}" aria-labelledby="t${q.id}" ${a==='dk'?'disabled':''} placeholder="${q.type==='money'?'0':'e.g. 250,000'}">`;
+    body = `<div class="numrow">${q.type==='money' ? `<div class="pre"><span>£</span>${inp}</div>` : inp}<button type="button" class="dkbtn" data-q="${q.id}" data-dk="1" aria-pressed="${a==='dk'}">Don't know</button></div>`;
+  }
+  return `<div class="q${miss?' missing':''}" id="q${q.id.replace('.','_')}"><div class="num">${esc(q.id)}</div><div class="qt" id="t${q.id}">${esc(q.text)}</div>${q.hint ? `<div class="hint">${esc(q.hint)}</div>` : ''}${body}<span class="need">Please choose an answer, or “Don't know”.</span></div>`;
+}
+function review(){
+  const counts = SECTIONS.map(s => { const qs = s.questions; const done = qs.filter(answered).length; return [s, done, qs.length]; });
+  const dk = Object.values(S.answers).filter(v => v === 'dk').length;
+  return `<section class="card"><span class="eyebrow">Final check</span><h2>Ready to send?</h2>
+    <p>Thank you for giving this proper time. Here's what you've completed. You can go back to any section before sending.</p>
+    <div class="summary">${counts.map(([s,d,t]) => `<span>${s.n}. ${esc(s.title)}</span><span>${d} of ${t}</span>`).join('')}</div>
+    <p class="muted">You answered “Don't know” ${dk} time${dk===1?'':'s'}. That's useful, not a problem.</p>
+    ${S.err ? `<div class="notice err">${esc(S.err)}</div>` : ''}
+    ${S.preview ? '<div class="notice">Preview mode: submitting downloads your answers as a file instead of sending them.</div>' : ''}</section>`;
+}
+function done(){
+  return `<section class="card done"><span class="eyebrow">Thank you</span><h2>Your answers are in</h2>
+    <p>Katie will be in touch to arrange your readout. If colleagues are also taking part, your answers join theirs, and you'll see where you agree, where you don't, and what none of you can see from where you sit.</p>
+    <p class="muted">You can close this page.</p></section>`;
+}
+
+/* ---------- events ---------- */
+document.addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  if (b.id === 'start') return start();
+  if (b.id === 'next') return next();
+  if (b.id === 'back') return back();
+  const id = b.dataset.q; if (!id) return;
+  const q = findQ(id);
+  if (b.dataset.dk){ S.answers[id] = S.answers[id] === 'dk' ? undefined : 'dk'; if (S.answers[id] === undefined) delete S.answers[id]; }
+  else if (b.dataset.i !== undefined) S.answers[id] = +b.dataset.i;
+  else if (b.dataset.n !== undefined) S.answers[id] = +b.dataset.n;
+  else if (b.dataset.m !== undefined){
+    const i = +b.dataset.m; let sel = Array.isArray(S.answers[id]) ? S.answers[id].slice() : [];
+    const label = q.options[i][0]; const exclusive = /^(None|None of these|Don't know|Nothing significant|None we know of)$/.test(label);
+    if (sel.includes(i)) sel = sel.filter(x => x !== i);
+    else if (exclusive) sel = [i];
+    else { sel = sel.filter(x => !/^(None|None of these|Don't know|Nothing significant|None we know of)$/.test(q.options[x][0])); if (q.max && sel.length >= q.max) sel.shift(); sel.push(i); }
+    S.answers[id] = sel;
+  }
+  S.missing.delete(id); const y = window.scrollY; save(); render(); window.scrollTo(0, y);
+});
+document.addEventListener('input', e => {
+  const t = e.target;
+  if (t.dataset.a){ S.about[t.dataset.a] = t.value; save(); }
+  if (t.dataset.open){ S.answers[t.dataset.q] = t.value; save(); }
+  if (t.dataset.num){ const n = parseFloat(t.value.replace(/[£,\s]/g, '')); if (isFinite(n)) S.answers[t.dataset.q] = n; else delete S.answers[t.dataset.q]; save(); }
+});
+document.addEventListener('change', e => { const t = e.target; if (t.tagName === 'SELECT' && t.dataset.a){ S.about[t.dataset.a] = t.value; save(); } });
+document.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.id === 'code'){ e.preventDefault(); start(); } });
+const findQ = id => { for (const s of SECTIONS) for (const q of s.questions) if (q.id === id) return q; };
+
+async function start(){
+  S.code = ($('#code').value || '').trim().toUpperCase(); S.err = '';
+  if (!S.code){ S.err = 'Please enter the access code from your invitation.'; return render(); }
+  try {
+    const r = await fetch(API + '?code=' + encodeURIComponent(S.code));
+    if (r.status === 404 && r.headers.get('content-type') && !r.headers.get('content-type').includes('json')) throw new Error('no-api');
+    const j = await r.json();
+    if (!j.ok){ S.err = "That code wasn't recognised. Check your invitation email, or reply to it and Katie will help."; return render(); }
+    S.org = j.organisation || '';
+  } catch(err){
+    if (S.code !== 'PREVIEW'){ S.err = "We couldn't check your code just now. Please try again in a moment."; return render(); }
+    S.preview = true; S.org = '';
+  }
+  S.startedAt = S.startedAt || Date.now(); S.step = 'about'; render(); window.scrollTo(0,0);
+}
+function next(){
+  const st = S.step; S.err = '';
+  if (st === 'about'){
+    const a = S.about;
+    if (!a.name || !a.email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(a.email) || !a.function || (!S.org && !a.organisation)){ S.err = 'Please add your name, a valid work email, your function' + (S.org ? '' : ' and organisation') + '.'; return render(); }
+    const saved = store.get(key());
+    if (saved && saved.answers && Object.keys(saved.answers).length && !Object.keys(S.answers).length){ S.answers = saved.answers; S.startedAt = saved.startedAt || S.startedAt; const resume = saved.step && saved.step.startsWith('s') ? saved.step : 's0'; S.step = resume; save(); render(); window.scrollTo(0,0); return; }
+    S.step = 's0';
+  } else if (st.startsWith('s')){
+    const i = +st.slice(1); const miss = missingIn(SECTIONS[i]);
+    if (miss.length){ S.missing = new Set(miss); render(); const el = document.getElementById('q' + miss[0].replace('.','_')); if (el) el.scrollIntoView({behavior:'smooth', block:'center'}); return; }
+    S.step = i + 1 < SECTIONS.length ? 's' + (i+1) : 'review';
+  } else if (st === 'review'){ return submit(); }
+  save(); render(); window.scrollTo(0,0);
+}
+function back(){
+  const steps = STEPS(); const i = steps.indexOf(S.step); if (i > 1){ S.step = steps[i-1]; S.missing.clear(); S.err = ''; save(); render(); window.scrollTo(0,0); }
+}
+async function submit(){
+  const payload = {meta:{diagnostic:BANK.name, version:BANK.version, code:S.code, organisation:S.org || S.about.organisation || '', startedAt:S.startedAt, submittedAt:Date.now(), minutes:S.startedAt ? Math.round((Date.now()-S.startedAt)/60000) : null}, about:S.about, answers:S.answers};
+  const btn = $('#next'); btn.disabled = true; btn.textContent = 'Sending…';
+  if (S.preview){
+    const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'}); const u = URL.createObjectURL(blob);
+    const l = document.createElement('a'); l.href = u; l.download = 'agwt-' + (S.about.name||'response').replace(/\W+/g,'-') + '.json'; document.body.appendChild(l); l.click(); l.remove();
+    S.step = 'done'; btn.disabled = false; return render();
+  }
+  try {
+    const r = await fetch(API, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)});
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok || !j.ok) throw new Error(j.error || 'send failed');
+    store.del(key()); S.step = 'done'; render(); window.scrollTo(0,0);
+  } catch(err){
+    S.err = "Your answers didn't send. They're still saved on this device, so please try again in a minute. If it keeps happening, reply to your invitation email.";
+    btn.disabled = false; render();
+  }
+}
+render();
+})();
+</script>
+</body>
+</html>
