@@ -3,7 +3,8 @@
  * as vector shapes, so nothing depends on a viewer's chart support.
  * Browser: window.buildRoxReport(ctx) -> jsPDF document (call .save(fileName)).
  * ctx = { org, date, example, groups:['C','B',...], counts:{C:n,...}, means:{C:[15],...}, overall:[15],
- *         focus:[question index x3] (optional), notes:{ov:'', 'q<n>m':'', 'q<n>c':''} (optional) }
+ *         focus:[question index x3] (optional) }
+ * Commentary boxes on pages 6-9 become fillable PDF fields via addRoxFields(doc) -> bytes (needs pdf-lib).
  */
 (function (root) {
   'use strict';
@@ -51,10 +52,10 @@
     doc.setProperties({ title: `CX-EX Connection findings: ${org}`, author: 'Strategic Advisory Service', creator: 'Strategic Advisory Service' });
 
     const groups = ctx.groups, means = ctx.means, overall = ctx.overall;
-    const notes = ctx.notes || {};
     const total = groups.reduce((s, g) => s + (ctx.counts[g] || 0), 0);
     const multi = groups.length > 1;
     let page = 0;
+    const fields = []; // commentary boxes, made fillable afterwards by addRoxFields
 
     /* ---------- drawing primitives ---------- */
     const col = h => '#' + h;
@@ -121,11 +122,13 @@
       text(t, M, 0.78, { size, bold: true, color: s.dark ? C.white : C.ink, w: W - 2 * M, maxLines: 1 });
       if (sub) text(sub, M, 1.38, { size: 14, color: s.dark ? 'BFBFBF' : '595959', w: W - 2 * M, maxLines: 2 });
     }
-    function noteBox(x, y, w, h, label, body) {
+    // Commentary box with a fillable text field, so the facilitator can type into the PDF itself.
+    function noteBox(x, y, w, h, label, name) {
       rect(x, y, w, h, C.paper);
       rect(x, y, 0.06, h, C.yellow);
-      text(label, x + 0.25, y + 0.18, { size: 12, bold: true });
-      text(body, x + 0.25, y + 0.5, { size: 12, color: C.body, w: w - 0.45, lh: 1.35, maxLines: Math.max(1, Math.floor((h - 0.62) / (12 / 72 * 1.35))) });
+      text(label, x + 0.25, y + 0.16, { size: 12, bold: true });
+      rect(x + 0.2, y + 0.48, w - 0.38, h - 0.62, 'FFFFFF', C.soft, 0.008, [0.04, 0.03]);
+      fields.push({ page, name, x: x + 0.22, y: y + 0.5, w: w - 0.42, h: h - 0.66 });
     }
     function legend(x, y, withOverall) {
       let cx = x;
@@ -322,7 +325,7 @@
         const rng = g => { const v = ['cx', 'rox', 'ex'].map(l => lensAvg[g][l]); return `${f1(Math.min(...v))} to ${f1(Math.max(...v))}`; };
         y += text(`Split by group, ${GROUP[loG].name.toLowerCase()} sit between ${rng(loG)} while ${GROUP[hiG].name.toLowerCase()} sit between ${rng(hiG)}.`, rx, y, { size: 12, color: C.body, w: rw, lh: 1.4 });
       }
-      if (clean(notes.ov).trim()) noteBox(rx, 4.75, rw, 1.75, 'Your challenge', notes.ov);
+      noteBox(rx, 4.6, rw, 1.95, 'Your challenge', 'overall_challenge');
     }
 
     /* ---------- 7-9. widest gaps, or lowest scores for a single group ---------- */
@@ -335,10 +338,8 @@
       rect(M, 2.1, 3.2, 0.36, lensCol, q.lens === 'ex' ? C.rule : null, 0.01);
       text(`Q${q.n}  ${LENSES[q.lens].name}`, M + 1.6, 2.18, { size: 11, bold: true, color: q.lens === 'cx' ? C.yellow : C.ink, align: 'center' });
       text(q.text, M, 2.65, { size: 17, w: 5.6, lh: 1.3 });
-      const nm = clean(notes['q' + q.n + 'm']).trim(), nc = clean(notes['q' + q.n + 'c']).trim();
-      let ny = 3.95;
-      if (nm) { const h = Math.min(1.6, 0.75 + textH(nm, 5.15, 12, 1.35)); noteBox(M, ny, 5.6, h, 'What this may mean', nm); ny += h + 0.18; }
-      if (nc) { const h = Math.min(6.5 - ny, 0.75 + textH(nc, 5.15, 12, 1.35)); noteBox(M, ny, 5.6, h, 'Your challenge', nc); }
+      noteBox(M, 3.75, 5.6, 1.5, 'What this may mean', `q${q.n}_meaning`);
+      noteBox(M, 5.4, 5.6, 1.35, 'Your challenge', `q${q.n}_challenge`);
 
       // right: one bar per group on a 0-6 scale
       const bx = 7.0, bw = 5.7, top = 2.2;
@@ -457,13 +458,34 @@
       text(`Responses: ${['C', 'B', 'T', 'S'].map(g => `${GROUP[g].name} ${ctx.counts[g] || 0}`).join(', ')}.`, rx, ty, { size: 10, color: C.body, w: rw, lh: 1.4 });
     }
 
+    doc.roxFields = fields;
     return doc;
   }
 
+  // Adds fillable text fields over the commentary boxes, using pdf-lib. Returns PDF bytes.
+  async function addRoxFields(doc, PDFLib) {
+    PDFLib = PDFLib || root.PDFLib;
+    const pdf = await PDFLib.PDFDocument.load(doc.output('arraybuffer'));
+    const font = await pdf.embedFont(PDFLib.StandardFonts.Helvetica);
+    const form = pdf.getForm();
+    const pt = v => v * 72;
+    doc.roxFields.forEach(f => {
+      const pg = pdf.getPage(f.page - 1);
+      const tf = form.createTextField(f.name);
+      tf.enableMultiline();
+      tf.enableScrolling();
+      tf.addToPage(pg, { x: pt(f.x), y: pt(H - f.y - f.h), width: pt(f.w), height: pt(f.h), font, textColor: PDFLib.rgb(0.25, 0.25, 0.25), borderWidth: 0 });
+      tf.setFontSize(11);
+    });
+    form.updateFieldAppearances(font);
+    return pdf.save();
+  }
+
   root.buildRoxReport = buildRoxReport;
+  root.addRoxFields = addRoxFields;
   root.roxReportFocus = function (groups, means, overall) {
     if (groups.length > 1) return QS.map((q, i) => { const v = groups.map(g => means[g][i]); return { i, s: Math.max(...v) - Math.min(...v) }; }).sort((a, b) => b.s - a.s).slice(0, 3).map(x => x.i);
     return QS.map((q, i) => ({ i, v: overall[i] })).sort((a, b) => b.v - a.v).slice(-3).reverse().map(x => x.i);
   };
-  if (typeof module !== 'undefined' && module.exports) module.exports = { buildRoxReport, roxReportFocus: root.roxReportFocus };
+  if (typeof module !== 'undefined' && module.exports) module.exports = { buildRoxReport, addRoxFields, roxReportFocus: root.roxReportFocus };
 })(typeof window !== 'undefined' ? window : globalThis);
