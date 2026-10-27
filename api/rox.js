@@ -28,7 +28,7 @@ function codes() {
 const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const avg = (a, l) => (LENS_QS[l].reduce((s, n) => s + a[n - 1], 0) / 5).toFixed(1);
 
-function html(org, group, answers, roxCode) {
+function html(org, group, answers, roxCode, name, email) {
   const rows = answers.map((v, i) => `<tr>
     <td style="padding:6px 10px 6px 0;color:#A67C00;white-space:nowrap">Q${i + 1}</td>
     <td style="padding:6px 10px 6px 0;color:#595959;white-space:nowrap">${LENSES[LENS_OF[i % 3]]}</td>
@@ -39,13 +39,14 @@ function html(org, group, answers, roxCode) {
     <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#FFCC00;font-weight:bold">Strategic Advisory Service</div>
     <div style="font-family:'Arial Black',Arial,sans-serif;font-size:22px;margin-top:6px">CX-EX Connection: new response</div>
   </div>
-  <p style="margin:18px 0 6px"><b>${esc(org)}</b> · ${esc(GROUPS[group])}</p>
+  <p style="margin:18px 0 6px"><b>${esc(name)}</b> · <a href="mailto:${esc(email)}">${esc(email)}</a><br><b>${esc(org)}</b> · ${esc(GROUPS[group])}</p>
+  <p style="margin:0 0 12px;color:#595959">The respondent has not seen any scores. They were told the Strategic Advisory Service will assess the responses and email their findings.</p>
   <p style="margin:0 0 16px">CX connection <b>${avg(answers, 'cx')}</b> · Return on Experience <b>${avg(answers, 'rox')}</b> · EX connection <b>${avg(answers, 'ex')}</b> <span style="color:#7F7F7F">(out of 6)</span></p>
   <p style="margin:0 0 6px">Response code for the facilitator view:</p>
   <p style="font-family:Consolas,Menlo,monospace;background:#F3F3F3;border:1px dashed #A67C00;padding:10px 12px;margin:0 0 6px">${esc(roxCode)}</p>
   <p style="margin:0 0 18px;color:#595959">Paste the codes from every response into <a href="${SITE}#team">the facilitator view</a> to see group spider graphs and gaps.</p>
   <table style="border-collapse:collapse;width:100%;font-size:13px">${rows}</table>
-  <p style="color:#7F7F7F;font-size:12px;margin-top:18px">Responses are anonymous: only the respondent's group is recorded.</p>
+  <p style="color:#7F7F7F;font-size:12px;margin-top:18px">Respondents were told results are shared with their organisation by group, never by name.</p>
 </div>`;
 }
 
@@ -67,10 +68,12 @@ export default async function handler(req, res) {
   if (!p) return res.status(400).json({ ok: false, error: 'bad payload' });
   const code = String(p.code || '').trim().toUpperCase();
   const group = String(p.group || '');
+  const name = String(p.name || '').trim().slice(0, 120);
+  const email = String(p.email || '').trim().slice(0, 200);
   const answers = Array.isArray(p.answers) ? p.answers.map(Number) : [];
   if (code === 'PREVIEW') return res.status(200).json({ ok: true, preview: true });
   if (!list[code]) return res.status(403).json({ ok: false, error: 'code' });
-  if (!GROUPS[group] || answers.length !== 15 || !answers.every(v => Number.isInteger(v) && v >= 1 && v <= 6)) {
+  if (!name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || !GROUPS[group] || answers.length !== 15 || !answers.every(v => Number.isInteger(v) && v >= 1 && v <= 6)) {
     return res.status(400).json({ ok: false, error: 'bad payload' });
   }
 
@@ -84,9 +87,10 @@ export default async function handler(req, res) {
     body: JSON.stringify({
       from: process.env.ROX_FROM || process.env.AGWT_FROM,
       to: [process.env.ROX_TO || process.env.AGWT_TO],
-      subject: `CX-EX Connection: ${org} · ${GROUPS[group]}`,
-      html: html(org, group, answers, roxCode),
-      text: `CX-EX Connection response\n${org} · ${GROUPS[group]}\n\n${roxCode}\n\nPaste into ${SITE}#team`
+      reply_to: email,
+      subject: `CX-EX Connection: ${name} · ${org} · ${GROUPS[group]}`,
+      html: html(org, group, answers, roxCode, name, email),
+      text: `CX-EX Connection response\n${name} <${email}>\n${org} · ${GROUPS[group]}\n\n${roxCode}\n\nPaste into ${SITE}#team`
     })
   });
   if (!r.ok) {
