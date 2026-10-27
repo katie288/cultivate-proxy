@@ -333,17 +333,17 @@ const API = '/api/rox';
 const urlCode = (new URLSearchParams(location.search).get('code') || '').trim().toUpperCase();
 const last = store.get('sas-rox:last') || {};
 const KEY = c => 'sas-rox:' + c;
-const S = {step:'intro', code:urlCode || last.code || '', org:'', verified:false, preview:false, sent:false, sending:false,
+const S = {step:'intro', code:urlCode || last.code || '', org:'', name:'', email:'', verified:false, preview:false, sent:false, sending:false,
   group:'', answers:Array(15).fill(0), err:'', missing:new Set()};
 function load(c){
   const d = store.get(KEY(c)) || {};
   S.step = ['intro','about','l0','l1','l2','l3','l4','results'].includes(d.step) ? d.step : 'intro';
-  S.org = d.org || ''; S.group = d.group || ''; S.sent = !!d.sent; S.verified = !!d.verified; S.preview = !!d.preview;
+  S.org = d.org || ''; S.group = d.group || ''; S.name = d.name || ''; S.email = d.email || ''; S.sent = !!d.sent; S.verified = !!d.verified; S.preview = !!d.preview;
   S.answers = Array.isArray(d.answers) && d.answers.length === 15 ? d.answers : Array(15).fill(0);
   if (!S.verified) S.step = 'intro';
 }
 if (S.code) load(S.code);
-const persist = () => { if (!S.code) return; store.set(KEY(S.code), {step:S.step, org:S.org, group:S.group, answers:S.answers, sent:S.sent, verified:S.verified, preview:S.preview}); store.set('sas-rox:last', {code:S.code}); };
+const persist = () => { if (!S.code) return; store.set(KEY(S.code), {step:S.step, org:S.org, name:S.name, email:S.email, group:S.group, answers:S.answers, sent:S.sent, verified:S.verified, preview:S.preview}); store.set('sas-rox:last', {code:S.code}); };
 const STEPS = ['intro','about','l0','l1','l2','l3','l4','results'];
 
 /* ---------- views ---------- */
@@ -358,7 +358,7 @@ function render(){
   $('#rail').innerHTML = LINES.map((_,i) => `<span class="${i===lineIdx?'on':(i<lineIdx || st==='results')?'done':''}"></span>`).join('');
   $('#railtxt').textContent = lineIdx >= 0 ? `${lineIdx+1} of 5` : st === 'about' ? 'About you' : st === 'results' ? 'Complete' : '';
   $('#back').textContent = 'Back';
-  $('#next').textContent = st === 'l4' ? 'See my results' : 'Next';
+  $('#next').textContent = st === 'l4' ? 'Submit my answers' : 'Next';
   $('#navmid').textContent = lineIdx >= 0 ? LINES[lineIdx].title : '';
   if (st === 'intro') m.innerHTML = vIntro();
   else if (st === 'about') m.innerHTML = vAbout();
@@ -388,7 +388,8 @@ function vIntro(){
     <div class="arrow">Stronger connection</div>
     <ul class="ticks">
       <li>The same six responses for all fifteen questions. No question is reversed: 6 always means a stronger connection.</li>
-      <li>Your answers are anonymous. We only see which group you belong to, so we can compare views across the organisation.</li>
+      <li>Your answers are confidential. Results are shared with your organisation by group, never by name.</li>
+      <li>When you finish, the Strategic Advisory Service assesses the responses and emails your findings to you.</li>
       <li>Please answer on your own. Comparing notes first flattens the differences we are looking for.</li>
     </ul>
     ${S.verified && !S.err ? (S.org ? `<p style="margin-top:22px">Taking part for <b>${esc(S.org)}</b>.</p>` : '') : `
@@ -402,8 +403,10 @@ function vAbout(){
   return `
   <section class="card">
     <span class="eyebrow">About you</span>
-    <h2>One quick thing first</h2>
-    <p class="muted">This isn't scored. It lets us compare how different parts of ${S.org ? esc(S.org) : 'the organisation'} see the same questions.</p>
+    <h2>A little about you first</h2>
+    <p class="muted">None of this is scored. Your role lets us compare how different parts of ${S.org ? esc(S.org) : 'the organisation'} see the same questions, and your email is where we send your findings.</p>
+    <div class="field"><label for="nm">Your name</label><input class="input" id="nm" value="${esc(S.name)}" autocomplete="name"></div>
+    <div class="field"><label for="em">Work email</label><input class="input" id="em" type="email" value="${esc(S.email)}" autocomplete="email" placeholder="So we can send your findings"></div>
     ${S.preview ? '<p class="small" style="margin-top:12px;color:var(--yellow)">Preview mode: your answers stay on this device and nothing is sent.</p>' : ''}
     <div class="field" role="radiogroup" aria-labelledby="roleLbl">
       <span class="lbl" id="roleLbl">Which best describes your role?</span>
@@ -440,52 +443,30 @@ function code(){
   return `ROX1.${S.group}.${S.answers.join('')}${org ? '.' + org : ''}`;
 }
 function vResults(){
-  const sc = S.answers;
-  const avg = {cx:lensAvg(sc,'cx'), rox:lensAvg(sc,'rox'), ex:lensAvg(sc,'ex')};
-  const order = Object.keys(avg).sort((a,b) => avg[b]-avg[a]);
-  const hi = QS.reduce((b,q) => sc[q.n-1] > sc[b.n-1] ? q : b, QS[0]);
-  const lo = QS.reduce((b,q) => sc[q.n-1] < sc[b.n-1] ? q : b, QS[0]);
-  const flat = avg[order[0]] - avg[order[2]] < 0.3;
-  const cards = ['cx','rox','ex'].map(l => {
-    const t = THEME[l];
-    return `<div class="score ${l}"><div class="nm">${esc(LENSES[l].name)}</div>
-      <div class="val">${f1(avg[l])}<small> / 6</small></div><div class="word">${esc(word(avg[l]))}</div>
-      ${spider(LENS_QS[l].map(n => QS[n-1].theme), [{vals:LENS_QS[l].map(n=>sc[n-1]), color:t.series, fill:t.fill, dots:true}], {ring:t.ring, ringStrong:t.ringStrong, label:t.label, aria:LENSES[l].name+' spider graph'})}
-    </div>`;
-  }).join('');
+  const first = (S.name||'').trim().split(/\s+/)[0];
   return `
-  <section>
-    <span class="eyebrow">Your view${S.org ? ' of ' + esc(S.org) : ''} · ${esc(GROUPS[S.group]?.name || '')}</span>
-    <h2 style="font-size:clamp(32px,5vw,48px);margin:10px 0 20px">Thank you. Here is how you see it.</h2>
-    <div class="scoreRow">${cards}</div>
-    <div class="read">
-      <p>${flat ? `Your three lenses sit close together, around <b>${esc(word(mean(Object.values(avg))).toLowerCase())}</b>.` : `You see the strongest connection in <b>${esc(LENSES[order[0]].name)}</b> and the weakest in <b>${esc(LENSES[order[2]].name)}</b>.`}</p>
-      <p>Your highest score is <b>${esc(hi.theme)}</b> (Q${hi.n}, ${sc[hi.n-1]}). Your lowest is <b>${esc(lo.theme)}</b> (Q${lo.n}, ${sc[lo.n-1]}).</p>
-      <p class="muted">This is one view. The real insight comes when it sits beside colleagues in customer-facing, back-office, team leader and senior roles, because the gaps between groups are often the most useful finding.</p>
-    </div>
+  <section class="hero" style="padding-top:8px">
+    <span class="eyebrow">${S.preview ? 'Preview mode' : 'Complete'}</span>
+    <h1 style="margin-top:14px;font-size:clamp(38px,7vw,64px)">Thank you${first ? ', ' + esc(first) : ''}.</h1>
+    ${S.sent ? `<p class="lede">Your answers are in. The Strategic Advisory Service team will assess them alongside your colleagues' responses${S.org ? ' from ' + esc(S.org) : ''}, and email your findings to <span class="addr">${esc(S.email)}</span>.</p>
+    <p class="lede" style="margin-top:12px">You can close this page.</p>` : ''}
   </section>
-  ${S.sent ? `<section class="card">
-    <span class="eyebrow">Received</span>
-    <h2>Your answers are in</h2>
-    <p>Thank you. Your answers have gone to the Strategic Advisory Service team and will join your colleagues' to show where views line up and where they pull apart. You can close this page.</p>
-  </section>` : `<section class="card">
+  ${S.sent ? '' : `<section class="card">
     <span class="eyebrow">${S.preview ? 'Preview mode' : 'One last step'}</span>
-    <h2>${S.preview ? 'Nothing has been sent' : 'Send us your answers'}</h2>
-    <p>${S.preview ? 'This was a preview, so your answers stayed on this device. Here is the code a real response would carry.' : `We couldn't send your answers automatically. Copy this short code and paste it into a reply to the email that sent you here, or send it to <span class="addr">${EMAIL}</span>. It holds your fifteen answers and your group, nothing else.`}</p>
-    <div class="codeBox"><div class="code" id="code">${esc(code())}</div><button class="btn" id="copy" type="button">Copy code</button></div>
+    <h2>${S.preview ? 'Nothing has been sent' : "We couldn't send your answers"}</h2>
+    <p>${S.preview ? 'This was a preview, so your answers stayed on this device.' : `Please try again. If it still doesn't work, copy this short code and send it to <span class="addr">${EMAIL}</span> so we can include your answers.`}</p>
+    ${S.preview ? '' : `<div class="codeBox"><div class="code" id="code">${esc(code())}</div><button class="btn" id="copy" type="button">Copy code</button></div>
     <p class="copyMsg" id="copyMsg" role="status"></p>
-    ${S.preview ? '' : '<div class="cta" style="margin-top:8px"><button class="btn ghost sm" id="resend" type="button">Try sending again</button></div>'}
+    <div class="cta" style="margin-top:8px"><button class="btn sm" id="resend" type="button">Try sending again</button></div>`}
   </section>`}
   <section>
     <span class="eyebrow">What happens next</span>
-    <h2 style="font-size:28px;margin:8px 0 6px">A useful next conversation</h2>
-    <p class="muted" style="max-width:62ch">When everyone has responded, we bring the group results to a short exploration call. Bring one recent customer moment, whether it went well or not.</p>
-    <div class="next3">
-      <div><b>What helped</b><p>Where the people behind the moment knew what mattered and were free to act.</p></div>
-      <div><b>What got in the way</b><p>Where hand-offs, measures, budgets or trust pulled the experience apart.</p></div>
-      <div><b>What changes next time</b><p>The one or two connections that would make the next customer moment land.</p></div>
+    <div class="next3" style="margin-top:14px">
+      <div><b>1. We assess</b><p>The Strategic Advisory Service reviews every response, comparing customer-facing, back-office, team leader and senior views.</p></div>
+      <div><b>2. You hear from us</b><p>Your findings are emailed to you once the assessment is complete.</p></div>
+      <div><b>3. We talk it through</b><p>A short exploration call to agree priorities. Bring one recent customer moment, whether it went well or not.</p></div>
     </div>
-    <div class="cta">${S.sent ? '' : '<button class="btn ghost sm" id="edit" type="button">Change my answers</button>'}<button class="btn ghost sm" id="restart" type="button">Start a fresh response on this device</button></div>
+    ${S.sent ? '' : '<div class="cta"><button class="btn ghost sm" id="edit" type="button">Change my answers</button></div>'}
   </section>`;
 }
 
@@ -617,7 +598,7 @@ async function submit(){
   if (S.preview || S.sent){ return go('results'); }
   S.sending = true; $('#next').disabled = true; $('#next').textContent = 'Sending…';
   try {
-    const r = await fetch(API, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({code:S.code, group:S.group, answers:S.answers})});
+    const r = await fetch(API, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({code:S.code, name:S.name, email:S.email, group:S.group, answers:S.answers})});
     const j = await r.json().catch(() => ({}));
     S.sent = !!(r.ok && j.ok);
   } catch(err){ S.sent = false; }
@@ -627,6 +608,9 @@ async function submit(){
 function next(){
   const st = S.step;
   if (st === 'about'){
+    S.name = ($('#nm').value||'').trim(); S.email = ($('#em').value||'').trim();
+    if (!S.name){ S.err = 'Add your name so we know who to send your findings to.'; persist(); return render(); }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(S.email)){ S.err = 'Add a valid work email so we can send your findings.'; persist(); return render(); }
     if (!S.group){ S.err = 'Choose the group that best describes your role.'; persist(); return render(); }
     return go('l0');
   }
@@ -646,7 +630,7 @@ document.addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b) return;
   switch (b.id){
     case 'start': return start();
-    case 'restart': S.answers = Array(15).fill(0); S.group = ''; S.sent = false; return go('intro');
+    case 'restart': S.answers = Array(15).fill(0); S.group = ''; S.sent = false; S.name = ''; S.email = ''; return go('intro');
     case 'edit': return go('l0');
     case 'resend': return submit();
     case 'next': return next();
@@ -661,6 +645,7 @@ document.addEventListener('click', e => {
     case 'clear': T.raw = ''; T.org = ''; store.set(TKEY, T); return renderTeam();
   }
 });
+document.addEventListener('input', e => { if (e.target.id === 'nm'){ S.name = e.target.value; persist(); } if (e.target.id === 'em'){ S.email = e.target.value; persist(); } });
 document.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.id === 'acc'){ e.preventDefault(); start(); } });
 document.addEventListener('change', e => {
   const t = e.target;
