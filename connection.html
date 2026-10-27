@@ -472,6 +472,26 @@ function vResults(){
 
 /* ---------- facilitator view ---------- */
 const TKEY = 'sas-rox:team';
+let REPORT_CTX = null;
+const loadScript = src => new Promise((ok, fail) => { const el = document.createElement('script'); el.src = src; el.onload = ok; el.onerror = () => fail(new Error(src)); document.head.appendChild(el); });
+async function downloadReport(){
+  const msg = $('#repMsg'), btn = $('#report');
+  const org = ($('#repOrg').value || '').trim();
+  T.reportOrg = org; store.set(TKEY, T);
+  btn.disabled = true; msg.textContent = 'Building the report…';
+  try {
+    if (!window.PptxGenJS) await loadScript('/vendor/pptxgen-3.12.0.bundle.js');
+    if (!window.buildRoxReport) await loadScript('/connection-report.js');
+    const date = new Date().toLocaleDateString('en-GB', {day:'numeric', month:'long', year:'numeric'});
+    const pptx = window.buildRoxReport(Object.assign({}, REPORT_CTX, {org: org || 'Your organisation', date}));
+    const safe = (org || 'organisation').replace(/[^A-Za-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    await pptx.writeFile({fileName: `CX-EX-Connection-findings-${safe}${REPORT_CTX.example ? '-EXAMPLE' : ''}.pptx`});
+    msg.textContent = 'Downloaded. Open it in PowerPoint, add your commentary in the dashed boxes, then send.';
+  } catch(err){
+    console.error(err); msg.textContent = "The report couldn't be built. Refresh the page and try again.";
+  }
+  btn.disabled = false;
+}
 const T = store.get(TKEY) || {raw:'', org:''};
 function parseCodes(raw){
   const out = [], seen = new Set();
@@ -535,6 +555,9 @@ function renderTeam(){
   else weakest.forEach(([g,l]) => insights.push(`${esc(GROUP_PLURAL[g])}: weakest lens is <b>${esc(LENSES[l].name)}</b> (${f1(lensOf(means[g],l))}).`));
   lowestQ.forEach(([g,i]) => insights.push(`${esc(GROUP_PLURAL[g])} score <b>${esc(QS[i].theme)}</b> lowest of all fifteen questions (${f1(means[g][i])}).`));
 
+  const reportOrg = T.org || (orgs.length === 1 ? orgs[0] : '') || T.reportOrg || '';
+  REPORT_CTX = {example, groups, means, overall:overallQ,
+    counts: example ? {C:12,B:8,T:5,S:4} : counts};
   $('#main').innerHTML = `
   <section>
     <span class="eyebrow">Facilitator view</span>
@@ -551,6 +574,16 @@ function renderTeam(){
       `<span class="chip"><b>${rows.length}</b>&nbsp;response${rows.length===1?'':'s'}${orgs.length===1?' · '+esc(orgs[0]):''}</span>` + Object.keys(counts).map(g => `<span class="chip${counts[g]>0&&counts[g]<3?' low':''}"><i style="background:${GROUPS[g].color}"></i>${esc(GROUP_PLURAL[g])} ${counts[g]}</span>`).join('') + (dups ? `<span class="chip low">${dups} duplicate code${dups===1?'':'s'} counted twice</span>` : '')}
     </div>
     ${!example && Object.values(counts).some(c => c>0 && c<3) ? '<p class="small muted" style="margin-top:10px">Groups with fewer than three responses are outlined: read them with care, and avoid sharing them in a way that identifies individuals.</p>' : ''}
+  </section>
+  <section class="card">
+    <span class="eyebrow">Findings report</span>
+    <h2>Download the report to send</h2>
+    <p class="muted" style="max-width:64ch">A 13-slide PowerPoint in the framework's style, built from the results below: who took part, spider graphs by group, the widest gaps, strongest and weakest questions, and a full appendix. Dashed boxes are for the Strategic Advisory Service's interpretation: fill them in before you send it.${example ? ' While the illustrative example is showing, every slide is marked as an example.' : ''}</p>
+    <div class="row" style="margin-top:16px">
+      <input class="input" id="repOrg" value="${esc(reportOrg)}" placeholder="Organisation name for the report" style="flex:1 1 260px;min-width:0">
+      <button class="btn" id="report" type="button">Download report (.pptx)</button>
+    </div>
+    <p class="copyMsg" id="repMsg" role="status"></p>
   </section>
   <section>
     <span class="eyebrow">Lens averages by group</span>
@@ -642,6 +675,7 @@ document.addEventListener('click', e => {
       return;
     }
     case 'apply': T.raw = $('#paste').value; store.set(TKEY, T); return renderTeam();
+    case 'report': return downloadReport();
     case 'clear': T.raw = ''; T.org = ''; store.set(TKEY, T); return renderTeam();
   }
 });
