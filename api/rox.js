@@ -4,7 +4,7 @@
 //
 // Environment variables (Vercel > Project > Settings > Environment Variables):
 //   ROX_CODES  access codes as JSON, one per organisation, e.g. {"BENNETTHAY26":"Bennett Hay"}
-//   ROX_TO     where responses go (optional; falls back to AGWT_TO)
+//   ROX_TO     where responses go, comma-separated (optional; falls back to AGWT_TO)
 //   ROX_FROM   sender on a domain verified in Resend (optional; falls back to AGWT_FROM)
 //   RESEND_API_KEY  already set for the other diagnostics
 //
@@ -86,7 +86,7 @@ export default async function handler(req, res) {
     headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({
       from: process.env.ROX_FROM || process.env.AGWT_FROM,
-      to: [process.env.ROX_TO || process.env.AGWT_TO],
+      to: String(process.env.ROX_TO || process.env.AGWT_TO || "").split(",").map(s => s.trim()).filter(Boolean),
       reply_to: email,
       subject: `CX-EX Connection: ${name} · ${org} · ${GROUPS[group]}`,
       html: html(org, group, answers, roxCode, name, email),

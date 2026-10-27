@@ -4,7 +4,7 @@
 //
 // Environment variables (Vercel > Project > Settings > Environment Variables):
 //   RESEND_API_KEY  your Resend API key (already used by your existing assessment)
-//   AGWT_TO         where responses go, e.g. katie@cultivatecustomerexperience.com
+//   AGWT_TO         where responses go; separate several addresses with commas
 //   AGWT_FROM       a sender on a domain verified in Resend, e.g. Executive CX Alignment Review <diagnostic@cultivatecustomerexperience.com>
 //   AGWT_CODES      access codes as JSON, one per organisation, e.g. {"HOSTSTAY26":"Host & Stay","ACME26":"Acme Ltd"}
 
@@ -73,7 +73,7 @@ export default async function handler(req, res) {
     headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({
       from: process.env.AGWT_FROM,
-      to: [process.env.AGWT_TO],
+      to: String(process.env.AGWT_TO || "").split(",").map(s => s.trim()).filter(Boolean),
       reply_to: p.about.email || undefined,
       subject: `Executive CX Alignment Review: ${p.about.name || 'New response'} · ${list[code]} · ${p.about.function || ''}`,
       html: summaryHtml(p),
