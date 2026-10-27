@@ -1,0 +1,681 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CX-EX Connection Diagnostic | Strategic Advisory Service</title>
+<meta name="description" content="How well your customer and employee experience connect, and what that connection returns.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Arimo:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one narrow column on black, like the deck; question cards carry the lens colours (CX dark, RoX yellow, EX white). Single dark look by design. */
+:root{
+  --ink:#0B0B0B; --panel:#1A1A1A; --panel2:#262626; --line:#3A3A3A; --mute:#A6A6A6; --text:#F3F3F3;
+  --yellow:#FFCC00; --gold:#A67C00; --white:#FFFFFF; --dark:#1C1C1C; --warn:#FF8A7A;
+  --display:"Archivo Black","Arial Black",Arial,sans-serif;
+  --body:Arimo,Arial,"Helvetica Neue",sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0;background:var(--ink);color:var(--text)}
+body{font-family:var(--body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--ink)}
+h1,h2,h3{font-family:var(--display);font-weight:400;margin:0;line-height:1.08;text-wrap:balance;letter-spacing:-.01em}
+p{margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+.wrap{max-width:860px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--yellow)}
+.muted{color:var(--mute)}
+.small{font-size:14px}
+
+/* top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:8;background:rgba(11,11,11,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--panel2)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
+.brand{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
+.brand i{display:inline-flex;gap:4px}
+.brand i b{width:9px;height:9px;border-radius:2px;display:block}
+.brand i b:nth-child(1){background:var(--panel2);outline:1px solid var(--line)}
+.brand i b:nth-child(2){background:var(--yellow)}
+.brand i b:nth-child(3){background:var(--white)}
+.rail{display:flex;gap:6px;flex:1;max-width:420px}
+.rail span{flex:1;height:6px;border-radius:3px;background:var(--panel2)}
+.rail span.on{background:var(--yellow)}
+.rail span.done{background:var(--gold)}
+.railtxt{font-size:12px;color:var(--mute);white-space:nowrap}
+@media (max-width:560px){.brand .bt{display:none}}
+
+main{padding-block:36px 140px}
+section+section{margin-top:28px}
+
+/* intro */
+.hero{padding-block:24px 8px}
+.hero h1{font-size:clamp(40px,8vw,72px)}
+.hero .sub{font-family:var(--display);color:var(--yellow);font-size:clamp(22px,3.6vw,30px);margin-top:10px}
+.hero p.lede{max-width:60ch;margin-top:18px;font-size:18px;color:#DADADA}
+.lenses{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:30px}
+.lens{border-radius:6px;padding:18px 18px 20px;min-width:0}
+.lens h3{font-family:var(--body);font-weight:700;font-size:15px;margin-bottom:8px}
+.lens p{font-size:14px}
+.lens.cx{background:var(--panel);border:1px solid var(--line)} .lens.cx h3{color:var(--yellow)} .lens.cx p{color:#CFCFCF}
+.lens.rox{background:var(--yellow);color:var(--dark)}
+.lens.ex{background:var(--white);color:var(--dark)}
+@media (max-width:680px){.lenses{grid-template-columns:1fr}}
+
+.howto{background:var(--panel);border:1px solid var(--panel2);border-radius:8px;padding:24px}
+.howto h2{font-size:26px;margin:6px 0 10px}
+.scaleKey{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin:18px 0 8px}
+.scaleKey div{background:var(--panel2);border-radius:5px;padding:12px 8px;text-align:center;font-size:13px;font-weight:600;min-width:0}
+.scaleKey div b{display:block;font-family:var(--display);font-weight:400;font-size:28px;line-height:1;margin-bottom:6px;color:var(--white)}
+.scaleKey div:last-child{background:var(--yellow);color:var(--dark)} .scaleKey div:last-child b{color:var(--dark)}
+.arrow{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--yellow);justify-content:flex-end}
+.arrow::before{content:"";flex:1;height:1px;background:var(--line)}
+@media (max-width:560px){.scaleKey{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.ticks{list-style:none;padding:0;margin:18px 0 0;display:grid;gap:10px}
+.ticks li{display:flex;gap:12px;font-size:15px}
+.ticks li::before{content:"";width:8px;height:8px;margin-top:8px;background:var(--yellow);border-radius:2px;flex:none}
+
+.btn{appearance:none;border:0;border-radius:6px;min-height:50px;padding:0 24px;font-weight:700;font-size:16px;cursor:pointer;background:var(--yellow);color:var(--dark);display:inline-flex;align-items:center;justify-content:center;gap:10px}
+.btn:hover{background:#FFD633}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+.btn.ghost:hover{border-color:var(--mute)}
+.btn.sm{min-height:40px;padding:0 16px;font-size:14px}
+.cta{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-top:26px}
+
+/* about */
+.card{background:var(--panel);border:1px solid var(--panel2);border-radius:8px;padding:26px}
+.card h2{font-size:30px;margin:8px 0 10px}
+.field{display:grid;gap:8px;margin-top:22px}
+.field label,.field .lbl{font-weight:700;font-size:15px}
+.input{width:100%;min-height:50px;border-radius:6px;border:1px solid var(--line);background:var(--ink);padding:12px 14px}
+.input:focus{border-color:var(--yellow);outline:none}
+.roles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:560px){.roles{grid-template-columns:1fr}}
+.role{position:relative;display:block;cursor:pointer}
+.role input{position:absolute;opacity:0;inset:0;cursor:pointer}
+.role span{display:block;border:1px solid var(--line);border-radius:6px;padding:14px 16px;min-height:100%}
+.role span b{display:block;font-size:16px}
+.role span small{display:block;color:var(--mute);font-size:13px;margin-top:2px}
+.role input:checked+span{border-color:var(--yellow);background:rgba(255,204,0,.08);box-shadow:inset 0 0 0 1px var(--yellow)}
+.role input:focus-visible+span{outline:3px solid var(--yellow);outline-offset:2px}
+.err{color:var(--warn);font-size:14px;margin-top:10px}
+
+/* questions */
+.lineHead{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+.lineHead h2{font-size:clamp(30px,5vw,44px)}
+.qs{display:grid;gap:16px}
+.q{border-radius:8px;padding:22px;scroll-margin-top:90px;
+   --qbg:var(--panel);--qfg:var(--text);--qmute:#BDBDBD;--qacc:var(--yellow);--tile:rgba(255,255,255,.06);--tileb:var(--line);--selbg:var(--yellow);--selfg:var(--dark)}
+.q.rox{--qbg:var(--yellow);--qfg:var(--dark);--qmute:#4A3B00;--qacc:var(--dark);--tile:rgba(0,0,0,.06);--tileb:rgba(0,0,0,.28);--selbg:var(--dark);--selfg:var(--yellow)}
+.q.ex{--qbg:var(--white);--qfg:var(--dark);--qmute:#595959;--qacc:var(--dark);--tile:#F3F3F3;--tileb:#D9D9D9;--selbg:var(--dark);--selfg:var(--yellow)}
+.q{background:var(--qbg);color:var(--qfg)}
+.q.cx{border:1px solid var(--line)}
+.qmeta{display:flex;gap:10px;align-items:baseline;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--qacc)}
+.qmeta .lensname{color:var(--qmute);font-weight:600}
+.qtheme{font-family:var(--display);font-size:24px;margin:10px 0 6px}
+.qtext{font-size:19px;line-height:1.45;max-width:60ch}
+.opts{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin-top:18px;border:0;padding:0;min-width:0}
+@media (max-width:640px){.opts{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.opt{position:relative;display:block;cursor:pointer;min-width:0}
+.opt input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.opt span{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:4px;min-height:84px;padding:10px 6px;border-radius:6px;background:var(--tile);border:1px solid var(--tileb);font-size:13px;font-weight:600;line-height:1.25;transition:transform .12s ease}
+.opt span b{font-family:var(--display);font-weight:400;font-size:24px;line-height:1}
+.opt:hover span{border-color:var(--qacc)}
+.opt input:checked+span{background:var(--selbg);color:var(--selfg);border-color:var(--selbg);transform:translateY(-2px)}
+.opt input:focus-visible+span{outline:3px solid var(--qacc);outline-offset:2px}
+.q.missing{box-shadow:0 0 0 3px var(--warn)}
+.need{display:none;margin-top:10px;font-size:14px;font-weight:700;color:#C0392B}
+.q.cx .need{color:var(--warn)}
+.q.missing .need{display:block}
+
+/* bottom nav */
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:8;background:rgba(11,11,11,.96);backdrop-filter:blur(8px);border-top:1px solid var(--panel2);padding-bottom:env(safe-area-inset-bottom,0px)}
+.nav .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-block:12px}
+.nav .mid{font-size:13px;color:var(--mute);text-align:center}
+
+/* results */
+.scoreRow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:680px){.scoreRow{grid-template-columns:1fr}}
+.score{border-radius:8px;padding:18px;min-width:0}
+.score.cx{background:var(--panel);border:1px solid var(--line)}
+.score.rox{background:var(--yellow);color:var(--dark)}
+.score.ex{background:var(--white);color:var(--dark)}
+.score .nm{font-weight:700;font-size:14px}
+.score.cx .nm{color:var(--yellow)}
+.score .val{font-family:var(--display);font-size:48px;line-height:1;margin-top:10px;font-variant-numeric:tabular-nums}
+.score .val small{font-family:var(--body);font-size:16px;font-weight:600;opacity:.7}
+.score .word{font-size:14px;margin-top:6px;opacity:.85}
+.score svg{display:block;width:100%;max-width:340px;margin:12px auto 0;height:auto}
+.read{margin-top:22px;display:grid;gap:12px;font-size:17px;max-width:64ch}
+.read b{color:var(--yellow)}
+.codeBox{display:flex;gap:10px;align-items:stretch;flex-wrap:wrap;margin-top:16px}
+.code{flex:1 1 280px;min-width:0;font-family:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;font-size:15px;background:var(--ink);border:1px dashed var(--yellow);border-radius:6px;padding:14px;word-break:break-all;user-select:all;color:var(--white)}
+.copyMsg{font-size:14px;color:var(--yellow);min-height:20px;margin-top:8px}
+.addr{user-select:all;color:var(--white);font-weight:700;word-break:break-all}
+.next3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:16px}
+.next3 div{border-radius:6px;padding:16px;min-width:0}
+.next3 div:nth-child(1){background:var(--panel2)}
+.next3 div:nth-child(2){background:var(--yellow);color:var(--dark)}
+.next3 div:nth-child(3){background:var(--white);color:var(--dark)}
+.next3 b{display:block;margin-bottom:4px}
+.next3 p{font-size:14px}
+@media (max-width:680px){.next3{grid-template-columns:1fr}}
+
+/* facilitator */
+.tag{display:inline-block;background:var(--yellow);color:var(--dark);font-size:12px;font-weight:700;padding:4px 10px;border-radius:4px}
+.paste{width:100%;min-height:110px;border-radius:6px;border:1px solid var(--line);background:var(--ink);padding:12px 14px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:14px;resize:vertical}
+.paste:focus{border-color:var(--yellow);outline:none}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:13px;font-variant-numeric:tabular-nums}
+.chip i{width:10px;height:10px;border-radius:50%;display:block}
+.chip.low{border-color:var(--warn)}
+.legend{display:flex;flex-wrap:wrap;gap:14px 20px;font-size:14px;margin-top:6px}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+.legend i{width:18px;height:4px;border-radius:2px;display:block}
+.charts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:16px}
+@media (max-width:760px){.charts{grid-template-columns:1fr}}
+.chart{background:var(--panel);border:1px solid var(--panel2);border-radius:8px;padding:16px;min-width:0}
+.chart h3{font-family:var(--body);font-weight:700;font-size:15px}
+.chart .avgs{font-size:13px;margin-top:4px;font-variant-numeric:tabular-nums;display:flex;flex-wrap:wrap;gap:4px 10px}
+.chart svg{display:block;width:100%;height:auto;margin-top:6px}
+.tblWrap{overflow-x:auto;margin-top:14px}
+table{border-collapse:collapse;width:100%;min-width:520px;font-variant-numeric:tabular-nums}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--panel2);font-size:14px}
+th{color:var(--mute);font-weight:600;font-size:13px}
+td.num{text-align:right}
+td .cell{display:flex;align-items:center;gap:8px;justify-content:flex-end}
+td .bar{width:56px;height:6px;border-radius:3px;background:var(--panel2);overflow:hidden;flex:none}
+td .bar i{display:block;height:100%;background:var(--yellow)}
+td.low{color:var(--warn)}
+.gaps{display:grid;gap:12px;margin-top:14px}
+.gap{background:var(--panel);border:1px solid var(--panel2);border-radius:8px;padding:16px 18px}
+.gap .gh{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline}
+.gap .gh b{font-size:16px}
+.gap .gh span{font-size:13px;color:var(--mute)}
+.gap .gq{font-size:14px;color:#CFCFCF;margin-top:4px;max-width:70ch}
+.strip{position:relative;height:40px;margin-top:12px}
+.strip .axis{position:absolute;left:0;right:0;top:18px;height:2px;background:var(--panel2)}
+.strip .tickl{position:absolute;top:26px;font-size:11px;color:var(--mute);transform:translateX(-50%)}
+.strip .dot{position:absolute;top:11px;width:16px;height:16px;border-radius:50%;transform:translateX(-50%);border:2px solid var(--ink)}
+.insights{display:grid;gap:10px;margin-top:6px;font-size:16px;max-width:70ch}
+.insights li{margin-left:18px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
+select.input{min-height:44px;width:auto}
+
+footer{border-top:1px solid var(--panel2);margin-top:20px}
+footer .wrap{display:flex;gap:20px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding-block:24px}
+footer img{width:120px;height:auto;display:block}
+footer p{font-size:13px;color:var(--mute);max-width:52ch}
+footer a{color:var(--mute)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header class="top"><div class="wrap">
+  <div class="brand"><i><b></b><b></b><b></b></i><span class="bt">Strategic Advisory Service</span></div>
+  <div class="rail" id="rail" hidden></div>
+  <span class="railtxt" id="railtxt"></span>
+</div></header>
+
+<main id="main" class="wrap"></main>
+
+<nav class="nav" id="nav" hidden><div class="wrap">
+  <button class="btn ghost" id="back" type="button">Back</button>
+  <span class="mid" id="navmid"></span>
+  <button class="btn" id="next" type="button">Next</button>
+</div></nav>
+
+<footer><div class="wrap">
+  <img alt="Nathan Dring and Associates" src="data:image/png;base64,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">
+  <p>The Strategic Advisory Service from Awards International, Cultivate Customer Experience by Design and Nathan Dring &amp; Associates. <a href="#team" id="teamLink">Facilitator view</a></p>
+</div></footer>
+
+<script>
+(function(){
+'use strict';
+
+/* ---------- framework (Nathan Dring & Associates, CX-EX Connection) ---------- */
+const LENSES = {
+  cx:  {name:'CX connection',        short:'CX',  what:'How work lands with customers'},
+  rox: {name:'Return on Experience', short:'RoX', what:'Where CX and EX pay back'},
+  ex:  {name:'EX connection',        short:'EX',  what:'What the work means to people'}
+};
+const LINES = [
+  {title:'What drives behaviour?', qs:[
+    [1,'cx','Expectations','Would customers say they know exactly what to expect from us, every time they deal with us?'],
+    [2,'rox','Value','Do people understand how their work creates value for customers and for colleagues?'],
+    [3,'ex','Identity','Do people feel they can bring their best self to work, rather than the version they think is expected?']]},
+  {title:'How do we lead?', qs:[
+    [4,'cx','Direction','Do people know how their role shapes the customer experience, even if they never speak to a customer?'],
+    [5,'rox','Alignment','Do leaders bring commercial, customer and employee goals together into one story people can follow?'],
+    [6,'ex','Meaning','Do people understand why their work matters, beyond what their job title says?']]},
+  {title:'What does good look like?', qs:[
+    [7,'cx','Compliance','Do people follow the customer process properly, even when no one is watching?'],
+    [8,'rox','Consistency','Do customers get a consistently great experience, whoever they deal with and however they contact us?'],
+    [9,'ex','Ownership','Do people take the initiative to fix things without waiting to be told?']]},
+  {title:'How do we measure it?', qs:[
+    [10,'cx','Metrics','Do leaders track what matters to customers, rather than what is easiest to measure?'],
+    [11,'rox','Impact','Do leaders track how customer and employee experience together move the results that matter?'],
+    [12,'ex','Discretionary effort','Do people go beyond what is required because they want to, rather than because they are asked?']]},
+  {title:'Are we serious?', qs:[
+    [13,'cx','Accountability','When customer standards are not met, do leaders follow through consistently?'],
+    [14,'rox','Investment','Do leaders invest in customer and employee experience equally, rather than favouring one?'],
+    [15,'ex','Trust','Do leaders give people the autonomy to do their job well, without checking every step?']]}
+];
+const QS = LINES.flatMap(l => l.qs.map(q => ({n:q[0], lens:q[1], theme:q[2], text:q[3]})));
+const LENS_QS = {cx:[1,4,7,10,13], rox:[2,5,8,11,14], ex:[3,6,9,12,15]};
+const SCALE = ['Not a chance','On a good day','Sometimes','Pretty often','Most days',"It's just what we do"];
+const GROUPS = {
+  C:{name:'Customer-facing', hint:'You deal with customers directly most days', color:'#FFCC00'},
+  B:{name:'Back office',     hint:'You support the customer experience from behind the scenes', color:'#A67C00'},
+  T:{name:'Team leader',     hint:'You lead a team day to day', color:'#A6A6A6'},
+  S:{name:'Senior leader',   hint:'You are part of the senior leadership team', color:'#FFFFFF'}
+};
+const GROUP_PLURAL = {C:'Customer-facing',B:'Back office',T:'Team leaders',S:'Senior leaders'};
+const EMAIL = 'katie@cultivatecustomerexperience.com';
+/* Illustrative group means from the framework deck (fictional, not real findings) */
+const EXAMPLE = {
+  C:[4.5,3.5,4.3,4.3,3.2,4.1,4.7,3.4,4.4,3.9,2.9,4.6,4.1,2.7,4.2],
+  B:[3.6,3.0,3.0,3.2,2.8,2.7,4.0,3.0,3.2,3.3,2.6,3.3,3.4,2.4,2.8],
+  T:[4.2,3.3,3.8,3.9,2.5,3.7,4.4,3.2,3.9,3.0,2.7,4.0,3.6,2.6,3.4],
+  S:[4.8,4.1,4.6,4.7,4.3,4.5,4.6,3.9,4.2,4.4,3.1,4.0,4.5,3.2,4.6]
+};
+
+/* ---------- helpers ---------- */
+const $ = s => document.querySelector(s);
+const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const store = {
+  get(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } },
+  set(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} },
+  del(k){ try{ localStorage.removeItem(k); }catch(e){} }
+};
+const mean = a => a.length ? a.reduce((x,y)=>x+y,0)/a.length : NaN;
+const f1 = v => isFinite(v) ? (Math.round(v*10)/10).toFixed(1) : '–';
+const word = v => SCALE[Math.min(5, Math.max(0, Math.round(v)-1))];
+const lensAvg = (scores, lens) => mean(LENS_QS[lens].map(n => scores[n-1]));
+
+/* ---------- spider graph (outer ring = 6) ---------- */
+function spider(labels, series, opt){
+  opt = opt || {};
+  const W = 380, H = 290, cx = 190, cy = 146, R = 92;
+  const pt = (i, v) => { const a = -Math.PI/2 + i*2*Math.PI/5; const r = R*v/6; return [cx + r*Math.cos(a), cy + r*Math.sin(a)]; };
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(opt.aria||'Spider graph')}">`;
+  for (let ring = 1; ring <= 6; ring++){
+    const p = [0,1,2,3,4].map(i => pt(i, ring).map(n=>n.toFixed(1)).join(',')).join(' ');
+    s += `<polygon points="${p}" fill="none" stroke="${ring===6?opt.ringStrong:opt.ring}" stroke-width="${ring===6?1.2:.8}"/>`;
+  }
+  for (let i = 0; i < 5; i++){
+    const [x,y] = pt(i,6);
+    s += `<line x1="${cx}" y1="${cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="${opt.ring}" stroke-width=".8"/>`;
+    const [lx,ly] = pt(i, 6 + 1.25);
+    const anchor = Math.abs(lx-cx) < 6 ? 'middle' : (lx > cx ? 'start' : 'end');
+    const dy = i === 0 ? -2 : (ly > cy ? 10 : 4);
+    s += `<text x="${lx.toFixed(1)}" y="${(ly+dy).toFixed(1)}" text-anchor="${anchor}" font-size="11.5" font-family="Arimo,Arial,sans-serif" fill="${opt.label}">${esc(labels[i])}</text>`;
+  }
+  const [sx, sy] = pt(0,6); s += `<text x="${sx+5}" y="${sy+10}" font-size="9" fill="${opt.label}" opacity=".7" font-family="Arimo,Arial,sans-serif">6</text>`;
+  series.forEach(se => {
+    const p = se.vals.map((v,i) => pt(i, v).map(n=>n.toFixed(1)).join(',')).join(' ');
+    s += `<polygon points="${p}" fill="${se.fill||'none'}" stroke="${se.color}" stroke-width="${se.width||2.2}" stroke-linejoin="round" ${se.dash?`stroke-dasharray="${se.dash}"`:''}/>`;
+    if (se.dots) se.vals.forEach((v,i) => { const [x,y] = pt(i,v); s += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3.6" fill="${se.color}"/>`; });
+  });
+  return s + '</svg>';
+}
+const THEME = {
+  cx:  {ring:'#3A3A3A', ringStrong:'#595959', label:'#BDBDBD', series:'#FFCC00', fill:'rgba(255,204,0,.22)'},
+  rox: {ring:'rgba(0,0,0,.18)', ringStrong:'rgba(0,0,0,.4)', label:'#3A3000', series:'#1C1C1C', fill:'rgba(0,0,0,.14)'},
+  ex:  {ring:'#D9D9D9', ringStrong:'#A6A6A6', label:'#595959', series:'#1C1C1C', fill:'rgba(255,204,0,.45)'}
+};
+
+/* ---------- respondent state ---------- */
+const API = '/api/rox';
+const urlCode = (new URLSearchParams(location.search).get('code') || '').trim().toUpperCase();
+const last = store.get('sas-rox:last') || {};
+const KEY = c => 'sas-rox:' + c;
+const S = {step:'intro', code:urlCode || last.code || '', org:'', verified:false, preview:false, sent:false, sending:false,
+  group:'', answers:Array(15).fill(0), err:'', missing:new Set()};
+function load(c){
+  const d = store.get(KEY(c)) || {};
+  S.step = ['intro','about','l0','l1','l2','l3','l4','results'].includes(d.step) ? d.step : 'intro';
+  S.org = d.org || ''; S.group = d.group || ''; S.sent = !!d.sent; S.verified = !!d.verified; S.preview = !!d.preview;
+  S.answers = Array.isArray(d.answers) && d.answers.length === 15 ? d.answers : Array(15).fill(0);
+  if (!S.verified) S.step = 'intro';
+}
+if (S.code) load(S.code);
+const persist = () => { if (!S.code) return; store.set(KEY(S.code), {step:S.step, org:S.org, group:S.group, answers:S.answers, sent:S.sent, verified:S.verified, preview:S.preview}); store.set('sas-rox:last', {code:S.code}); };
+const STEPS = ['intro','about','l0','l1','l2','l3','l4','results'];
+
+/* ---------- views ---------- */
+function render(){
+  const team = location.hash === '#team';
+  $('#teamLink').hidden = team;
+  if (team) return renderTeam();
+  const st = S.step, m = $('#main');
+  const lineIdx = st[0] === 'l' ? +st.slice(1) : -1;
+  $('#nav').hidden = !(st === 'about' || lineIdx >= 0);
+  $('#rail').hidden = !(lineIdx >= 0 || st === 'about');
+  $('#rail').innerHTML = LINES.map((_,i) => `<span class="${i===lineIdx?'on':(i<lineIdx || st==='results')?'done':''}"></span>`).join('');
+  $('#railtxt').textContent = lineIdx >= 0 ? `${lineIdx+1} of 5` : st === 'about' ? 'About you' : st === 'results' ? 'Complete' : '';
+  $('#back').textContent = 'Back';
+  $('#next').textContent = st === 'l4' ? 'See my results' : 'Next';
+  $('#navmid').textContent = lineIdx >= 0 ? LINES[lineIdx].title : '';
+  if (st === 'intro') m.innerHTML = vIntro();
+  else if (st === 'about') m.innerHTML = vAbout();
+  else if (st === 'results') m.innerHTML = vResults();
+  else m.innerHTML = vLine(lineIdx);
+}
+
+function vIntro(){
+  const resume = S.answers.some(Boolean) && S.step === 'intro';
+  return `
+  <section class="hero">
+    <span class="eyebrow">A diagnostic for leaders</span>
+    <h1 style="margin-top:14px">CX-EX Connection</h1>
+    <div class="sub">Return on Experience</div>
+    <p class="lede">How well your customer and employee experience connect, and what that connection returns. Fifteen questions, about five minutes.</p>
+    <div class="lenses">
+      <div class="lens cx"><h3>CX connection</h3><p>Doing the right thing for customers. People know the customer standard and deliver it.</p></div>
+      <div class="lens rox"><h3>Return on Experience</h3><p>Driving the outcomes that matter. Customer and employee experience reinforce each other, and leaders can see what that returns.</p></div>
+      <div class="lens ex"><h3>EX connection</h3><p>Doing what they love. People care about the work and bring themselves to it.</p></div>
+    </div>
+  </section>
+  <section class="howto">
+    <span class="eyebrow">How to answer</span>
+    <h2>Answer for what normally happens here today</h2>
+    <p class="muted" style="max-width:62ch">Choose the response that best describes everyday practice, rather than what the strategy says or what you hope will happen.</p>
+    <div class="scaleKey">${SCALE.map((s,i) => `<div><b>${i+1}</b>${esc(s)}</div>`).join('')}</div>
+    <div class="arrow">Stronger connection</div>
+    <ul class="ticks">
+      <li>The same six responses for all fifteen questions. No question is reversed: 6 always means a stronger connection.</li>
+      <li>Your answers are anonymous. We only see which group you belong to, so we can compare views across the organisation.</li>
+      <li>Please answer on your own. Comparing notes first flattens the differences we are looking for.</li>
+    </ul>
+    ${S.verified && !S.err ? (S.org ? `<p style="margin-top:22px">Taking part for <b>${esc(S.org)}</b>.</p>` : '') : `
+    <div class="field" style="max-width:340px"><label for="acc">Your access code</label><input class="input" id="acc" value="${esc(S.code)}" autocomplete="off" autocapitalize="characters" placeholder="From your invitation email" style="text-transform:uppercase"></div>`}
+    ${S.err ? `<p class="err" role="alert">${esc(S.err)}</p>` : ''}
+    <div class="cta"><button class="btn" id="start" type="button"${S.sending?' disabled':''}>${S.sending ? 'Checking…' : resume ? 'Carry on where I left off' : 'Start the diagnostic'}</button>${resume ? '<button class="btn ghost" id="restart" type="button">Start again</button>' : '<span class="muted small">About 5 minutes</span>'}</div>
+  </section>`;
+}
+
+function vAbout(){
+  return `
+  <section class="card">
+    <span class="eyebrow">About you</span>
+    <h2>One quick thing first</h2>
+    <p class="muted">This isn't scored. It lets us compare how different parts of ${S.org ? esc(S.org) : 'the organisation'} see the same questions.</p>
+    ${S.preview ? '<p class="small" style="margin-top:12px;color:var(--yellow)">Preview mode: your answers stay on this device and nothing is sent.</p>' : ''}
+    <div class="field" role="radiogroup" aria-labelledby="roleLbl">
+      <span class="lbl" id="roleLbl">Which best describes your role?</span>
+      <div class="roles">${Object.entries(GROUPS).map(([k,g]) => `
+        <label class="role"><input type="radio" name="grp" value="${k}" ${S.group===k?'checked':''}><span><b>${esc(g.name)}</b><small>${esc(g.hint)}</small></span></label>`).join('')}
+      </div>
+    </div>
+    ${S.err ? `<p class="err" role="alert">${esc(S.err)}</p>` : ''}
+  </section>`;
+}
+
+function vLine(i){
+  const L = LINES[i];
+  return `
+  <div class="lineHead"><div><span class="eyebrow">Line of enquiry ${i+1} of 5</span><h2 style="margin-top:8px">${esc(L.title)}</h2></div></div>
+  <div class="qs">${L.qs.map(q => vQ({n:q[0], lens:q[1], theme:q[2], text:q[3]})).join('')}</div>`;
+}
+function vQ(q){
+  const a = S.answers[q.n-1];
+  return `<fieldset class="q ${q.lens}${S.missing.has(q.n)?' missing':''}" id="q${q.n}" style="margin:0">
+    <legend class="qmeta" style="padding:0;float:left;width:100%"><span>Q${q.n}</span><span class="lensname">${esc(LENSES[q.lens].name)}</span></legend>
+    <div style="clear:both"></div>
+    <div class="qtheme">${esc(q.theme)}</div>
+    <p class="qtext">${esc(q.text)}</p>
+    <div class="opts">${SCALE.map((s,i) => `
+      <label class="opt"><input type="radio" name="q${q.n}" value="${i+1}" ${a===i+1?'checked':''} aria-label="${i+1}, ${esc(s)}"><span><b>${i+1}</b>${esc(s)}</span></label>`).join('')}
+    </div>
+    <p class="need">Choose an answer to carry on.</p>
+  </fieldset>`;
+}
+
+function code(){
+  const org = (S.org||'').trim().replace(/\s+/g,'+').replace(/[^A-Za-z0-9+&'-]/g,'');
+  return `ROX1.${S.group}.${S.answers.join('')}${org ? '.' + org : ''}`;
+}
+function vResults(){
+  const sc = S.answers;
+  const avg = {cx:lensAvg(sc,'cx'), rox:lensAvg(sc,'rox'), ex:lensAvg(sc,'ex')};
+  const order = Object.keys(avg).sort((a,b) => avg[b]-avg[a]);
+  const hi = QS.reduce((b,q) => sc[q.n-1] > sc[b.n-1] ? q : b, QS[0]);
+  const lo = QS.reduce((b,q) => sc[q.n-1] < sc[b.n-1] ? q : b, QS[0]);
+  const flat = avg[order[0]] - avg[order[2]] < 0.3;
+  const cards = ['cx','rox','ex'].map(l => {
+    const t = THEME[l];
+    return `<div class="score ${l}"><div class="nm">${esc(LENSES[l].name)}</div>
+      <div class="val">${f1(avg[l])}<small> / 6</small></div><div class="word">${esc(word(avg[l]))}</div>
+      ${spider(LENS_QS[l].map(n => QS[n-1].theme), [{vals:LENS_QS[l].map(n=>sc[n-1]), color:t.series, fill:t.fill, dots:true}], {ring:t.ring, ringStrong:t.ringStrong, label:t.label, aria:LENSES[l].name+' spider graph'})}
+    </div>`;
+  }).join('');
+  return `
+  <section>
+    <span class="eyebrow">Your view${S.org ? ' of ' + esc(S.org) : ''} · ${esc(GROUPS[S.group]?.name || '')}</span>
+    <h2 style="font-size:clamp(32px,5vw,48px);margin:10px 0 20px">Thank you. Here is how you see it.</h2>
+    <div class="scoreRow">${cards}</div>
+    <div class="read">
+      <p>${flat ? `Your three lenses sit close together, around <b>${esc(word(mean(Object.values(avg))).toLowerCase())}</b>.` : `You see the strongest connection in <b>${esc(LENSES[order[0]].name)}</b> and the weakest in <b>${esc(LENSES[order[2]].name)}</b>.`}</p>
+      <p>Your highest score is <b>${esc(hi.theme)}</b> (Q${hi.n}, ${sc[hi.n-1]}). Your lowest is <b>${esc(lo.theme)}</b> (Q${lo.n}, ${sc[lo.n-1]}).</p>
+      <p class="muted">This is one view. The real insight comes when it sits beside colleagues in customer-facing, back-office, team leader and senior roles, because the gaps between groups are often the most useful finding.</p>
+    </div>
+  </section>
+  ${S.sent ? `<section class="card">
+    <span class="eyebrow">Received</span>
+    <h2>Your answers are in</h2>
+    <p>Thank you. Your answers have gone to the Strategic Advisory Service team and will join your colleagues' to show where views line up and where they pull apart. You can close this page.</p>
+  </section>` : `<section class="card">
+    <span class="eyebrow">${S.preview ? 'Preview mode' : 'One last step'}</span>
+    <h2>${S.preview ? 'Nothing has been sent' : 'Send us your answers'}</h2>
+    <p>${S.preview ? 'This was a preview, so your answers stayed on this device. Here is the code a real response would carry.' : `We couldn't send your answers automatically. Copy this short code and paste it into a reply to the email that sent you here, or send it to <span class="addr">${EMAIL}</span>. It holds your fifteen answers and your group, nothing else.`}</p>
+    <div class="codeBox"><div class="code" id="code">${esc(code())}</div><button class="btn" id="copy" type="button">Copy code</button></div>
+    <p class="copyMsg" id="copyMsg" role="status"></p>
+    ${S.preview ? '' : '<div class="cta" style="margin-top:8px"><button class="btn ghost sm" id="resend" type="button">Try sending again</button></div>'}
+  </section>`}
+  <section>
+    <span class="eyebrow">What happens next</span>
+    <h2 style="font-size:28px;margin:8px 0 6px">A useful next conversation</h2>
+    <p class="muted" style="max-width:62ch">When everyone has responded, we bring the group results to a short exploration call. Bring one recent customer moment, whether it went well or not.</p>
+    <div class="next3">
+      <div><b>What helped</b><p>Where the people behind the moment knew what mattered and were free to act.</p></div>
+      <div><b>What got in the way</b><p>Where hand-offs, measures, budgets or trust pulled the experience apart.</p></div>
+      <div><b>What changes next time</b><p>The one or two connections that would make the next customer moment land.</p></div>
+    </div>
+    <div class="cta">${S.sent ? '' : '<button class="btn ghost sm" id="edit" type="button">Change my answers</button>'}<button class="btn ghost sm" id="restart" type="button">Start a fresh response on this device</button></div>
+  </section>`;
+}
+
+/* ---------- facilitator view ---------- */
+const TKEY = 'sas-rox:team';
+const T = store.get(TKEY) || {raw:'', org:''};
+function parseCodes(raw){
+  const out = [], seen = new Set();
+  const re = /ROX1\.([CBTS])\.([1-6]{15})(?:\.([A-Za-z0-9+&'-]+))?/g;
+  let m;
+  while ((m = re.exec(raw))){
+    const key = m[0]; const dup = seen.has(key); seen.add(key);
+    out.push({group:m[1], scores:m[2].split('').map(Number), org:(m[3]||'').replace(/\+/g,' '), dup});
+  }
+  return out;
+}
+function renderTeam(){
+  $('#nav').hidden = true; $('#rail').hidden = true; $('#railtxt').textContent = 'Facilitator view';
+  const all = parseCodes(T.raw||'');
+  const orgs = [...new Set(all.map(r => r.org).filter(Boolean))];
+  if (T.org && !orgs.includes(T.org)) T.org = '';
+  const rows = all.filter(r => !T.org || r.org === T.org);
+  const example = rows.length === 0;
+  const counts = {C:0,B:0,T:0,S:0};
+  rows.forEach(r => counts[r.group]++);
+  const groups = example ? ['C','B','T','S'] : Object.keys(counts).filter(g => counts[g] > 0);
+  const means = {};
+  groups.forEach(g => {
+    means[g] = example ? EXAMPLE[g] : QS.map((q,i) => mean(rows.filter(r => r.group===g).map(r => r.scores[i])));
+  });
+  const overallQ = QS.map((q,i) => mean(groups.map(g => means[g][i])));
+  const lensOf = (vals, l) => mean(LENS_QS[l].map(n => vals[n-1]));
+  const dups = all.filter(r => r.dup).length;
+
+  const charts = ['cx','rox','ex'].map(l => {
+    const series = groups.map(g => ({vals:LENS_QS[l].map(n => means[g][n-1]), color:GROUPS[g].color, width:2.2}));
+    if (groups.length > 1) series.push({vals:LENS_QS[l].map(n => overallQ[n-1]), color:'#BDBDBD', dash:'4 4', width:1.4});
+    return `<div class="chart"><h3>${esc(LENSES[l].name)}</h3>
+      <div class="avgs">${groups.map(g => `<span style="color:${GROUPS[g].color}">${f1(lensOf(means[g],l))}</span>`).join('<span class="muted">·</span>')}</div>
+      ${spider(LENS_QS[l].map(n => QS[n-1].theme), series, {ring:'#333', ringStrong:'#595959', label:'#BDBDBD', aria:LENSES[l].name+' by group'})}</div>`;
+  }).join('');
+
+  const lensRows = ['cx','rox','ex'].map(l => {
+    const vals = groups.map(g => lensOf(means[g], l));
+    const ov = lensOf(overallQ, l);
+    const minV = Math.min(...vals);
+    return `<tr><td>${esc(LENSES[l].name)}</td>${vals.map(v => `<td class="num${groups.length>1 && v===minV?' low':''}"><span class="cell">${f1(v)}<span class="bar"><i style="width:${(v/6*100).toFixed(0)}%"></i></span></span></td>`).join('')}${groups.length>1?`<td class="num"><b>${f1(ov)}</b></td>`:''}</tr>`;
+  }).join('');
+
+  let gapsHtml = '';
+  if (groups.length > 1){
+    const spreads = QS.map((q,i) => { const v = groups.map(g => means[g][i]); return {q, i, spread:Math.max(...v)-Math.min(...v), v}; }).sort((a,b) => b.spread - a.spread).slice(0,4);
+    gapsHtml = spreads.map(s => {
+      const hiG = groups[s.v.indexOf(Math.max(...s.v))], loG = groups[s.v.indexOf(Math.min(...s.v))];
+      return `<div class="gap"><div class="gh"><b>Q${s.q.n} ${esc(s.q.theme)} <span class="muted" style="font-weight:400">· ${esc(LENSES[s.q.lens].short)}</span></b><span>Gap ${f1(s.spread)}: ${esc(GROUP_PLURAL[hiG])} ${f1(Math.max(...s.v))}, ${esc(GROUP_PLURAL[loG])} ${f1(Math.min(...s.v))}</span></div>
+        <p class="gq">${esc(s.q.text)}</p>
+        <div class="strip" aria-hidden="true"><div class="axis"></div>${[1,2,3,4,5,6].map(t => `<span class="tickl" style="left:${((t-1)/5*100)}%">${t}</span>`).join('')}${groups.map(g => `<span class="dot" title="${esc(GROUP_PLURAL[g])}" style="left:${((means[g][s.i]-1)/5*100).toFixed(1)}%;background:${GROUPS[g].color}"></span>`).join('')}</div></div>`;
+    }).join('');
+  }
+
+  const weakest = groups.map(g => { const l = ['cx','rox','ex'].sort((a,b) => lensOf(means[g],a)-lensOf(means[g],b))[0]; return [g,l]; });
+  const allSameWeak = weakest.every(w => w[1] === weakest[0][1]);
+  const lowestQ = groups.map(g => { const i = means[g].indexOf(Math.min(...means[g])); return [g,i]; });
+  const insights = [];
+  if (groups.length > 1 && allSameWeak) insights.push(`<b>${esc(LENSES[weakest[0][1]].name)}</b> is the weakest lens for every group.`);
+  else weakest.forEach(([g,l]) => insights.push(`${esc(GROUP_PLURAL[g])}: weakest lens is <b>${esc(LENSES[l].name)}</b> (${f1(lensOf(means[g],l))}).`));
+  lowestQ.forEach(([g,i]) => insights.push(`${esc(GROUP_PLURAL[g])} score <b>${esc(QS[i].theme)}</b> lowest of all fifteen questions (${f1(means[g][i])}).`));
+
+  $('#main').innerHTML = `
+  <section>
+    <span class="eyebrow">Facilitator view</span>
+    <h2 style="font-size:clamp(32px,5vw,48px);margin:10px 0 10px">Team results</h2>
+    <p class="muted" style="max-width:64ch">Paste the codes respondents send you. Whole emails are fine: the page picks the codes out. Nothing leaves this browser.</p>
+  </section>
+  <section class="card">
+    <label class="lbl" for="paste" style="font-weight:700">Response codes</label>
+    <textarea class="paste" id="paste" placeholder="ROX1.C.453425344354234.Bennett+Hay" style="margin-top:10px">${esc(T.raw||'')}</textarea>
+    <div class="row"><button class="btn sm" id="apply" type="button">Update results</button><button class="btn ghost sm" id="clear" type="button">Clear</button>
+      ${orgs.length > 1 ? `<label class="small muted" for="orgSel">Organisation</label><select class="input" id="orgSel"><option value="">All (${all.length})</option>${orgs.map(o => `<option${o===T.org?' selected':''}>${esc(o)}</option>`).join('')}</select>` : ''}
+    </div>
+    <div class="chips">${example ? '<span class="tag">Illustrative example</span><span class="chip">Fictional group means from the framework deck. Paste real codes to replace them.</span>' :
+      `<span class="chip"><b>${rows.length}</b>&nbsp;response${rows.length===1?'':'s'}${orgs.length===1?' · '+esc(orgs[0]):''}</span>` + Object.keys(counts).map(g => `<span class="chip${counts[g]>0&&counts[g]<3?' low':''}"><i style="background:${GROUPS[g].color}"></i>${esc(GROUP_PLURAL[g])} ${counts[g]}</span>`).join('') + (dups ? `<span class="chip low">${dups} duplicate code${dups===1?'':'s'} counted twice</span>` : '')}
+    </div>
+    ${!example && Object.values(counts).some(c => c>0 && c<3) ? '<p class="small muted" style="margin-top:10px">Groups with fewer than three responses are outlined: read them with care, and avoid sharing them in a way that identifies individuals.</p>' : ''}
+  </section>
+  <section>
+    <span class="eyebrow">Lens averages by group</span>
+    <div class="tblWrap"><table><thead><tr><th>Lens</th>${groups.map(g => `<th style="text-align:right;color:${GROUPS[g].color}">${esc(GROUP_PLURAL[g])}</th>`).join('')}${groups.length>1?'<th style="text-align:right">Overall</th>':''}</tr></thead><tbody>${lensRows}</tbody></table></div>
+    <p class="small muted" style="margin-top:8px">Mean of five questions on the six-point scale. Overall is the mean of the groups, so a large group does not drown out a small one.${groups.length>1?' The lowest group in each row is highlighted.':''}</p>
+  </section>
+  <section>
+    <span class="eyebrow">Shape of the connection</span>
+    <div class="legend" style="margin-top:12px">${groups.map(g => `<span><i style="background:${GROUPS[g].color}"></i>${esc(GROUP_PLURAL[g])}</span>`).join('')}${groups.length>1?'<span><i style="background:repeating-linear-gradient(90deg,#BDBDBD 0 4px,transparent 4px 8px)"></i>Overall</span>':''}</div>
+    <div class="charts">${charts}</div>
+    <p class="small muted" style="margin-top:10px">Outer ring is 6. Bigger shapes mean stronger connection. Read the shape as well as the size: a narrow spike can matter as much as a small overall shape.</p>
+  </section>
+  ${gapsHtml ? `<section><span class="eyebrow">Where groups pull apart</span><h2 style="font-size:26px;margin:8px 0 0">The four widest gaps between groups</h2><div class="gaps">${gapsHtml}</div></section>` : ''}
+  <section class="card">
+    <span class="eyebrow">For the exploration call</span>
+    <h2>What the scores suggest</h2>
+    <ul class="insights">${insights.map(t => `<li>${t}</li>`).join('')}</ul>
+    <p class="small muted" style="margin-top:14px">The results open a conversation. They do not close one. A low score shows a gap worth exploring, not why it is there.</p>
+  </section>`;
+}
+
+/* ---------- events ---------- */
+function go(step){ S.step = step; S.err = ''; S.missing.clear(); persist(); render(); window.scrollTo(0,0); }
+function resumeStep(){ return S.group ? (S.answers.every(Boolean) ? 'results' : 'l' + Math.min(4, Math.floor(S.answers.findIndex(a => !a)/3))) : 'about'; }
+async function start(){
+  if (S.verified) return go(resumeStep());
+  const typed = (($('#acc') && $('#acc').value) || S.code || '').trim().toUpperCase();
+  if (!typed){ S.err = 'Enter the access code from your invitation email.'; return render(); }
+  if (typed !== S.code){ S.code = typed; load(typed); }
+  S.err = ''; S.sending = true; render();
+  try {
+    const r = await fetch(API + '?code=' + encodeURIComponent(typed));
+    const j = await r.json();
+    S.sending = false;
+    if (!j.ok){ S.err = "That code wasn't recognised. Check your invitation email, or reply to it and we'll help."; return render(); }
+    S.org = j.organisation || ''; S.verified = true; S.preview = typed === 'PREVIEW';
+  } catch(err){
+    S.sending = false;
+    if (typed !== 'PREVIEW'){ S.err = "We couldn't check your code just now. Please try again in a moment."; return render(); }
+    S.org = ''; S.verified = true; S.preview = true;
+  }
+  go(resumeStep());
+}
+async function submit(){
+  if (S.preview || S.sent){ return go('results'); }
+  S.sending = true; $('#next').disabled = true; $('#next').textContent = 'Sending…';
+  try {
+    const r = await fetch(API, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({code:S.code, group:S.group, answers:S.answers})});
+    const j = await r.json().catch(() => ({}));
+    S.sent = !!(r.ok && j.ok);
+  } catch(err){ S.sent = false; }
+  S.sending = false; $('#next').disabled = false;
+  go('results');
+}
+function next(){
+  const st = S.step;
+  if (st === 'about'){
+    if (!S.group){ S.err = 'Choose the group that best describes your role.'; persist(); return render(); }
+    return go('l0');
+  }
+  if (st[0] === 'l'){
+    if (S.sending) return;
+    const i = +st.slice(1);
+    const miss = LINES[i].qs.map(q => q[0]).filter(n => !S.answers[n-1]);
+    if (miss.length){ S.missing = new Set(miss); render(); const el = document.getElementById('q'+miss[0]); if (el) el.scrollIntoView({behavior:'smooth', block:'start'}); return; }
+    return i < 4 ? go('l'+(i+1)) : submit();
+  }
+}
+function back(){
+  const i = STEPS.indexOf(S.step);
+  if (i > 0) go(STEPS[i-1]);
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  switch (b.id){
+    case 'start': return start();
+    case 'restart': S.answers = Array(15).fill(0); S.group = ''; S.sent = false; return go('intro');
+    case 'edit': return go('l0');
+    case 'resend': return submit();
+    case 'next': return next();
+    case 'back': return back();
+    case 'copy': {
+      const txt = code(), msg = $('#copyMsg');
+      const fallback = () => { const r = document.createRange(); r.selectNodeContents($('#code')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); msg.textContent = 'Code selected. Copy it with your keyboard or the menu.'; };
+      try { navigator.clipboard.writeText(txt).then(() => { msg.textContent = 'Copied. Now paste it into your reply.'; }, fallback); } catch(err){ fallback(); }
+      return;
+    }
+    case 'apply': T.raw = $('#paste').value; store.set(TKEY, T); return renderTeam();
+    case 'clear': T.raw = ''; T.org = ''; store.set(TKEY, T); return renderTeam();
+  }
+});
+document.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.id === 'acc'){ e.preventDefault(); start(); } });
+document.addEventListener('change', e => {
+  const t = e.target;
+  if (t.name === 'grp'){ S.group = t.value; S.err = ''; persist(); const er = document.querySelector('.err'); if (er) er.remove(); }
+  if (t.name && /^q\d+$/.test(t.name)){
+    const n = +t.name.slice(1); S.answers[n-1] = +t.value; persist();
+    if (S.missing.has(n)){ S.missing.delete(n); document.getElementById('q'+n).classList.remove('missing'); }
+  }
+  if (t.id === 'orgSel'){ T.org = t.value; store.set(TKEY, T); renderTeam(); }
+});
+window.addEventListener('hashchange', () => { render(); window.scrollTo(0,0); });
+render();
+})();
+</script>
+</body>
+</html>
