@@ -3,6 +3,10 @@
     {
       "src": "/cx-diagnostic",
       "dest": "/diagnostic.html"
+    },
+    {
+      "src": "/connection",
+      "dest": "/connection.html"
     }
   ]
 }
