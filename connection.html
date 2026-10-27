@@ -168,6 +168,12 @@ section+section{margin-top:28px}
 .tag{display:inline-block;background:var(--yellow);color:var(--dark);font-size:12px;font-weight:700;padding:4px 10px;border-radius:4px}
 .paste{width:100%;min-height:110px;border-radius:6px;border:1px solid var(--line);background:var(--ink);padding:12px 14px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:14px;resize:vertical}
 .paste:focus{border-color:var(--yellow);outline:none}
+.note{width:100%;min-height:76px;border-radius:6px;border:1px solid var(--line);background:var(--ink);padding:10px 12px;font-size:15px;line-height:1.45;resize:vertical}
+.note:focus{border-color:var(--yellow);outline:none}
+.notes{display:grid;gap:18px;margin-top:18px}
+.notes h3{font-size:16px;margin:0 0 4px}
+.notes .pair{display:grid;gap:10px;grid-template-columns:1fr 1fr}
+@media (max-width:640px){.notes .pair{grid-template-columns:1fr}}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
 .chip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:13px;font-variant-numeric:tabular-nums}
 .chip i{width:10px;height:10px;border-radius:50%;display:block}
@@ -232,6 +238,7 @@ footer a{color:var(--mute)}
   <p>The Strategic Advisory Service from Awards International, Cultivate Customer Experience by Design and Nathan Dring &amp; Associates. <a href="#team" id="teamLink">Facilitator view</a></p>
 </div></footer>
 
+<script src="/connection-report.js"></script>
 <script>
 (function(){
 'use strict';
@@ -478,15 +485,15 @@ async function downloadReport(){
   const msg = $('#repMsg'), btn = $('#report');
   const org = ($('#repOrg').value || '').trim();
   T.reportOrg = org; store.set(TKEY, T);
-  btn.disabled = true; msg.textContent = 'Building the report…';
+  btn.disabled = true; msg.textContent = 'Building the PDF…';
   try {
-    if (!window.PptxGenJS) await loadScript('/vendor/pptxgen-3.12.0.bundle.js');
+    if (!(window.jspdf && window.jspdf.jsPDF)) await loadScript('/vendor/jspdf-2.5.1.umd.min.js');
     if (!window.buildRoxReport) await loadScript('/connection-report.js');
     const date = new Date().toLocaleDateString('en-GB', {day:'numeric', month:'long', year:'numeric'});
-    const pptx = window.buildRoxReport(Object.assign({}, REPORT_CTX, {org: org || 'Your organisation', date}));
+    const doc = window.buildRoxReport(Object.assign({}, REPORT_CTX, {org: org || 'Your organisation', date, notes: T.notes || {}}));
     const safe = (org || 'organisation').replace(/[^A-Za-z0-9]+/g, '-').replace(/^-|-$/g, '');
-    await pptx.writeFile({fileName: `CX-EX-Connection-findings-${safe}${REPORT_CTX.example ? '-EXAMPLE' : ''}.pptx`});
-    msg.textContent = 'Downloaded. Open it in PowerPoint, add your commentary in the dashed boxes, then send.';
+    doc.save(`CX-EX-Connection-findings-${safe}${REPORT_CTX.example ? '-EXAMPLE' : ''}.pdf`);
+    msg.textContent = 'Downloaded. Check it, then send it to the client.';
   } catch(err){
     console.error(err); msg.textContent = "The report couldn't be built. Refresh the page and try again.";
   }
@@ -556,8 +563,19 @@ function renderTeam(){
   lowestQ.forEach(([g,i]) => insights.push(`${esc(GROUP_PLURAL[g])} score <b>${esc(QS[i].theme)}</b> lowest of all fifteen questions (${f1(means[g][i])}).`));
 
   const reportOrg = T.org || (orgs.length === 1 ? orgs[0] : '') || T.reportOrg || '';
-  REPORT_CTX = {example, groups, means, overall:overallQ,
+  const focus = window.roxReportFocus ? window.roxReportFocus(groups, means, overallQ) : [];
+  REPORT_CTX = {example, groups, means, overall:overallQ, focus,
     counts: example ? {C:12,B:8,T:5,S:4} : counts};
+  const N = T.notes || {};
+  const multi = groups.length > 1;
+  const ord = ['', 'second ', 'third '];
+  const noteFields = `<div class="notes">
+      <div><h3>Overall: your challenge <span class="muted" style="font-weight:400">(page 6)</span></h3>
+        <textarea class="note" data-note="ov" placeholder="One question for the leadership team about the lens results">${esc(N.ov||'')}</textarea></div>
+      ${focus.map((i,k) => { const q = QS[i]; return `<div><h3>Q${q.n} ${esc(q.theme)}: the ${ord[k]}${multi ? 'widest gap' : 'lowest score'} <span class="muted" style="font-weight:400">(page ${7+k})</span></h3>
+        <div class="pair"><textarea class="note" data-note="q${q.n}m" placeholder="What this may mean">${esc(N['q'+q.n+'m']||'')}</textarea>
+        <textarea class="note" data-note="q${q.n}c" placeholder="Your challenge: one question to discuss">${esc(N['q'+q.n+'c']||'')}</textarea></div></div>`; }).join('')}
+    </div>`;
   $('#main').innerHTML = `
   <section>
     <span class="eyebrow">Facilitator view</span>
@@ -578,10 +596,11 @@ function renderTeam(){
   <section class="card">
     <span class="eyebrow">Findings report</span>
     <h2>Download the report to send</h2>
-    <p class="muted" style="max-width:64ch">A 13-slide PowerPoint in the framework's style, built from the results below: who took part, spider graphs by group, the widest gaps, strongest and weakest questions, and a full appendix. Dashed boxes are for the Strategic Advisory Service's interpretation: fill them in before you send it.${example ? ' While the illustrative example is showing, every slide is marked as an example.' : ''}</p>
+    <p class="muted" style="max-width:64ch">A 13-page PDF in the framework's style, built from the results below: who took part, spider graphs by group, ${groups.length > 1 ? 'the widest gaps' : 'the lowest scores'}, strongest and weakest questions, and a full appendix. Add the Strategic Advisory Service's interpretation below before you download. Any box left empty is left out of the PDF. Your commentary is saved in this browser only.${example ? ' While the illustrative example is showing, every page is marked as an example.' : ''}</p>
+    ${noteFields}
     <div class="row" style="margin-top:16px">
       <input class="input" id="repOrg" value="${esc(reportOrg)}" placeholder="Organisation name for the report" style="flex:1 1 260px;min-width:0">
-      <button class="btn" id="report" type="button">Download report (.pptx)</button>
+      <button class="btn" id="report" type="button">Download report (PDF)</button>
     </div>
     <p class="copyMsg" id="repMsg" role="status"></p>
   </section>
@@ -676,10 +695,10 @@ document.addEventListener('click', e => {
     }
     case 'apply': T.raw = $('#paste').value; store.set(TKEY, T); return renderTeam();
     case 'report': return downloadReport();
-    case 'clear': T.raw = ''; T.org = ''; store.set(TKEY, T); return renderTeam();
+    case 'clear': T.raw = ''; T.org = ''; T.notes = {}; store.set(TKEY, T); return renderTeam();
   }
 });
-document.addEventListener('input', e => { if (e.target.id === 'nm'){ S.name = e.target.value; persist(); } if (e.target.id === 'em'){ S.email = e.target.value; persist(); } });
+document.addEventListener('input', e => { if (e.target.dataset && e.target.dataset.note){ T.notes = T.notes || {}; T.notes[e.target.dataset.note] = e.target.value; store.set(TKEY, T); return; } if (e.target.id === 'nm'){ S.name = e.target.value; persist(); } if (e.target.id === 'em'){ S.email = e.target.value; persist(); } });
 document.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.id === 'acc'){ e.preventDefault(); start(); } });
 document.addEventListener('change', e => {
   const t = e.target;
